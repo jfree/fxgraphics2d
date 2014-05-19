@@ -5,7 +5,7 @@ Overview
 --------
 FXGraphics2D is a free implementation of the Graphics2D API that targets the JavaFX Canvas.  The code has been developed for the use of Orson Charts (http://www.object-refinery.com/orsoncharts/) and JFreeChart (http://www.jfree.org/jfreechart).  The home page for the project is:
 
-    http://www.jfree.org/fxgraphics2d/
+http://www.jfree.org/fxgraphics2d/
 
 FXGraphics2D requires JDK 1.8.0 or later and is licensed under the terms of a (three clause) BSD-style license.
 
@@ -25,7 +25,7 @@ Build
 -----
 An Ant script is provided for the build.  To run it, type the following from the project root directory:
 
-   ant -f ant/build.xml
+    ant -f ant/build.xml
 
 
 License
