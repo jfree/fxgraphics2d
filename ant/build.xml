@@ -13,7 +13,7 @@
     <target name="initialise" description="Initialise required settings.">
         <tstamp />
         <property name="fxgraphics2d.name" value="fxgraphics2d" />
-        <property name="fxgraphics2d.version" value="1.0" />
+        <property name="fxgraphics2d.version" value="1.1-pre" />
         <property name="orsoncharts.name" value="orsoncharts" />
         <property name="orsoncharts.version" value="1.4-pre" />
         <property name="jfreechart.name" value="jfreechart" />
@@ -120,6 +120,28 @@
 
     </target>
 
+    <!-- Generate the FXGraphics2D API HTML pages -->
+    <target name="javadoc"
+            description="Generate the Javadoc HTML pages."
+            depends="initialise">
+        <delete dir="${basedir}/javadoc" />
+        <mkdir dir="${basedir}/javadoc" />
+        <javadoc destdir="${basedir}/javadoc"
+                 windowtitle="FXGraphics2D version ${fxgraphics2d.version}"
+                 overview="${basedir}/src/overview.html"
+                 use="no"
+                 linksource="yes"
+                 splitindex="no"
+                 docfilessubdirs="true">
+            <classpath refid="build.classpath" />
+            <packageset dir="${basedir}/src" defaultexcludes="yes">
+                <include name="**"/>
+                <exclude name="com/orsoncharts/demo/**"/>
+                <exclude name="org/jfree/fx/demo/**"/>
+            </packageset>
+        </javadoc>
+    </target>
+
     <!-- Fill the 'distribution' directory. -->
     <target name="fill-distribution" depends="compile,compile-demo">
 
@@ -172,7 +194,7 @@
 
     <!-- ALL -->
     <target name="all"
-            depends="compile,zip"
+            depends="compile,javadoc,zip"
             description="Compiles FXGraphics2D, builds the jar file and creates distribution file (.zip).">
 
         <!-- delete the temporary distribution directory -->
