@@ -231,8 +231,8 @@ public class FXGraphics2D extends Graphics2D {
     /**
      * Returns the flag that controls whether or not clipping is actually 
      * applied to the JavaFX canvas.  The default value is currently 
-     * {@code true} (the clipping is DISABLED) because it does not seem
-     * to work correctly.  See <a href="https://javafx-jira.kenai.com/browse/RT-36891">
+     * {@code false} (the clipping is ENABLED) but you have the option to 
+     * disable it if necessary.  See <a href="https://javafx-jira.kenai.com/browse/RT-36891">
      * https://javafx-jira.kenai.com/browse/RT-36891</a> for details (requires 
      * an account).
      * 
