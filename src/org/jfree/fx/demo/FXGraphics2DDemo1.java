@@ -33,9 +33,6 @@
 
 package org.jfree.fx.demo;
 
-import static javafx.application.Application.launch;
-
-import org.jfree.fx.FXGraphics2D;
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Font;
@@ -45,6 +42,9 @@ import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
+
+import org.jfree.fx.FXGraphics2D;
+
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.JFreeChart;
 import org.jfree.chart.block.BlockBorder;
@@ -83,7 +83,8 @@ public class FXGraphics2DDemo1 extends Application {
         
         private void draw() { 
             double width = getWidth(); 
-            double height = getHeight();  
+            double height = getHeight();
+            getGraphicsContext2D().clearRect(0, 0, width, height);
             this.chart.draw(this.g2, new Rectangle2D.Double(0, 0, width, 
                     height));
         } 
@@ -476,7 +477,7 @@ public class FXGraphics2DDemo1 extends Application {
         stage.setTitle("FXGraphics2DDemo1.java"); 
         stage.setWidth(700);
         stage.setHeight(390);
-        stage.show(); 
+        stage.show();
     }
     
     /**
