@@ -137,10 +137,6 @@ public class FXGraphics2D extends Graphics2D {
 
     /** The background color, presently ignored. */
     private Color background = Color.BLACK;
-
-    /** A hidden image used for font metrics. */
-    private final BufferedImage image = new BufferedImage(10, 10, 
-            BufferedImage.TYPE_INT_RGB);
     
     /**
      * An instance that is lazily instantiated in drawLine and then 
