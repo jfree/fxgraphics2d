@@ -1122,7 +1122,7 @@ public class FXGraphics2D extends Graphics2D {
         }
         // null is handled fine here...
         this.clip = this.transform.createTransformedShape(shape);
-        if (clip != null) {
+        if (clip != null && !this.clippingDisabled) {
             this.gc.save(); 
             this.saveCount++;
             shapeToPath(shape);
