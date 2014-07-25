@@ -136,6 +136,9 @@ public class FXGraphics2D extends Graphics2D {
     
     private Font font = new Font("SansSerif", Font.PLAIN, 12);
     
+    private final FontRenderContext fontRenderContext = new FontRenderContext(
+            null, false, true);
+
     private AffineTransform transform = new AffineTransform();
 
     /** The background color, presently ignored. */
@@ -820,7 +823,7 @@ public class FXGraphics2D extends Graphics2D {
      */
     @Override
     public FontRenderContext getFontRenderContext() {
-        return this.fmImage.createGraphics().getFontRenderContext();
+        return this.fontRenderContext;
     }
 
     /**
