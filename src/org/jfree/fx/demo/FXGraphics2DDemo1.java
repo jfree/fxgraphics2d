@@ -5,7 +5,7 @@
  * Copyright (c) 2014, Object Refinery Limited.
  * All rights reserved.
  *
- * http://www.object-refinery.com/fxgraphics2d/index.html
+ * http://www.jfree.org/fxgraphics2d/index.html
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
