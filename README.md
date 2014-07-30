@@ -16,7 +16,7 @@ Demo
 ----
 Two demos are included in the distribution.  The first shows the basic usage of the FXGraphics2D class by displaying a JFreeChart instance within a resizable JavaFX canvas.  To run this demo from the command line type the following from the root directory of the project:
 
-    java -cp fxgraphics2d-1.1-demo.jar org.jfree.demo.fx.FXGraphics2DDemo1
+    java -cp fxgraphics2d-1.1-demo.jar org.jfree.fx.demo.FXGraphics2DDemo1
 
 The second demo is taken from the Orson Charts project and shows various 3D charts displayed on a custom JavaFX control.  The Orson Charts library is using FXGraphics2D internally for the viewer control.  To run this demo, type the following from the root directory of the project:
 
