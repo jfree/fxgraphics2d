@@ -1,6 +1,8 @@
 FXGraphics2D
 ============
 
+Version 1.1, 30 July 2014
+
 Overview
 --------
 FXGraphics2D is a free implementation of the Graphics2D API that targets the JavaFX Canvas.  The code has been developed for the use of Orson Charts (http://www.object-refinery.com/orsoncharts/) and JFreeChart (http://www.jfree.org/jfreechart).  The home page for the project is:
@@ -14,18 +16,22 @@ Demo
 ----
 Two demos are included in the distribution.  The first shows the basic usage of the FXGraphics2D class by displaying a JFreeChart instance within a resizable JavaFX canvas.  To run this demo from the command line type the following from the root directory of the project:
 
-    java -cp fxgraphics2d-1.0-demo.jar org.jfree.demo.fx.FXGraphics2DDemo1
+    java -cp fxgraphics2d-1.1-demo.jar org.jfree.demo.fx.FXGraphics2DDemo1
 
 The second demo is taken from the Orson Charts project and shows various 3D charts displayed on a custom JavaFX control.  The Orson Charts library is using FXGraphics2D internally for the viewer control.  To run this demo, type the following from the root directory of the project:
 
-    java -jar fxgraphics2d-1.0-demo.jar
+    java -jar fxgraphics2d-1.1-demo.jar
 
 
 Build
 -----
-An Ant script is provided for the build.  To run it, type the following from the project root directory:
+You can build FXGraphics2D with either Ant:
 
     ant -f ant/build.xml
+
+...or Maven:
+
+    mvn clean install
 
 
 License
@@ -34,6 +40,7 @@ License
 The following license applies to the FXGraphics2D library (other licenses apply to the demo code dependencies such as JFreeChart and Orson Charts):
 
 Copyright (c) 2014, Object Refinery Limited.
+
 All rights reserved.
 
 Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met:
@@ -55,4 +62,12 @@ If you have feedback about the FXGraphics2D library, please visit the forum at h
 History
 -------
 
-19-May-2014 : Version 1.0 released.
+30-Jul-2014 : Version 1.1
+- fix clipping so that combined plots in JFreeChart work correctly;
+- observe KEY_STROKE_CONTROL rendering hint for lines and rectangles (used to sharpen gridlines and borders in JFreeChart);
+- adjust fontRenderContext so that glyph positioning is more precise for TextLayout;
+- add clearRect() call in the JFreeChart demo;
+- add Maven support (pom.xml).
+
+19-May-2014 : Version 1.0
+- initial public release.

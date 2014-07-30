@@ -13,15 +13,13 @@
     <target name="initialise" description="Initialise required settings.">
         <tstamp />
         <property name="fxgraphics2d.name" value="fxgraphics2d" />
-        <property name="fxgraphics2d.version" value="1.1-pre" />
+        <property name="fxgraphics2d.version" value="1.1" />
         <property name="orsoncharts.name" value="orsoncharts" />
-        <property name="orsoncharts.version" value="1.4-pre" />
-        <property name="jfreechart.name" value="jfreechart" />
-        <property name="jfreechart.version" value="1.0.17" />
-        <property name="jcommon.name" value="jcommon" />
-        <property name="jcommon.version" value="1.0.22" />
+        <property name="orsoncharts.version" value="1.5-pre" />
+        <property name="jfreechart.name" value="jfreechart-nofx" />
+        <property name="jfreechart.version" value="2.0-pre1" />
         <property name="jfreesvg.name" value="jfreesvg" />
-        <property name="jfreesvg.version" value="1.9" />
+        <property name="jfreesvg.version" value="2.0" />
         <property name="orsonpdf.name" value="orsonpdf" />
         <property name="orsonpdf.version" value="1.6-eval" />
         <property name="builddir" value="${basedir}/build" />
@@ -31,7 +29,6 @@
             <fileset dir="${basedir}/lib/">
                 <include name="${orsoncharts.name}-${orsoncharts.version}.jar"/>
                 <include name="${jfreechart.name}-${jfreechart.version}.jar"/>
-                <include name="${jcommon.name}-${jcommon.version}.jar"/>
                 <include name="${jfreesvg.name}-${jfreesvg.version}.jar"/>
                 <include name="${orsonpdf.name}-${orsonpdf.version}.jar"/>
             </fileset>
@@ -52,7 +49,8 @@
                debug="on"
                deprecation="true"
                source="${src.version}"
-               target="${target.version}">
+               target="${target.version}"
+               includeantruntime="false">
         </javac>
 
         <!-- make the jar -->
@@ -86,7 +84,8 @@
                debug="on"
                deprecation="true"
                source="${src.version}"
-               target="${target.version}">
+               target="${target.version}"
+               includeantruntime="false">
             <classpath refid="build.classpath" />
         </javac>
 
@@ -110,7 +109,7 @@
                 <attribute name="Implementation-Version" value="${fxgraphics2d.version}" />
                 <attribute name="Implementation-Vendor" value="Object Refinery Limited" />
                 <attribute name="Main-Class" value="com.orsoncharts.demo.fx.OrsonChartsFXDemo" />
-                <attribute name="Class-Path" value="${orsoncharts.name}-${orsoncharts.version}-demo.jar lib/${orsoncharts.name}-${orsoncharts.version}.jar lib/${jfreesvg.name}-${jfreesvg.version}.jar lib/${jfreechart.name}-${jfreechart.version}.jar lib/${jcommon.name}-${jcommon.version}.jar lib/${orsonpdf.name}-${orsonpdf.version}.jar "/>
+                <attribute name="Class-Path" value="${orsoncharts.name}-${orsoncharts.version}-demo.jar lib/${orsoncharts.name}-${orsoncharts.version}.jar lib/${jfreesvg.name}-${jfreesvg.version}.jar lib/${jfreechart.name}-${jfreechart.version}.jar lib/${orsonpdf.name}-${orsonpdf.version}.jar "/>
             </manifest> 
 
         </jar>
@@ -157,13 +156,13 @@
         <!-- copy across license.txt  -->
         <copy file="${basedir}/license.txt" tofile="${basedir}/distribution/license.txt" />
 
-        <!-- copy across runtime jar file -->
+        <!-- copy across runtime jar file and demo jar file -->
         <copy file="${basedir}/lib/${fxgraphics2d.name}-${fxgraphics2d.version}.jar" tofile="${basedir}/distribution/${fxgraphics2d.name}-${fxgraphics2d.version}.jar" />
+        <copy file="${basedir}/${fxgraphics2d.name}-${fxgraphics2d.version}-demo.jar" tofile="${basedir}/distribution/${fxgraphics2d.name}-${fxgraphics2d.version}-demo.jar" />
 
-        <!-- copy across Orson Charts, JFreeChart, JCommon, JFreeSVG and Orson PDF jar files -->
+        <!-- copy across Orson Charts, JFreeChart, JFreeSVG and Orson PDF jar files -->
         <copy file="${basedir}/lib/${orsoncharts.name}-${orsoncharts.version}.jar" tofile="${basedir}/distribution/lib/${orsoncharts.name}-${orsoncharts.version}.jar" />
         <copy file="${basedir}/lib/${jfreechart.name}-${jfreechart.version}.jar" tofile="${basedir}/distribution/lib/${jfreechart.name}-${jfreechart.version}.jar" />
-        <copy file="${basedir}/lib/${jcommon.name}-${jcommon.version}.jar" tofile="${basedir}/distribution/lib/${jcommon.name}-${jcommon.version}.jar" />
         <copy file="${basedir}/lib/${jfreesvg.name}-${jfreesvg.version}.jar" tofile="${basedir}/distribution/lib/${jfreesvg.name}-${jfreesvg.version}.jar" />
         <copy file="${basedir}/lib/${orsonpdf.name}-${orsonpdf.version}.jar" tofile="${basedir}/distribution/lib/${orsonpdf.name}-${orsonpdf.version}.jar" />
 
