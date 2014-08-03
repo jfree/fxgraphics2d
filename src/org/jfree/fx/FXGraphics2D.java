@@ -37,6 +37,19 @@
 
 package org.jfree.fx;
 
+import javafx.embed.swing.SwingFXUtils;
+import javafx.scene.canvas.Canvas;
+import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.paint.CycleMethod;
+import javafx.scene.paint.LinearGradient;
+import javafx.scene.paint.RadialGradient;
+import javafx.scene.paint.Stop;
+import javafx.scene.shape.ArcType;
+import javafx.scene.shape.StrokeLineCap;
+import javafx.scene.shape.StrokeLineJoin;
+import javafx.scene.text.FontPosture;
+import javafx.scene.text.FontWeight;
+
 import java.awt.AlphaComposite;
 import java.awt.BasicStroke;
 import java.awt.Color;
@@ -82,18 +95,6 @@ import java.text.AttributedCharacterIterator;
 import java.util.Hashtable;
 import java.util.Map;
 import java.util.Set;
-import javafx.embed.swing.SwingFXUtils;
-import javafx.scene.canvas.Canvas;
-import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.paint.CycleMethod;
-import javafx.scene.paint.LinearGradient;
-import javafx.scene.paint.RadialGradient;
-import javafx.scene.paint.Stop;
-import javafx.scene.shape.ArcType;
-import javafx.scene.shape.StrokeLineCap;
-import javafx.scene.shape.StrokeLineJoin;
-import javafx.scene.text.FontPosture;
-import javafx.scene.text.FontWeight;
 
 /**
  * A {@link Graphics2D} implementation that writes to a JavaFX {@link Canvas}.
@@ -542,7 +543,7 @@ public class FXGraphics2D extends Graphics2D {
      * Maps a line join code from AWT to the corresponding JavaFX 
      * StrokeLineJoin enum value.
      * 
-     * @param c  the line join code.
+     * @param j  the line join code.
      * 
      * @return A JavaFX line join value. 
      */
@@ -1502,14 +1503,18 @@ public class FXGraphics2D extends Graphics2D {
      * @return {@code true} if the image is drawn. 
      */
     @Override
-    public boolean drawImage(Image img, int x, int y, int width, int height, 
+    public boolean drawImage(final Image img, int x, int y, int width, int height,
             ImageObserver observer) {
-        BufferedImage img2 = new BufferedImage(width, height, 
-                BufferedImage.TYPE_INT_ARGB);
-        Graphics2D g2 = img2.createGraphics();
-        g2.drawImage(img, 0, 0, width, height, null);
-        javafx.scene.image.WritableImage fxImage = SwingFXUtils.toFXImage(img2, 
-                null);
+        final BufferedImage buffered;
+        if (img instanceof BufferedImage) {
+            buffered = (BufferedImage) img;
+        } else {
+            buffered = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
+            final Graphics2D g2 = buffered.createGraphics();
+            g2.drawImage(img, 0, 0, width, height, null);
+            g2.dispose();
+        }
+        javafx.scene.image.WritableImage fxImage = SwingFXUtils.toFXImage(buffered, null);
         this.gc.drawImage(fxImage, x, y, width, height);
         return true;
     }
