@@ -179,6 +179,8 @@ public class FXGraphics2D extends Graphics2D {
     private final BufferedImage fmImage = new BufferedImage(10, 10, 
             BufferedImage.TYPE_INT_RGB);
 
+    private final Graphics2D fmImageG2 = fmImage.createGraphics();
+    
     /**
      * Throws an {@code IllegalArgumentException} if {@code arg} is
      * {@code null}.
@@ -690,13 +692,14 @@ public class FXGraphics2D extends Graphics2D {
         }
     }
 
+    private double[] coords = new double[6];
+    
     /**
      * Maps a shape to a path in the graphics context. 
      * 
      * @param s  the shape ({@code null} not permitted).
      */
     private void shapeToPath(Shape s) {
-        double[] coords = new double[6];
         this.gc.beginPath();
         PathIterator iterator = s.getPathIterator(null);
         while (!iterator.isDone()) {
@@ -1509,12 +1512,14 @@ public class FXGraphics2D extends Graphics2D {
         if (img instanceof BufferedImage) {
             buffered = (BufferedImage) img;
         } else {
-            buffered = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
+            buffered = new BufferedImage(width, height, 
+                    BufferedImage.TYPE_INT_ARGB);
             final Graphics2D g2 = buffered.createGraphics();
             g2.drawImage(img, 0, 0, width, height, null);
             g2.dispose();
         }
-        javafx.scene.image.WritableImage fxImage = SwingFXUtils.toFXImage(buffered, null);
+        javafx.scene.image.WritableImage fxImage = SwingFXUtils.toFXImage(
+                buffered, null);
         this.gc.drawImage(fxImage, x, y, width, height);
         return true;
     }
