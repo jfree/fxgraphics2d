@@ -56,9 +56,21 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
 
 Implementation Notes
 --------------------
-In performance testing we have noted that path rendering is not as fast as it could be.  This is confirmed by this bug report:
+(1) The JavaFX Canvas does not have support for dashed lines.  We have submitted this feature request:
+
+    https://javafx-jira.kenai.com/browse/RT-37999
+
+The feature is coming in Java 1.8.0_40.
+
+(2) In performance testing we have noted that path rendering is not as fast as it could be.  This is confirmed by this bug report:
 
     https://javafx-jira.kenai.com/browse/RT-20405
+
+(3) There is a rendering bug that is triggered when a clip is applied.  We submitted this bug report and the fix is available in Java 1.8.0_20:
+
+    https://javafx-jira.kenai.com/browse/RT-36891
+
+As a workaround for earlier Java versions, the FXGraphics2D class has a setClippingDisabled(boolean) method which enables clipping to be enabled or disabled.
 
 
 Feedback
@@ -68,6 +80,9 @@ If you have feedback about the FXGraphics2D library, please visit the forum at h
 
 History
 -------
+
+??-???-2014 : Version 1.2
+- minor performance fixes.
 
 30-Jul-2014 : Version 1.1
 - fix clipping so that combined plots in JFreeChart work correctly;
