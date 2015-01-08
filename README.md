@@ -1,7 +1,7 @@
 FXGraphics2D
 ============
 
-Version 1.1, 30 July 2014
+Version 1.2, ?? January 2015
 
 Overview
 --------
@@ -81,7 +81,9 @@ If you have feedback about the FXGraphics2D library, please visit the forum at h
 History
 -------
 
-??-???-2014 : Version 1.2
+??-???-2015 : Version 1.2
+- add support for dashed lines (implemented via reflection, as the required JavaFX API methods won't be in a production release until March 2015);
+- implemented getGraphicsDevice() method;
 - minor performance fixes.
 
 30-Jul-2014 : Version 1.1

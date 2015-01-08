@@ -91,6 +91,7 @@ import java.awt.image.ImageObserver;
 import java.awt.image.RenderedImage;
 import java.awt.image.WritableRaster;
 import java.awt.image.renderable.RenderableImage;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.text.AttributedCharacterIterator;
 import java.util.Hashtable;
@@ -119,8 +120,10 @@ public class FXGraphics2D extends Graphics2D {
     
     private Shape clip;
     
+    /** Stores the AWT Paint object for get/setPaint(). */
     private Paint paint = Color.BLACK;
     
+    /** Stores the AWT Color object for get/setColor(). */
     private Color awtColor = Color.BLACK;
     
     private Composite composite = AlphaComposite.getInstance(
@@ -185,6 +188,12 @@ public class FXGraphics2D extends Graphics2D {
      * metrics.  Used in the getFontMetrics(Font f) method.
      */
     private final Graphics2D fmImageG2 = fmImage.createGraphics();
+
+    /** 
+     * The device configuration (this is lazily instantiated in the 
+     * getDeviceConfiguration() method).
+     */
+    private GraphicsConfiguration deviceConfiguration;
     
     /**
      * Throws an {@code IllegalArgumentException} if {@code arg} is
@@ -272,13 +281,19 @@ public class FXGraphics2D extends Graphics2D {
     }
     
     /**
-     * This method is not implemented yet.
-     * @return {@code null}.
+     * Returns the device configuration.
+     * 
+     * @return The device configuration (never {@code null}).
      */
     @Override
     public GraphicsConfiguration getDeviceConfiguration() {
-        // FIXME
-        return null;
+        if (this.deviceConfiguration == null) {
+            int width = (int) this.gc.getCanvas().getWidth();
+            int height = (int) this.gc.getCanvas().getHeight();
+            this.deviceConfiguration = new FXGraphicsConfiguration(width,
+                    height);
+        }
+        return this.deviceConfiguration;
     }
 
     /**
@@ -303,7 +318,9 @@ public class FXGraphics2D extends Graphics2D {
 
     /**
      * Returns the paint used to draw or fill shapes (or text).  The default 
-     * value is {@link Color#BLACK}.
+     * value is {@link Color#BLACK}.  This attribute is updated by both the
+     * {@link #setPaint(java.awt.Paint)} and {@link #setColor(java.awt.Color)}
+     * methods.
      * 
      * @return The paint (never {@code null}). 
      * 
@@ -323,8 +340,8 @@ public class FXGraphics2D extends Graphics2D {
      * <br><br>
      * Note that this implementation will map {@link Color}, 
      * {@link GradientPaint}, {@link LinearGradientPaint} and 
-     * {@link RadialGradientPaint}, other paint implementations are not 
-     * handled.
+     * {@link RadialGradientPaint} to JavaFX equivalents, other paint 
+     * implementations are not handled.
      * 
      * @param paint  the paint ({@code null} is permitted but ignored).
      * 
@@ -393,6 +410,9 @@ public class FXGraphics2D extends Graphics2D {
     /**
      * Returns the foreground color.  This method exists for backwards
      * compatibility in AWT, you should use the {@link #getPaint()} method.
+     * This attribute is updated by the {@link #setColor(java.awt.Color)}
+     * method, and also by the {@link #setPaint(java.awt.Paint)} method if
+     * a {@code Color} instance is passed to the method.
      * 
      * @return The foreground color (never {@code null}).
      * 
