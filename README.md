@@ -1,11 +1,15 @@
 FXGraphics2D
 ============
 
-Version 1.2, ?? January 2015
+Version 1.2, ?? September 2015
 
 Overview
 --------
-FXGraphics2D is a free implementation of the Graphics2D API that targets the JavaFX Canvas.  The code has been developed for the use of Orson Charts (http://www.object-refinery.com/orsoncharts/) and JFreeChart (http://www.jfree.org/jfreechart).  The home page for the project is:
+FXGraphics2D is a free implementation of Java's Graphics2D API that targets the JavaFX Canvas.  The code has been developed for the use of Orson Charts (http://www.object-refinery.com/orsoncharts/) and JFreeChart (http://www.jfree.org/jfreechart).  You can read about FXGraphics2D in this Java Magazine article:
+
+http://www.oraclejavamagazine-digital.com/javamagazine/november_december_2014#pg63
+
+The home page for the project is:
 
 http://www.jfree.org/fxgraphics2d/
 
@@ -39,7 +43,7 @@ License
 
 The following license applies to the FXGraphics2D library (other licenses apply to the demo code dependencies such as JFreeChart and Orson Charts):
 
-Copyright (c) 2014, Object Refinery Limited.
+Copyright (c) 2014, 2015, Object Refinery Limited.
 
 All rights reserved.
 
@@ -56,19 +60,19 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
 
 Implementation Notes
 --------------------
-(1) The JavaFX Canvas does not have support for dashed lines.  We have submitted this feature request:
+(1) Initial versions of the JavaFX Canvas did not have support for dashed lines.  We submitted this feature request:
 
-    https://javafx-jira.kenai.com/browse/RT-37999
+    https://bugs.openjdk.java.net/browse/JDK-8097787
 
-The feature is coming in Java 1.8.0_40.
+The feature was added in Java 1.8.0_40.
 
 (2) In performance testing we have noted that path rendering is not as fast as it could be.  This is confirmed by this bug report:
 
-    https://javafx-jira.kenai.com/browse/RT-20405
+    https://bugs.openjdk.java.net/browse/JDK-8092373
 
 (3) There is a rendering bug that is triggered when a clip is applied.  We submitted this bug report and the fix is available in Java 1.8.0_20:
 
-    https://javafx-jira.kenai.com/browse/RT-36891
+    https://bugs.openjdk.java.net/browse/JDK-8094416
 
 As a workaround for earlier Java versions, the FXGraphics2D class has a setClippingDisabled(boolean) method which enables clipping to be enabled or disabled.
 
@@ -81,8 +85,8 @@ If you have feedback about the FXGraphics2D library, please visit the forum at h
 History
 -------
 
-??-???-2015 : Version 1.2
-- add support for dashed lines (implemented via reflection, as the required JavaFX API methods won't be in a production release until March 2015);
+??-Sep-2015 : Version 1.2
+- add support for dashed lines (implemented via reflection, as the required JavaFX API methods are supported in 1.8.0_40 or later only);
 - implemented getGraphicsDevice() method;
 - minor performance fixes.
 
