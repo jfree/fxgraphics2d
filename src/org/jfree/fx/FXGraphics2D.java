@@ -2,7 +2,7 @@
  * FXGraphics2D
  * ============
  * 
- * (C)opyright 2014, by Object Refinery Limited.
+ * (C)opyright 2014, 2015, by Object Refinery Limited.
  * 
  * http://www.jfree.org/fxgraphics2d/index.html
  *
@@ -112,7 +112,7 @@ public class FXGraphics2D extends Graphics2D {
     /** The number of times the graphics state has been saved. */
     private int saveCount = 0;
     
-    /** A flag to permit clipping to be disabled (since it is buggy). */
+    /** A flag to permit clipping to be disabled (because...JavaFX bugs). */
     private boolean clippingDisabled = false;
     
     /** Rendering hints. */
@@ -1594,8 +1594,8 @@ public class FXGraphics2D extends Graphics2D {
      * @return {@code true} if the image is drawn. 
      */
     @Override
-    public boolean drawImage(final Image img, int x, int y, int width, int height,
-            ImageObserver observer) {
+    public boolean drawImage(final Image img, int x, int y, 
+            int width, int height, ImageObserver observer) {
         final BufferedImage buffered;
         if (img instanceof BufferedImage) {
             buffered = (BufferedImage) img;
