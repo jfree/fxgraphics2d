@@ -19,9 +19,9 @@
         <property name="jfreechart.name" value="jfreechart-nofx" />
         <property name="jfreechart.version" value="2.0-pre1" />
         <property name="jfreesvg.name" value="jfreesvg" />
-        <property name="jfreesvg.version" value="2.0" />
+        <property name="jfreesvg.version" value="3.0" />
         <property name="orsonpdf.name" value="orsonpdf" />
-        <property name="orsonpdf.version" value="1.6-eval" />
+        <property name="orsonpdf.version" value="1.7" />
         <property name="builddir" value="${basedir}/build" />
         <property name="src.version" value="1.8"/>
         <property name="target.version" value="1.8"/>
