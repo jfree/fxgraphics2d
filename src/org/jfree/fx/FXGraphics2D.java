@@ -1690,7 +1690,7 @@ public class FXGraphics2D extends Graphics2D {
                 w, h);
         Graphics2D g2 = img2.createGraphics();
         g2.drawImage(img, 0, 0, w, h, sx1, sy1, sx2, sy2, null);
-        return drawImage(img2, dx1, dx2, null);
+        return drawImage(img2, dx1, dy1, null);
     }
 
     /**
