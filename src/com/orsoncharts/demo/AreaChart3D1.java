@@ -2,7 +2,7 @@
  * Orson Charts - Demo
  * ===================
  * 
- * Copyright (c) 2013, 2014, Object Refinery Limited.
+ * Copyright (c) 2013-2015, Object Refinery Limited.
  * All rights reserved.
  *
  * http://www.object-refinery.com/orsoncharts/index.html
@@ -41,10 +41,9 @@ import java.awt.Color;
 import com.orsoncharts.Chart3D;
 import com.orsoncharts.Chart3DFactory;
 import com.orsoncharts.data.category.CategoryDataset3D;
-import com.orsoncharts.data.category.StandardCategoryDataset3D;
-import com.orsoncharts.data.DefaultKeyedValues;
 import com.orsoncharts.plot.CategoryPlot3D;
 import com.orsoncharts.renderer.category.AreaRenderer3D;
+import java.awt.BasicStroke;
 
 /**
  * 3D area chart configuration for demo applications.
@@ -66,89 +65,12 @@ public class AreaChart3D1 {
         chart.setChartBoxColor(new Color(255, 255, 255, 128));
         CategoryPlot3D plot = (CategoryPlot3D) chart.getPlot();
         plot.getRowAxis().setVisible(false);
+        plot.setGridlineStrokeForValues(new BasicStroke(0.5f, 
+                BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND, 4.0f, 
+                new float[] { 2f, 2f }, 0f));
         AreaRenderer3D renderer = (AreaRenderer3D) plot.getRenderer();
         renderer.setBaseColor(Color.GRAY);
         return chart;
     }
     
-    /**
-     * Creates a sample dataset (hard-coded for the purpose of keeping the
-     * demo self-contained - in practice you would normally read your data
-     * from a file, database or other source).
-     * 
-     * @return A sample dataset.
-     */
-    public static CategoryDataset3D createDataset() {    
-        StandardCategoryDataset3D dataset = new StandardCategoryDataset3D();
-                
-        //DefaultKeyedValues s0 = new DefaultKeyedValues();
-        //s0.put("Q1/11", 0.264746);
-        //s0.put("Q2/11", 0.281320);
-        //s0.put("Q3/11", 0.290026);
-        //s0.put("Q4/11", 0.297011);
-        //s0.put("Q1/12", 0.314731);
-        //s0.put("Q2/12", 0.322595);
-        //s0.put("Q3/12", 0.343606);
-        //s0.put("Q4/12", 0.347884);
-        //s0.put("Q1/13", 0.363259);
-        //s0.put("Q2/13", 0.374423);
-        //dataset.addSeriesAsRow("Redhat", s0);
-
-        DefaultKeyedValues<Double> s1 = new DefaultKeyedValues<Double>();
-        s1.put("Q2/11", 8.181);
-        s1.put("Q3/11", 8.792);
-        s1.put("Q4/11", 9.039);
-        s1.put("Q1/12", 10.916);
-        s1.put("Q2/12", 8.181);
-        s1.put("Q3/12", 9.094);
-        s1.put("Q4/12", 8.958);
-        s1.put("Q1/13", 10.947);
-        s1.put("Q2/13", 8.372);
-        s1.put("Q3/13", 9.275);
-        dataset.addSeriesAsRow("Oracle", s1);
-
-        DefaultKeyedValues<Double> s2 = new DefaultKeyedValues<Double>();
-        s2.put("Q2/11", 9.03);
-        s2.put("Q3/11", 9.72);
-        s2.put("Q4/11", 10.58);
-        s2.put("Q1/12", 10.65);
-        s2.put("Q2/12", 12.214);
-        s2.put("Q3/12", 14.101);
-        s2.put("Q4/12", 14.419);
-        s2.put("Q1/13", 13.969);
-        s2.put("Q2/13", 14.105);
-        s2.put("Q3/13", 14.893);
-        s2.put("Q4/13", 16.858);
-        dataset.addSeriesAsRow("Google", s2);
-        
-        DefaultKeyedValues<Double> s3 = new DefaultKeyedValues<Double>();
-        s3.put("Q2/11", 17.37);
-        s3.put("Q3/11", 17.37);
-        s3.put("Q4/11", 20.89);
-        s3.put("Q1/12", 17.41);
-        s3.put("Q2/12", 18.06);
-        s3.put("Q3/12", 16.008);
-        s3.put("Q4/12", 21.456);
-        s3.put("Q1/13", 20.489);
-        s3.put("Q2/13", 19.896);
-        s3.put("Q3/13", 18.529);
-        s3.put("Q4/13", 24.519);
-        dataset.addSeriesAsRow("Microsoft", s3);
-        
-        DefaultKeyedValues<Double> s4 = new DefaultKeyedValues<Double>();
-        s4.put("Q2/11", 28.57);
-        s4.put("Q3/11", 28.27);
-        s4.put("Q4/11", 46.33);
-        s4.put("Q1/12", 39.20);
-        s4.put("Q2/12", 35.00);
-        s4.put("Q3/12", 36.00);
-        s4.put("Q4/12", 54.5);
-        s4.put("Q1/13", 43.6);
-        s4.put("Q2/13", 35.323);
-        s4.put("Q3/13", 37.5);
-        s4.put("Q4/13", 57.594);
-        dataset.addSeriesAsRow("Apple", s4);
-        return dataset;
-    }
-
 }
