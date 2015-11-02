@@ -2,7 +2,7 @@
  * Orson Charts - Demo
  * ===================
  * 
- * Copyright (c) 2013, 2014, Object Refinery Limited.
+ * Copyright (c) 2013-2015, Object Refinery Limited.
  * All rights reserved.
  *
  * http://www.object-refinery.com/orsoncharts/index.html
@@ -45,6 +45,7 @@ import javafx.stage.Stage;
 import com.orsoncharts.Chart3D;
 import com.orsoncharts.data.category.CategoryDataset3D;
 import com.orsoncharts.demo.AreaChart3D1;
+import com.orsoncharts.demo.SampleData;
 import com.orsoncharts.fx.Chart3DViewer;
 
 /**
@@ -53,7 +54,7 @@ import com.orsoncharts.fx.Chart3DViewer;
 public class AreaChart3DFXDemo1 extends Application {
 
     public static Node createDemoNode() {
-        CategoryDataset3D dataset = AreaChart3D1.createDataset();
+        CategoryDataset3D dataset = SampleData.createCompanyRevenueDataset();
         Chart3D chart = AreaChart3D1.createChart(dataset);
         Chart3DViewer viewer = new Chart3DViewer(chart);
         return viewer;
