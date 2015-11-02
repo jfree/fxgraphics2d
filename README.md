@@ -20,11 +20,11 @@ Demo
 ----
 Two demos are included in the distribution.  The first shows the basic usage of the FXGraphics2D class by displaying a JFreeChart instance within a resizable JavaFX canvas.  To run this demo from the command line type the following from the root directory of the project:
 
-    java -cp fxgraphics2d-1.1-demo.jar org.jfree.fx.demo.FXGraphics2DDemo1
+    java -cp fxgraphics2d-1.2-demo.jar org.jfree.fx.demo.FXGraphics2DDemo1
 
 The second demo is taken from the Orson Charts project and shows various 3D charts displayed on a custom JavaFX control.  The Orson Charts library is using FXGraphics2D internally for the viewer control.  To run this demo, type the following from the root directory of the project:
 
-    java -jar fxgraphics2d-1.1-demo.jar
+    java -jar fxgraphics2d-1.2-demo.jar
 
 
 Build
@@ -88,7 +88,8 @@ History
 ??-Dec-2015 : Version 1.2
 - add support for dashed lines (implemented via reflection, as the required JavaFX API methods are supported in 1.8.0_40 or later only);
 - implemented getGraphicsDevice() method;
-- minor performance fixes.
+- minor performance fixes;
+- updated demos.
 
 30-Jul-2014 : Version 1.1
 - fix clipping so that combined plots in JFreeChart work correctly;
