@@ -89,11 +89,11 @@
             <classpath refid="build.classpath" />
         </javac>
 
-        <copy file="${basedir}/src/com/orsoncharts/demo/iStock_000003105870Small.jpg" tofile="${basedir}/build/com/orsoncharts/demo/iStock_000003105870Small.jpg" />
-        <copy file="${basedir}/src/com/orsoncharts/demo/iris.txt" tofile="${basedir}/build/com/orsoncharts/demo/iris.txt" />
+        <copy file="${basedir}/resources/com/orsoncharts/demo/iStock_000003105870Small.jpg" tofile="${basedir}/build/com/orsoncharts/demo/iStock_000003105870Small.jpg" />
+        <copy file="${basedir}/resources/com/orsoncharts/demo/iris.txt" tofile="${basedir}/build/com/orsoncharts/demo/iris.txt" />
 
         <copy todir="${basedir}/build/com/orsoncharts/demo">
-            <fileset dir="${basedir}/src/com/orsoncharts/demo">
+            <fileset dir="${basedir}/resources/com/orsoncharts/demo">
                 <include name="*.html"/>
             </fileset>
         </copy>
@@ -111,7 +111,6 @@
                 <attribute name="Main-Class" value="com.orsoncharts.demo.fx.OrsonChartsFXDemo" />
                 <attribute name="Class-Path" value="${orsoncharts.name}-${orsoncharts.version}-demo.jar lib/${orsoncharts.name}-${orsoncharts.version}.jar lib/${jfreesvg.name}-${jfreesvg.version}.jar lib/${jfreechart.name}-${jfreechart.version}.jar lib/${orsonpdf.name}-${orsonpdf.version}.jar "/>
             </manifest> 
-
         </jar>
 
         <!-- delete the temp directory -->
@@ -172,11 +171,20 @@
             </fileset>
         </copy>
 
+        <!-- copy across resource files -->
+        <copy todir="${basedir}/distribution/resources">
+            <fileset dir="${basedir}/resources">
+            </fileset>
+        </copy>
+
         <!-- copy across ant build files -->
         <copy file="${basedir}/ant/build.xml" tofile="${basedir}/distribution/ant/build.xml" />
 
         <!-- convert end-of-line characters in text files -->
         <fixcrlf srcdir="${basedir}/distribution/src"
+                 eol="crlf" eof="remove" />
+        <!-- convert end-of-line characters in text files -->
+        <fixcrlf srcdir="${basedir}/distribution/resources"
                  eol="crlf" eof="remove" />
     </target>
 
