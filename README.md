@@ -1,11 +1,11 @@
 FXGraphics2D
 ============
 
-Version 1.2, ?? September 2015
+Version 1.2, ?? December 2015
 
 Overview
 --------
-FXGraphics2D is a free implementation of Java's Graphics2D API that targets the JavaFX Canvas.  The code has been developed for the use of Orson Charts (http://www.object-refinery.com/orsoncharts/) and JFreeChart (http://www.jfree.org/jfreechart).  You can read about FXGraphics2D in this Java Magazine article:
+FXGraphics2D is a free implementation of Java's Graphics2D API that targets the JavaFX Canvas.  It makes it possible to reuse existing Java2D code in a JavaFX application.  The code has been developed for the use of Orson Charts (http://www.object-refinery.com/orsoncharts/) and JFreeChart (http://www.jfree.org/jfreechart).  You can read about FXGraphics2D in this Java Magazine article:
 
 http://www.oraclejavamagazine-digital.com/javamagazine/november_december_2014#pg63
 
@@ -85,7 +85,7 @@ If you have feedback about the FXGraphics2D library, please visit the forum at h
 History
 -------
 
-??-Sep-2015 : Version 1.2
+??-Dec-2015 : Version 1.2
 - add support for dashed lines (implemented via reflection, as the required JavaFX API methods are supported in 1.8.0_40 or later only);
 - implemented getGraphicsDevice() method;
 - minor performance fixes.
