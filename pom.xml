@@ -4,7 +4,7 @@
  
   <groupId>org.jfree</groupId>
   <artifactId>fxgraphics2d</artifactId>
-  <version>1.1-SNAPSHOT</version>
+  <version>1.2-SNAPSHOT</version>
   <packaging>jar</packaging>
  
   <!-- this is required to host it on Sonatype's OSSRH -->
@@ -31,6 +31,21 @@
  
   <dependencies>
     <dependency>
+      <groupId>org.jfree</groupId>
+      <artifactId>jfreechart2</artifactId>
+      <version>2.0-pre1</version>
+    </dependency>    
+    <dependency>
+      <groupId>com.orsonpdf</groupId>
+      <artifactId>orsonpdf</artifactId>
+      <version>1.7</version>
+    </dependency>    
+    <dependency>
+      <groupId>com.orsoncharts</groupId>
+      <artifactId>orsoncharts</artifactId>
+      <version>1.5</version>
+    </dependency>    
+    <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
       <version>4.11</version>
@@ -40,6 +55,14 @@
 
   <build>
     <sourceDirectory>src</sourceDirectory>
+    
+    <!-- resources are for the demos only - comment this out for building jar only -->
+    <resources>
+        <resource>
+            <directory>resources</directory>
+        </resource>
+    </resources>
+    
     <plugins>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
