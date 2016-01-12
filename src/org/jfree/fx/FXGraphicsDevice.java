@@ -2,7 +2,7 @@
  * FXGraphics2D
  * ============
  * 
- * (C)opyright 2014, 2015, by Object Refinery Limited.
+ * (C)opyright 2014-2016, by Object Refinery Limited.
  * 
  * http://www.jfree.org/fxgraphics2d/index.html
  *
@@ -71,7 +71,7 @@ public class FXGraphicsDevice extends GraphicsDevice {
     }
 
     /**
-     * Returns the id string.
+     * Returns the id string (defined in the constructor).
      * 
      * @return The id string. 
      */
