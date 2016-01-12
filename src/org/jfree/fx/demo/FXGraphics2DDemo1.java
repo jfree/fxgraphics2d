@@ -2,7 +2,7 @@
  * FXGraphics2DDemo1
  * =================
  * 
- * Copyright (c) 2014, 2015, Object Refinery Limited.
+ * Copyright (c) 2014-2016, Object Refinery Limited.
  * All rights reserved.
  *
  * http://www.jfree.org/fxgraphics2d/index.html
