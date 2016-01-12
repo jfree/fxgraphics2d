@@ -2,7 +2,7 @@
  * FXGraphics2D
  * ============
  * 
- * (C)opyright 2014, 2015, by Object Refinery Limited.
+ * (C)opyright 2014-2016, by Object Refinery Limited.
  * 
  * http://www.jfree.org/fxgraphics2d/index.html
  *
@@ -91,7 +91,7 @@ public class FXGraphicsConfiguration extends GraphicsConfiguration {
 
     /**
      * Returns the color model for the specified transparency type, or 
-     * <code>null</code>.
+     * {@code null}.
      * 
      * @param transparency  the transparency type.
      * 
