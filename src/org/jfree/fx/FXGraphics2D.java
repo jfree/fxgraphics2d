@@ -241,10 +241,10 @@ public class FXGraphics2D extends Graphics2D {
     }
     
     /**
-     * Sets the width to use for the stroke when the current AWT stroke
+     * Sets the width to use for the stroke when setting a new AWT stroke that
      * has a width of {@code 0.0}.
      * 
-     * @param width  the new width (must be 0 or greater).
+     * @param width  the new width (must be 0.0 or greater).
      */
     public void setZeroStrokeWidth(double width) {
         if (width < 0.0) {
@@ -528,7 +528,7 @@ public class FXGraphics2D extends Graphics2D {
     }
 
     /**
-     * Sets the stroke that will be used to draw shapes.
+     * Sets the stroke that will be used to draw shapes.  
      * 
      * @param s  the stroke ({@code null} not permitted).
      * 
@@ -537,9 +537,15 @@ public class FXGraphics2D extends Graphics2D {
     @Override
     public void setStroke(Stroke s) {
         nullNotPermitted(s, "s");
+        if (s == this.stroke) { // quick test, full equals test later
+            return;
+        }
         this.stroke = s;
         if (stroke instanceof BasicStroke) {
             BasicStroke bs = (BasicStroke) s;
+            if (bs.equals(this.stroke)) {
+                return; // no change
+            }
             double lineWidth = bs.getLineWidth();
             if (lineWidth == 0.0) {
                 lineWidth = this.zeroStrokeWidth;
