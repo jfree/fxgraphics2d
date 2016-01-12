@@ -1,7 +1,7 @@
 FXGraphics2D
 ============
 
-Version 1.2, 27 December 2015
+Version 1.2, 12 January 2016
 
 Overview
 --------
@@ -43,7 +43,7 @@ License
 
 The following license applies to the FXGraphics2D library (other licenses apply to the demo code dependencies such as JFreeChart and Orson Charts):
 
-Copyright (c) 2014, 2015, Object Refinery Limited.
+Copyright (c) 2014-2016, Object Refinery Limited.
 
 All rights reserved.
 
@@ -85,9 +85,10 @@ If you have feedback about the FXGraphics2D library, please visit the forum at h
 History
 -------
 
-27-Dec-2015 : Version 1.2
+12-Jan-2016 : Version 1.2 (not yet released)
 - add support for dashed lines (implemented via reflection, as the required JavaFX API methods are supported in 1.8.0_40 or later only);
 - implemented getGraphicsDevice() method;
+- in setPaint(), don't update if the paint value is the same;
 - fixed bug in drawImage() method;
 - minor performance fixes;
 - updated demos.
