@@ -2,7 +2,7 @@
  * FXGraphics2D
  * ============
  * 
- * (C)opyright 2014, 2015, by Object Refinery Limited.
+ * (C)opyright 2014-2016, by Object Refinery Limited.
  * 
  * http://www.jfree.org/fxgraphics2d/index.html
  *
@@ -94,6 +94,7 @@ import java.awt.image.renderable.RenderableImage;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.text.AttributedCharacterIterator;
+import java.util.Arrays;
 import java.util.Hashtable;
 import java.util.Map;
 import java.util.Set;
@@ -352,6 +353,9 @@ public class FXGraphics2D extends Graphics2D {
         if (paint == null) {
             return;
         }
+        if (paintsAreEqual(paint, this.paint)) {
+            return;
+        }
         this.paint = paint;
         if (paint instanceof Color) {
             setColor((Color) paint);
@@ -434,7 +438,7 @@ public class FXGraphics2D extends Graphics2D {
      */
     @Override
     public void setColor(Color c) {
-        if (c == null) {
+        if (c == null || c.equals(this.awtColor)) {
             return;
         }
         this.awtColor = c;
@@ -1915,5 +1919,63 @@ public class FXGraphics2D extends Graphics2D {
         } else {
             this.oval.setFrame(x, y, width, height);
         }
-    }    
+    }
+    
+    /**
+     * Returns {@code true} if the two {@code Paint} objects are equal 
+     * OR both {@code null}.  This method handles
+     * {@code GradientPaint}, {@code LinearGradientPaint} 
+     * and {@code RadialGradientPaint} as special cases.
+     *
+     * @param p1  paint 1 ({@code null} permitted).
+     * @param p2  paint 2 ({@code null} permitted).
+     *
+     * @return A boolean.
+     */
+    private static boolean paintsAreEqual(Paint p1, Paint p2) {
+        if (p1 == p2) {
+            return true;
+        }
+        // handle cases where either or both arguments are null
+        if (p1 == null) {
+            return (p2 == null);   
+        }
+        if (p2 == null) {
+            return false;   
+        }
+
+        // handle cases...
+        if (p1 instanceof GradientPaint && p2 instanceof GradientPaint) {
+            GradientPaint gp1 = (GradientPaint) p1;
+            GradientPaint gp2 = (GradientPaint) p2;
+            return gp1.getColor1().equals(gp2.getColor1()) 
+                    && gp1.getColor2().equals(gp2.getColor2())
+                    && gp1.getPoint1().equals(gp2.getPoint1())    
+                    && gp1.getPoint2().equals(gp2.getPoint2())
+                    && gp1.isCyclic() == gp2.isCyclic()
+                    && gp1.getTransparency() == gp1.getTransparency(); 
+        } else if (p1 instanceof LinearGradientPaint 
+                && p2 instanceof LinearGradientPaint) {
+            LinearGradientPaint lgp1 = (LinearGradientPaint) p1;
+            LinearGradientPaint lgp2 = (LinearGradientPaint) p2;
+            return lgp1.getStartPoint().equals(lgp2.getStartPoint())
+                    && lgp1.getEndPoint().equals(lgp2.getEndPoint()) 
+                    && Arrays.equals(lgp1.getFractions(), lgp2.getFractions())
+                    && Arrays.equals(lgp1.getColors(), lgp2.getColors())
+                    && lgp1.getCycleMethod() == lgp2.getCycleMethod();
+        } else if (p1 instanceof RadialGradientPaint 
+                && p2 instanceof RadialGradientPaint) {
+            RadialGradientPaint rgp1 = (RadialGradientPaint) p1;
+            RadialGradientPaint rgp2 = (RadialGradientPaint) p2;
+            return rgp1.getCenterPoint().equals(rgp2.getCenterPoint())
+                    && rgp1.getRadius() == rgp2.getRadius() 
+                    && rgp1.getFocusPoint().equals(rgp2.getFocusPoint())
+                    && Arrays.equals(rgp1.getFractions(), rgp2.getFractions())
+                    && Arrays.equals(rgp1.getColors(), rgp2.getColors())
+                    && rgp1.getCycleMethod() == rgp2.getCycleMethod();
+        } else {
+            return p1.equals(p2);
+        }
+    }
+
 }
