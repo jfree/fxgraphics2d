@@ -147,7 +147,7 @@ public class FXGraphics2D extends Graphics2D {
 
     private AffineTransform transform = new AffineTransform();
 
-    /** The background color, presently ignored. */
+    /** The background color, used in the {@code clearRect()} method. */
     private Color background = Color.BLACK;
     
     /**
