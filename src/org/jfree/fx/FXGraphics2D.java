@@ -111,7 +111,7 @@ public class FXGraphics2D extends Graphics2D {
     private final GraphicsContext gc;
     
     /** The number of times the graphics state has been saved. */
-    private int saveCount = 0;
+    private boolean stateSaved = false;
     
     /** A flag to permit clipping to be disabled (because...JavaFX bugs). */
     private boolean clippingDisabled = false;
@@ -129,7 +129,7 @@ public class FXGraphics2D extends Graphics2D {
     
     private Composite composite = AlphaComposite.getInstance(
             AlphaComposite.SRC_OVER, 1.0f);
-    
+
     private Stroke stroke = new BasicStroke(1.0f);
  
     /** 
@@ -540,7 +540,6 @@ public class FXGraphics2D extends Graphics2D {
         if (s == this.stroke) { // quick test, full equals test later
             return;
         }
-        this.stroke = s;
         if (stroke instanceof BasicStroke) {
             BasicStroke bs = (BasicStroke) s;
             if (bs.equals(this.stroke)) {
@@ -557,6 +556,7 @@ public class FXGraphics2D extends Graphics2D {
             setLineDashes(gc, floatToDoubleArray(bs.getDashArray()));
             setLineDashOffset(gc, bs.getDashPhase());
         }
+        this.stroke = s;
     }
     
     /**
@@ -1228,31 +1228,37 @@ public class FXGraphics2D extends Graphics2D {
      */
     @Override
     public void setClip(Shape shape) {
-        boolean restored = false;
-        while (this.saveCount > 0) {
-            this.gc.restore();
-            restored = true;
-            this.saveCount--;
-        }
-        if (restored) {
-            reapplyAttributes();
+        if (stateSaved) {
+            this.gc.restore(); // get back original clip
+            reapplyAttributes(); // but keep other attributes
+            stateSaved = false;
         }
         // null is handled fine here...
         this.clip = this.transform.createTransformedShape(shape);
         if (clip != null && !this.clippingDisabled) {
             this.gc.save(); 
-            this.saveCount++;
+            this.stateSaved = true;
             shapeToPath(shape);
             this.gc.clip();
         }
     }
     
     private void reapplyAttributes() {
-        setPaint(this.paint);
-        setBackground(this.background);
-        setStroke(this.stroke);
-        setFont(this.font);
-        setTransform(this.transform);
+        Paint paint = this.paint;
+        this.paint = null;
+        if (paint instanceof Color) {
+            this.awtColor = null;
+        }
+        setPaint(paint);
+        Stroke stroke = this.stroke;
+        this.stroke = null;
+        setStroke(stroke);
+        Font font = this.font;
+        this.font = null;
+        setFont(font);
+        AffineTransform t = this.transform;
+        this.transform = null;
+        setTransform(t);
     }
     
     /**
@@ -1288,8 +1294,10 @@ public class FXGraphics2D extends Graphics2D {
         }
         this.clip = clipNew;
         if (!this.clippingDisabled) {
-            this.gc.save();
-            this.saveCount++;
+            if (!this.stateSaved) {
+                this.gc.save();
+                this.stateSaved = true;
+            }
             shapeToPath(this.clip);
             this.gc.clip();
         }
@@ -1953,6 +1961,9 @@ public class FXGraphics2D extends Graphics2D {
         }
 
         // handle cases...
+        if (p1 instanceof Color && p2 instanceof Color) {
+            return p1.equals(p2);
+        }
         if (p1 instanceof GradientPaint && p2 instanceof GradientPaint) {
             GradientPaint gp1 = (GradientPaint) p1;
             GradientPaint gp2 = (GradientPaint) p2;
@@ -1962,7 +1973,8 @@ public class FXGraphics2D extends Graphics2D {
                     && gp1.getPoint2().equals(gp2.getPoint2())
                     && gp1.isCyclic() == gp2.isCyclic()
                     && gp1.getTransparency() == gp1.getTransparency(); 
-        } else if (p1 instanceof LinearGradientPaint 
+        } 
+        if (p1 instanceof LinearGradientPaint 
                 && p2 instanceof LinearGradientPaint) {
             LinearGradientPaint lgp1 = (LinearGradientPaint) p1;
             LinearGradientPaint lgp2 = (LinearGradientPaint) p2;
@@ -1973,7 +1985,8 @@ public class FXGraphics2D extends Graphics2D {
                     && lgp1.getCycleMethod() == lgp2.getCycleMethod()
                     && lgp1.getColorSpace() == lgp2.getColorSpace()
                     && lgp1.getTransform().equals(lgp2.getTransform());
-        } else if (p1 instanceof RadialGradientPaint 
+        } 
+        if (p1 instanceof RadialGradientPaint 
                 && p2 instanceof RadialGradientPaint) {
             RadialGradientPaint rgp1 = (RadialGradientPaint) p1;
             RadialGradientPaint rgp2 = (RadialGradientPaint) p2;
@@ -1985,9 +1998,8 @@ public class FXGraphics2D extends Graphics2D {
                     && rgp1.getCycleMethod() == rgp2.getCycleMethod()
                     && rgp1.getColorSpace() == rgp2.getColorSpace()
                     && rgp1.getTransform().equals(rgp2.getTransform());
-        } else {
-            return p1.equals(p2);
         }
+        return p1.equals(p2);
     }
 
 }
