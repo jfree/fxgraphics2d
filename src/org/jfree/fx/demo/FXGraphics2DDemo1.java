@@ -80,9 +80,9 @@ public class FXGraphics2DDemo1 extends Application {
         public ChartCanvas(JFreeChart chart) {
             this.chart = chart;
             this.g2 = new FXGraphics2D(getGraphicsContext2D());
-            // Redraw canvas when size changes. 
-            widthProperty().addListener(evt -> draw()); 
-            heightProperty().addListener(evt -> draw()); 
+            // Redraw canvas when size changes.
+            widthProperty().addListener(e -> draw()); 
+            heightProperty().addListener(e -> draw()); 
         }  
         
         private void draw() { 
