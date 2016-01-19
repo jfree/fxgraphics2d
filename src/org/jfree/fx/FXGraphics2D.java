@@ -110,7 +110,7 @@ public class FXGraphics2D extends Graphics2D {
     /** The graphics context for the JavaFX canvas. */
     private final GraphicsContext gc;
     
-    /** The number of times the graphics state has been saved. */
+    /** A flag that is set when the graphics state has been saved. */
     private boolean stateSaved = false;
     
     /** A flag to permit clipping to be disabled (because...JavaFX bugs). */
