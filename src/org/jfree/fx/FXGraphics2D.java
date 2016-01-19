@@ -1162,21 +1162,21 @@ public class FXGraphics2D extends Graphics2D {
     }
     
     private void reapplyAttributes() {
-        Paint paint = this.paint;
+        Paint savedPaint = this.paint;
         this.paint = null;
-        if (paint instanceof Color) {
+        if (savedPaint instanceof Color) {
             this.awtColor = null;
         }
-        setPaint(paint);
-        Stroke stroke = this.stroke;
+        setPaint(savedPaint);
+        Stroke savedStroke = this.stroke;
         this.stroke = null;
-        setStroke(stroke);
-        Font font = this.font;
+        setStroke(savedStroke);
+        Font savedFont = this.font;
         this.font = null;
-        setFont(font);
-        AffineTransform t = this.transform;
+        setFont(savedFont);
+        AffineTransform savedTransform = this.transform;
         this.transform = null;
-        setTransform(t);
+        setTransform(savedTransform);
     }
     
     /**
