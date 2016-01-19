@@ -675,10 +675,6 @@ public class FXGraphics2D extends Graphics2D {
                 l.setLine(x1, y1, x2, y2);
             }
             this.gc.strokeLine(l.getX1(), l.getY1(), l.getX2(), l.getY2());
-        } else if (s instanceof RoundRectangle2D) {
-            RoundRectangle2D rr = (RoundRectangle2D) s;
-            this.gc.strokeRoundRect(rr.getX(), rr.getY(), rr.getWidth(), 
-                    rr.getHeight(), rr.getArcWidth(), rr.getArcHeight());
         } else if (s instanceof Rectangle2D) {
             Rectangle2D r = (Rectangle2D) s;
             if (s instanceof Rectangle) {
@@ -694,6 +690,10 @@ public class FXGraphics2D extends Graphics2D {
                 r.setRect(x, y, w, h);
             }
             this.gc.strokeRect(r.getX(), r.getY(), r.getWidth(), r.getHeight());
+        } else if (s instanceof RoundRectangle2D) {
+            RoundRectangle2D rr = (RoundRectangle2D) s;
+            this.gc.strokeRoundRect(rr.getX(), rr.getY(), rr.getWidth(), 
+                    rr.getHeight(), rr.getArcWidth(), rr.getArcHeight());
         } else if (s instanceof Ellipse2D) {
             Ellipse2D e = (Ellipse2D) s;
             this.gc.strokeOval(e.getX(), e.getY(), e.getWidth(), e.getHeight());
@@ -769,13 +769,13 @@ public class FXGraphics2D extends Graphics2D {
      */
     @Override
     public void fill(Shape s) {
-        if (s instanceof RoundRectangle2D) {
+        if (s instanceof Rectangle2D) {
+            Rectangle2D r = (Rectangle2D) s;
+            this.gc.fillRect(r.getX(), r.getY(), r.getWidth(), r.getHeight());
+        } else if (s instanceof RoundRectangle2D) {
             RoundRectangle2D rr = (RoundRectangle2D) s;
             this.gc.fillRoundRect(rr.getX(), rr.getY(), rr.getWidth(), 
                     rr.getHeight(), rr.getArcWidth(), rr.getArcHeight());
-        } else if (s instanceof Rectangle2D) {
-            Rectangle2D r = (Rectangle2D) s;
-            this.gc.fillRect(r.getX(), r.getY(), r.getWidth(), r.getHeight());
         } else if (s instanceof Ellipse2D) {
             Ellipse2D e = (Ellipse2D) s;
             this.gc.fillOval(e.getX(), e.getY(), e.getWidth(), e.getHeight());
