@@ -91,8 +91,6 @@ import java.awt.image.ImageObserver;
 import java.awt.image.RenderedImage;
 import java.awt.image.WritableRaster;
 import java.awt.image.renderable.RenderableImage;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import java.text.AttributedCharacterIterator;
 import java.util.Arrays;
 import java.util.Hashtable;
@@ -522,8 +520,8 @@ public class FXGraphics2D extends Graphics2D {
             this.gc.setLineCap(awtToJavaFXLineCap(bs.getEndCap()));
             this.gc.setLineJoin(awtToJavaFXLineJoin(bs.getLineJoin()));
             this.gc.setMiterLimit(bs.getMiterLimit());
-            setLineDashes(gc, floatToDoubleArray(bs.getDashArray()));
-            setLineDashOffset(gc, bs.getDashPhase());
+            this.gc.setLineDashes(floatToDoubleArray(bs.getDashArray()));
+            this.gc.setLineDashOffset(bs.getDashPhase());
         }
         this.stroke = s;
     }
@@ -579,55 +577,6 @@ public class FXGraphics2D extends Graphics2D {
         return d;
     }
 
-    /**
-     * A utility method that calls {@code GraphicsContext.setLineDashes()} 
-     * using reflection (since this method is only available in 8u40).  On
-     * runtimes where the method is not available, this method will do nothing.
-     * 
-     * @param gc  the graphics context ({@code null} permitted).
-     * @param dashes  the dashes.
-     */
-    private void setLineDashes(GraphicsContext gc, double... dashes) {
-        if (dashes == null) {
-            dashes = new double[] { 0.0 };
-        }
-        try {
-            Method m = GraphicsContext.class.getMethod("setLineDashes", 
-                    double[].class);
-            try {
-                m.invoke(gc, dashes);
-            } catch (IllegalAccessException | IllegalArgumentException 
-                    | InvocationTargetException e) {
-                // ignore 
-            }
-        } catch (NoSuchMethodException | SecurityException e) {
-            // ignore
-        }
-    }
-    
-    /**
-     * A utility method that calls {@code GraphicsContext.setLineDashOffset()} 
-     * using reflection (since this method is only available in 8u40).  On
-     * runtimes where the method is not available, this method will do nothing.
-     * 
-     * @param gc  the graphics context ({@code null} not permitted).
-     * @param dashes  the dashes.
-     */
-    private void setLineDashOffset(GraphicsContext gc, double dashOffset) {
-        try {
-            Method m = GraphicsContext.class.getMethod("setLineDashOffset", 
-                   double.class);
-            try {
-                m.invoke(gc, dashOffset);
-            } catch (IllegalAccessException | IllegalArgumentException 
-                    | InvocationTargetException e) {
-                // ignore 
-            }
-        } catch (NoSuchMethodException | SecurityException e) {
-            // ignore
-        }
-    }
-    
     /**
      * Returns the current value for the specified hint.  Note that all hints
      * are currently ignored in this implementation.
