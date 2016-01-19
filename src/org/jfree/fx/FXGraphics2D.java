@@ -113,9 +113,6 @@ public class FXGraphics2D extends Graphics2D {
     /** A flag that is set when the graphics state has been saved. */
     private boolean stateSaved = false;
     
-    /** A flag to permit clipping to be disabled (because...JavaFX bugs). */
-    private boolean clippingDisabled = false;
-    
     /** Rendering hints. */
     private final RenderingHints hints;
     
@@ -252,34 +249,6 @@ public class FXGraphics2D extends Graphics2D {
         }
         this.zeroStrokeWidth = width;
     }
- 
-    /**
-     * Returns the flag that controls whether or not clipping is actually 
-     * applied to the JavaFX canvas.  The default value is currently 
-     * {@code false} (the clipping is ENABLED) but since it does not always
-     * work correctly you have the option to disable it.  See 
-     * <a href="https://javafx-jira.kenai.com/browse/RT-36891">
-     * https://javafx-jira.kenai.com/browse/RT-36891</a> for details (requires 
-     * an account).
-     * 
-     * @return A boolean.
-     * 
-     * @see #setClippingDisabled(boolean) 
-     */
-    public boolean isClippingDisabled() {
-        return this.clippingDisabled;
-    }
-    
-    /**
-     * Sets the flag that controls whether or not clipping is disabled.
-     * 
-     * @param disabled  the new flag value.
-     * 
-     * @see #isClippingDisabled() 
-     */
-    public void setClippingDisabled(boolean disabled) {
-        this.clippingDisabled = disabled;    
-    }
     
     /**
      * Returns the device configuration.
@@ -313,7 +282,7 @@ public class FXGraphics2D extends Graphics2D {
         copy.setStroke(getStroke());
         copy.setFont(getFont());
         copy.setTransform(getTransform());
-        copy.setBackground(getBackground());
+        copy.setBackground(getBackground());    
         return copy;
     }
 
@@ -1235,7 +1204,7 @@ public class FXGraphics2D extends Graphics2D {
         }
         // null is handled fine here...
         this.clip = this.transform.createTransformedShape(shape);
-        if (clip != null && !this.clippingDisabled) {
+        if (clip != null) {
             this.gc.save(); 
             this.stateSaved = true;
             shapeToPath(shape);
@@ -1293,14 +1262,12 @@ public class FXGraphics2D extends Graphics2D {
             clipNew = new Path2D.Double(a1);
         }
         this.clip = clipNew;
-        if (!this.clippingDisabled) {
-            if (!this.stateSaved) {
-                this.gc.save();
-                this.stateSaved = true;
-            }
-            shapeToPath(this.clip);
-            this.gc.clip();
+        if (!this.stateSaved) {
+            this.gc.save();
+            this.stateSaved = true;
         }
+        shapeToPath(this.clip);
+        this.gc.clip();
     }
 
     /**
