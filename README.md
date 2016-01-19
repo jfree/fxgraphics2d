@@ -1,7 +1,7 @@
 FXGraphics2D
 ============
 
-Version 1.2, 12 January 2016
+Version 1.2, 19 January 2016
 
 Overview
 --------
@@ -13,7 +13,7 @@ The home page for the project is:
 
 http://www.jfree.org/fxgraphics2d/
 
-FXGraphics2D requires JDK 1.8.0 or later and is licensed under the terms of a (three clause) BSD-style license.
+FXGraphics2D requires JDK 1.8.0_40 or later and is licensed under the terms of a (three clause) BSD-style license.
 
 
 Demo
@@ -69,12 +69,6 @@ The feature was added in Java 1.8.0_40.
 (2) In performance testing we have noted that path rendering is not as fast as it could be.  This is confirmed by this bug report:
 
     https://bugs.openjdk.java.net/browse/JDK-8092373
-
-(3) There is a rendering bug that is triggered when a clip is applied.  We submitted this bug report and the fix is available in Java 1.8.0_20:
-
-    https://bugs.openjdk.java.net/browse/JDK-8094416
-
-As a workaround for earlier Java versions, the FXGraphics2D class has a setClippingDisabled(boolean) method which enables clipping to be enabled or disabled.
 
 
 Feedback
