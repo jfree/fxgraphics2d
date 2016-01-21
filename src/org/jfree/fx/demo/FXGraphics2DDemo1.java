@@ -153,6 +153,7 @@ public class FXGraphics2DDemo1 extends Application {
             renderer.setSeriesPaint(4, new Color(81, 176, 86));
             renderer.setSeriesPaint(5, new Color(0, 55, 122));
             renderer.setSeriesPaint(6, new Color(0, 92, 165));
+            renderer.setDefaultLegendTextFont(new Font(fontName, Font.PLAIN, 14));
         }
 
         return chart;
