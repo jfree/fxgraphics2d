@@ -811,17 +811,21 @@ public class FXGraphics2D extends Graphics2D {
      */
     @Override
     public void setFont(Font font) {
-        if (font == null) {
+        if (font == null || this.font.equals(font)) {
             return;
         }
+        applyFont(font);
+    }
+
+    private void applyFont(Font font) {
         this.font = font;
         FontWeight weight = font.isBold() ? FontWeight.BOLD : FontWeight.NORMAL;
         FontPosture posture = font.isItalic() 
                 ? FontPosture.ITALIC : FontPosture.REGULAR;
         this.gc.setFont(javafx.scene.text.Font.font(font.getFamily(), 
-                weight, posture, font.getSize()));
+                weight, posture, font.getSize()));        
     }
-    
+
     /**
      * Returns the font metrics for the specified font.
      * 
@@ -1171,9 +1175,7 @@ public class FXGraphics2D extends Graphics2D {
         Stroke savedStroke = this.stroke;
         this.stroke = null;
         setStroke(savedStroke);
-        Font savedFont = this.font;
-        this.font = null;
-        setFont(savedFont);
+        applyFont(this.font);
         AffineTransform savedTransform = this.transform;
         this.transform = null;
         setTransform(savedTransform);
