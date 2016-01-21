@@ -1230,8 +1230,7 @@ public class FXGraphics2D extends Graphics2D {
      */
     @Override
     public void clipRect(int x, int y, int width, int height) {
-        setRect(x, y, width, height);
-        clip(this.rect);
+        clip(rect(x, y, width, height));
     }
 
     /**
@@ -1246,8 +1245,7 @@ public class FXGraphics2D extends Graphics2D {
      */
     @Override
     public void setClip(int x, int y, int width, int height) {
-        setRect(x, y, width, height);
-        setClip(this.rect);
+        setClip(rect(x, y, width, height));
     }
 
     /**
@@ -1279,8 +1277,7 @@ public class FXGraphics2D extends Graphics2D {
      */
     @Override
     public void fillRect(int x, int y, int width, int height) {
-        setRect(x, y, width, height);
-        fill(this.rect);
+        fill(rect(x, y, width, height));
     }
 
     /**
@@ -1322,8 +1319,7 @@ public class FXGraphics2D extends Graphics2D {
     @Override
     public void drawRoundRect(int x, int y, int width, int height, 
             int arcWidth, int arcHeight) {
-        setRoundRect(x, y, width, height, arcWidth, arcHeight);
-        draw(this.roundRect);
+        draw(roundRect(x, y, width, height, arcWidth, arcHeight));
     }
 
     /**
@@ -1341,8 +1337,7 @@ public class FXGraphics2D extends Graphics2D {
     @Override
     public void fillRoundRect(int x, int y, int width, int height, 
             int arcWidth, int arcHeight) {
-        setRoundRect(x, y, width, height, arcWidth, arcHeight);
-        fill(this.roundRect);
+        fill(roundRect(x, y, width, height, arcWidth, arcHeight));
     }
     
     /**
@@ -1358,8 +1353,7 @@ public class FXGraphics2D extends Graphics2D {
      */
     @Override
     public void drawOval(int x, int y, int width, int height) {
-        setOval(x, y, width, height);
-        draw(this.oval);
+        draw(oval(x, y, width, height));
     }
 
     /**
@@ -1374,8 +1368,7 @@ public class FXGraphics2D extends Graphics2D {
      */
     @Override
     public void fillOval(int x, int y, int width, int height) {
-        setOval(x, y, width, height);
-        fill(this.oval);
+        fill(oval(x, y, width, height));
     }
 
     /**
@@ -1396,8 +1389,7 @@ public class FXGraphics2D extends Graphics2D {
     @Override
     public void drawArc(int x, int y, int width, int height, int startAngle, 
             int arcAngle) {
-        setArc(x, y, width, height, startAngle, arcAngle);
-        draw(this.arc);
+        draw(arc(x, y, width, height, startAngle, arcAngle));
     }
 
     /**
@@ -1418,8 +1410,7 @@ public class FXGraphics2D extends Graphics2D {
     @Override
     public void fillArc(int x, int y, int width, int height, int startAngle, 
             int arcAngle) {
-        setArc(x, y, width, height, startAngle, arcAngle);
-        fill(this.arc);
+        fill(arc(x, y, width, height, startAngle, arcAngle));
     }
 
     /**
@@ -1778,13 +1769,16 @@ public class FXGraphics2D extends Graphics2D {
      * @param y  the y-coordinate.
      * @param width  the width.
      * @param height  the height.
+     * 
+     * @return A rectangle (never {@code null}).
      */
-    private void setRect(int x, int y, int width, int height) {
+    private Rectangle2D rect(int x, int y, int width, int height) {
         if (this.rect == null) {
             this.rect = new Rectangle2D.Double(x, y, width, height);
         } else {
             this.rect.setRect(x, y, width, height);
         }
+        return this.rect;
     }
 
     /**
@@ -1798,16 +1792,19 @@ public class FXGraphics2D extends Graphics2D {
      * @param height  the height.
      * @param arcWidth  the arc width.
      * @param arcHeight  the arc height.
+     * 
+     * @return A round rectangle (never {@code null}).
      */
-    private void setRoundRect(int x, int y, int width, int height, int arcWidth, 
-            int arcHeight) {
+    private RoundRectangle2D roundRect(int x, int y, int width, int height, 
+            int arcWidth, int arcHeight) {
         if (this.roundRect == null) {
             this.roundRect = new RoundRectangle2D.Double(x, y, width, height, 
                     arcWidth, arcHeight);
         } else {
             this.roundRect.setRoundRect(x, y, width, height, 
                     arcWidth, arcHeight);
-        }        
+        }
+        return this.roundRect;
     }
 
     /**
@@ -1821,8 +1818,10 @@ public class FXGraphics2D extends Graphics2D {
      * @param height  the height.
      * @param startAngle  the start angle in degrees, 0 = 3 o'clock.
      * @param arcAngle  the angle (anticlockwise) in degrees.
+     * 
+     * @return An arc (never {@code null}).
      */
-    private void setArc(int x, int y, int width, int height, int startAngle, 
+    private Arc2D arc(int x, int y, int width, int height, int startAngle, 
             int arcAngle) {
         if (this.arc == null) {
             this.arc = new Arc2D.Double(x, y, width, height, startAngle, 
@@ -1830,25 +1829,30 @@ public class FXGraphics2D extends Graphics2D {
         } else {
             this.arc.setArc(x, y, width, height, startAngle, arcAngle, 
                     Arc2D.OPEN);
-        }        
+        }
+        return this.arc;
     }
             
     /**
-     * Sets the attributes of the reusable {@link Ellipse2D} object that is 
-     * used by the {@link #drawOval(int, int, int, int)} and
-     * {@link #fillOval(int, int, int, int)} methods.
+     * Returns an {@link Ellipse2D} object that may be reused (so this instance
+     * should be used for short term operations only). See the 
+     * {@link #drawOval(int, int, int, int)} and 
+     * {@link #fillOval(int, int, int, int)} methods for usage.
      * 
      * @param x  the x-coordinate.
      * @param y  the y-coordinate.
      * @param width  the width.
      * @param height  the height.
+     * 
+     * @return An oval shape (never {@code null}).
      */
-    private void setOval(int x, int y, int width, int height) {
+    private Ellipse2D oval(int x, int y, int width, int height) {
         if (this.oval == null) {
             this.oval = new Ellipse2D.Double(x, y, width, height);
         } else {
             this.oval.setFrame(x, y, width, height);
         }
+        return this.oval;
     }
     
     /**
