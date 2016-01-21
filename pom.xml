@@ -73,10 +73,10 @@
           <target>1.8</target>
           <compilerArgument>-Xlint:unchecked</compilerArgument>
           <encoding>${project.build.sourceEncoding}</encoding>
-          <excludes>
+<!--          <excludes>
             <exclude>com/orsoncharts/demo/**</exclude>
             <exclude>org/jfree/fx/demo/**</exclude>
-          </excludes>                
+          </excludes>                -->
         </configuration>
       </plugin>
 
