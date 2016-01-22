@@ -4,7 +4,7 @@
  
   <groupId>org.jfree</groupId>
   <artifactId>fxgraphics2d</artifactId>
-  <version>1.2-SNAPSHOT</version>
+  <version>1.2</version>
   <packaging>jar</packaging>
  
   <!-- this is required to host it on Sonatype's OSSRH -->
@@ -57,11 +57,11 @@
     <sourceDirectory>src</sourceDirectory>
     
     <!-- resources are for the demos only - comment this out for building jar only -->
-    <resources>
+<!--   <resources>
         <resource>
             <directory>resources</directory>
         </resource>
-    </resources>
+    </resources> -->
     
     <plugins>
       <plugin>
@@ -73,10 +73,10 @@
           <target>1.8</target>
           <compilerArgument>-Xlint:unchecked</compilerArgument>
           <encoding>${project.build.sourceEncoding}</encoding>
-<!--          <excludes>
+          <excludes>
             <exclude>com/orsoncharts/demo/**</exclude>
             <exclude>org/jfree/fx/demo/**</exclude>
-          </excludes>                -->
+          </excludes>
         </configuration>
       </plugin>
 
