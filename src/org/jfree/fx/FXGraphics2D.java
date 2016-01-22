@@ -96,8 +96,6 @@ import java.util.Arrays;
 import java.util.Hashtable;
 import java.util.Map;
 import java.util.Set;
-import javax.swing.text.StyleConstants;
-import org.jfree.chart.util.PaintUtils;
 
 /**
  * A {@link Graphics2D} implementation that writes to a JavaFX {@link Canvas}.
