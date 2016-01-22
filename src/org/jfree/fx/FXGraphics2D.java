@@ -96,6 +96,8 @@ import java.util.Arrays;
 import java.util.Hashtable;
 import java.util.Map;
 import java.util.Set;
+import javax.swing.text.StyleConstants;
+import org.jfree.chart.util.PaintUtils;
 
 /**
  * A {@link Graphics2D} implementation that writes to a JavaFX {@link Canvas}.
@@ -108,9 +110,6 @@ public class FXGraphics2D extends Graphics2D {
     /** The graphics context for the JavaFX canvas. */
     private final GraphicsContext gc;
     
-    /** A flag that is set when the graphics state has been saved. */
-    private boolean stateSaved = false;
-    
     /** Rendering hints. */
     private final RenderingHints hints;
     
@@ -120,7 +119,7 @@ public class FXGraphics2D extends Graphics2D {
     private Paint paint = Color.BLACK;
     
     /** Stores the AWT Color object for get/setColor(). */
-    private Color awtColor = Color.BLACK;
+    private Color color = Color.BLACK;
     
     private Composite composite = AlphaComposite.getInstance(
             AlphaComposite.SRC_OVER, 1.0f);
@@ -144,6 +143,15 @@ public class FXGraphics2D extends Graphics2D {
 
     /** The background color, used in the {@code clearRect()} method. */
     private Color background = Color.BLACK;
+    
+    /** A flag that is set when the JavaFX graphics state has been saved. */
+    private boolean stateSaved = false;
+
+    private Stroke savedStroke;
+    private Paint savedPaint;
+    private Color savedColor;
+    private Font savedFont;
+    private AffineTransform savedTransform;
     
     /**
      * An instance that is lazily instantiated in drawLine and then 
@@ -391,7 +399,7 @@ public class FXGraphics2D extends Graphics2D {
      */
     @Override
     public Color getColor() {
-        return this.awtColor;
+        return this.color;
     }
 
     /**
@@ -405,10 +413,10 @@ public class FXGraphics2D extends Graphics2D {
      */
     @Override
     public void setColor(Color c) {
-        if (c == null || c.equals(this.awtColor)) {
+        if (c == null || c.equals(this.color)) {
             return;
         }
-        this.awtColor = c;
+        this.color = c;
         this.paint = c;
         javafx.scene.paint.Color fxcolor = awtColorToJavaFX(c);
         this.gc.setFill(fxcolor);
@@ -1150,35 +1158,55 @@ public class FXGraphics2D extends Graphics2D {
      */
     @Override
     public void setClip(Shape shape) {
-        if (stateSaved) {
+        if (this.stateSaved) {
             this.gc.restore(); // get back original clip
             reapplyAttributes(); // but keep other attributes
-            stateSaved = false;
+            this.stateSaved = false;
         }
         // null is handled fine here...
         this.clip = this.transform.createTransformedShape(shape);
         if (clip != null) {
             this.gc.save(); 
-            this.stateSaved = true;
+            rememberSavedAttributes();
             shapeToPath(shape);
             this.gc.clip();
         }
     }
     
+    /** 
+     * Remember the Graphics2D attributes in force at the point of pushing
+     * the JavaFX context.
+     */
+    private void rememberSavedAttributes() {
+        this.stateSaved = true;
+        this.savedColor = this.color;
+        this.savedFont = this.font;
+        this.savedPaint = this.paint;
+        this.savedStroke = this.stroke;
+        this.savedTransform = new AffineTransform(this.transform);
+    }
+    
     private void reapplyAttributes() {
-        Paint savedPaint = this.paint;
-        this.paint = null;
-        if (savedPaint instanceof Color) {
-            this.awtColor = null;
+        if (!paintsAreEqual(this.paint, this.savedPaint)) {
+            setPaint(this.savedPaint);
         }
-        setPaint(savedPaint);
-        Stroke savedStroke = this.stroke;
-        this.stroke = null;
-        setStroke(savedStroke);
-        applyFont(this.font);
-        AffineTransform savedTransform = this.transform;
-        this.transform = null;
-        setTransform(savedTransform);
+        if (!this.color.equals(this.savedColor)) {
+            setColor(this.savedColor);
+        }
+        if (!this.stroke.equals(this.savedColor)) {
+            setStroke(this.savedStroke);
+        }
+        if (!this.font.equals(this.savedFont)) {
+            setFont(this.savedFont);
+        }
+        if (!this.transform.equals(this.savedTransform)) {
+            setTransform(this.transform);
+        }
+        this.savedColor = null;
+        this.savedFont = null;
+        this.savedPaint = null;
+        this.savedStroke = null;
+        this.savedTransform = null;
     }
     
     /**
@@ -1215,7 +1243,7 @@ public class FXGraphics2D extends Graphics2D {
         this.clip = clipNew;
         if (!this.stateSaved) {
             this.gc.save();
-            this.stateSaved = true;
+            rememberSavedAttributes();
         }
         shapeToPath(this.clip);
         this.gc.clip();
