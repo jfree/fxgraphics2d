@@ -1,7 +1,7 @@
 FXGraphics2D
 ============
 
-Version 1.2, 22 January 2016
+Version 1.2, 23 January 2016
 
 Overview
 --------
@@ -79,12 +79,12 @@ If you have feedback about the FXGraphics2D library, please visit the forum at h
 History
 -------
 
-22-Jan-2016 : Version 1.2 (not yet released)
-- add support for dashed lines;
+23-Jan-2016 : Version 1.2
 - implemented getGraphicsDevice() method;
+- add support for dashed lines;
 - in setPaint() and setStroke(), don't update anything if the value is the same;
+- various performance fixes;
 - fixed bug in drawImage() method;
-- minor performance fixes;
 - updated demos.
 
 30-Jul-2014 : Version 1.1
