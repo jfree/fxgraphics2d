@@ -1639,8 +1639,8 @@ public class FXGraphics2D extends Graphics2D {
             int sx1, int sy1, int sx2, int sy2, ImageObserver observer) {
         int w = dx2 - dx1;
         int h = dy2 - dy1;
-        BufferedImage img2 = new BufferedImage(BufferedImage.TYPE_INT_ARGB, 
-                w, h);
+        BufferedImage img2 = new BufferedImage(w, h, 
+                BufferedImage.TYPE_INT_ARGB);
         Graphics2D g2 = img2.createGraphics();
         g2.drawImage(img, 0, 0, w, h, sx1, sy1, sx2, sy2, null);
         return drawImage(img2, dx1, dy1, null);
