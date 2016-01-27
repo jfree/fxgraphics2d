@@ -1,7 +1,7 @@
 FXGraphics2D
 ============
 
-Version 1.2.1, 23 January 2016
+Version 1.3, 27 January 2016
 
 Overview
 --------
@@ -20,11 +20,11 @@ Demo
 ----
 Two demos are included in the distribution.  The first shows the basic usage of the FXGraphics2D class by displaying a JFreeChart instance within a resizable JavaFX canvas.  To run this demo from the command line type the following from the root directory of the project:
 
-    java -cp fxgraphics2d-1.2.1-demo.jar org.jfree.fx.demo.FXGraphics2DDemo1
+    java -cp fxgraphics2d-1.3-demo.jar org.jfree.fx.demo.FXGraphics2DDemo1
 
 The second demo is taken from the Orson Charts project and shows various 3D charts displayed on a custom JavaFX control.  The Orson Charts library is using FXGraphics2D internally for the viewer control.  To run this demo, type the following from the root directory of the project:
 
-    java -jar fxgraphics2d-1.2.1-demo.jar
+    java -jar fxgraphics2d-1.3-demo.jar
 
 
 Build
@@ -78,6 +78,12 @@ If you have feedback about the FXGraphics2D library, please visit the forum at h
 
 History
 -------
+
+27-Jan-2016 : Version 1.3
+- fixed bug in drawImage() method;
+- add 'maven' directory with a pom that can be copied over to load the project
+  in NetBeans;
+- updated Ant script to copy over pom.xml to distribution.
 
 23-Jan-2016 : Version 1.2.1 
 - implemented getGraphicsDevice() method;
