@@ -27,11 +27,10 @@ The second demo is taken from the Orson Charts project and shows various 3D char
     java -jar fxgraphics2d-1.3-demo.jar
 
 The demo has the following dependencies (jar files are included in the 'lib' folder):
-
-Orson Charts 1.5 - licensed under the terms of the GNU General Public License v3 (GPLv3).  See http://www.object-refinery.com/orsoncharts;
-Orson PDF 1.7 - licensed under the terms of the GPLv3.  See http://www.object-refinery.com/orsonpdf;
-JFreeSVG 3.0 - licensed under the terms of the GPLv3.  See http://www.jfree.org/jfreesvg;
-JFreeChart - licensed under the terms of the GNU Lesser General Public License v2.1 or later (LGPL).  See https://github.com/jfree/jfreechart-fse;
+-Orson Charts 1.5 - licensed under the terms of the GNU General Public License v3 (GPLv3).  See http://www.object-refinery.com/orsoncharts;
+-Orson PDF 1.7 - licensed under the terms of the GPLv3.  See http://www.object-refinery.com/orsonpdf;
+-JFreeSVG 3.0 - licensed under the terms of the GPLv3.  See http://www.jfree.org/jfreesvg;
+-JFreeChart - licensed under the terms of the GNU Lesser General Public License v2.1 or later (LGPL).  See https://github.com/jfree/jfreechart-fse;
 
 These dependencies are *not* required for building the FXGraphics2D jar file, only the demos.
 
