@@ -165,6 +165,7 @@
         <copy file="${basedir}/lib/${jfreechart.name}-${jfreechart.version}.jar" tofile="${basedir}/distribution/lib/${jfreechart.name}-${jfreechart.version}.jar" />
         <copy file="${basedir}/lib/${jfreesvg.name}-${jfreesvg.version}.jar" tofile="${basedir}/distribution/lib/${jfreesvg.name}-${jfreesvg.version}.jar" />
         <copy file="${basedir}/lib/${orsonpdf.name}-${orsonpdf.version}.jar" tofile="${basedir}/distribution/lib/${orsonpdf.name}-${orsonpdf.version}.jar" />
+        <copy file="${basedir}/lib/gpl-3.0.txt" tofile="${basedir}/distribution/lib/gpl-3.0.txt" />
 
         <!-- copy across source files -->
         <copy todir="${basedir}/distribution/src">
