@@ -182,14 +182,13 @@ public class FXGraphics2D extends Graphics2D {
     private Arc2D arc;
     
     /** A hidden image used for font metrics. */
-    private final BufferedImage fmImage = new BufferedImage(10, 10, 
-            BufferedImage.TYPE_INT_RGB);
+    private BufferedImage fmImage;
 
     /** 
      * A Graphics2D instance for the hidden image that is used for font
      * metrics.  Used in the getFontMetrics(Font f) method.
      */
-    private final Graphics2D fmImageG2 = fmImage.createGraphics();
+    private Graphics2D fmImageG2 = fmImage.createGraphics();
 
     /** 
      * The device configuration (this is lazily instantiated in the 
@@ -841,6 +840,15 @@ public class FXGraphics2D extends Graphics2D {
      */
     @Override
     public FontMetrics getFontMetrics(Font f) {
+        // be lazy about creating the underlying objects...
+        if (this.fmImage == null) {
+            this.fmImage = new BufferedImage(10, 10, 
+                    BufferedImage.TYPE_INT_RGB);
+            this.fmImageG2 = this.fmImage.createGraphics();
+            this.fmImageG2.setRenderingHint(
+                    RenderingHints.KEY_FRACTIONALMETRICS, 
+                    RenderingHints.VALUE_FRACTIONALMETRICS_ON);
+        }
         return this.fmImageG2.getFontMetrics(f);
     }
     
