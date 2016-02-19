@@ -1628,17 +1628,17 @@ public class FXGraphics2D extends Graphics2D {
      * Draws part of an image (defined by the source rectangle 
      * {@code (sx1, sy1, sx2, sy2)}) into the destination rectangle
      * {@code (dx1, dy1, dx2, dy2)}.  Note that the {@code observer} 
-     * is ignored.
+     * is ignored in this implementation.
      * 
      * @param img  the image.
      * @param dx1  the x-coordinate for the top left of the destination.
      * @param dy1  the y-coordinate for the top left of the destination.
      * @param dx2  the x-coordinate for the bottom right of the destination.
      * @param dy2  the y-coordinate for the bottom right of the destination.
-     * @param sx1 the x-coordinate for the top left of the source.
-     * @param sy1 the y-coordinate for the top left of the source.
-     * @param sx2 the x-coordinate for the bottom right of the source.
-     * @param sy2 the y-coordinate for the bottom right of the source.
+     * @param sx1  the x-coordinate for the top left of the source.
+     * @param sy1  the y-coordinate for the top left of the source.
+     * @param sx2  the x-coordinate for the bottom right of the source.
+     * @param sy2  the y-coordinate for the bottom right of the source.
      * 
      * @return {@code true} if the image is drawn. 
      */
@@ -1686,6 +1686,12 @@ public class FXGraphics2D extends Graphics2D {
         return drawImage(img, dx1, dy1, dx2, dy2, sx1, sy1, sx2, sy2, observer);
     }
 
+    /**
+     * Draws a rendered image.
+     * 
+     * @param img  the rendered image.
+     * @param xform  the transform.
+     */
     @Override
     public void drawRenderedImage(RenderedImage img, AffineTransform xform) {
         BufferedImage bi = convertRenderedImage(img);
@@ -1740,7 +1746,7 @@ public class FXGraphics2D extends Graphics2D {
 
     /**
      * Draws an image with the specified transform. Note that the 
-     * {@code observer} is ignored.     
+     * {@code observer} is ignored in this implementation.     
      * 
      * @param img  the image.
      * @param xform  the transform.
