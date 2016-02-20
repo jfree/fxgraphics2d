@@ -188,7 +188,7 @@ public class FXGraphics2D extends Graphics2D {
      * A Graphics2D instance for the hidden image that is used for font
      * metrics.  Used in the getFontMetrics(Font f) method.
      */
-    private Graphics2D fmImageG2 = fmImage.createGraphics();
+    private Graphics2D fmImageG2;
 
     /** 
      * The device configuration (this is lazily instantiated in the 
