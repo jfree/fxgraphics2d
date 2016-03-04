@@ -1,7 +1,7 @@
 FXGraphics2D
 ============
 
-Version 1.3, 28 January 2016
+Version 1.4, not yet released
 
 Overview
 --------
@@ -20,11 +20,11 @@ Demo
 ----
 Two demos are included in the distribution.  The first shows the basic usage of the FXGraphics2D class by displaying a JFreeChart instance within a resizable JavaFX canvas.  To run this demo from the command line type the following from the root directory of the project:
 
-    java -cp fxgraphics2d-1.3-demo.jar org.jfree.fx.demo.FXGraphics2DDemo1
+    java -cp fxgraphics2d-1.4-demo.jar org.jfree.fx.demo.FXGraphics2DDemo1
 
 The second demo is taken from the Orson Charts project and shows various 3D charts displayed on a custom JavaFX control.  The Orson Charts library is using FXGraphics2D internally for the viewer control.  To run this demo, type the following from the root directory of the project:
 
-    java -jar fxgraphics2d-1.3-demo.jar
+    java -jar fxgraphics2d-1.4-demo.jar
 
 The demo has the following dependencies (jar files are included in the 'lib' folder):
 - Orson Charts 1.5 : licensed under the terms of the GNU General Public License v3 (GPLv3).  See http://www.object-refinery.com/orsoncharts;
@@ -87,6 +87,9 @@ If you have feedback about the FXGraphics2D library, please visit the forum at h
 
 History
 -------
+
+??-Mar-2016 : Version 1.4
+- fixed bug in rotate method, incorrect conversion to degrees.
 
 28-Jan-2016 : Version 1.3
 - fixed bug in drawImage() method;

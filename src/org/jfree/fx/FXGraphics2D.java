@@ -363,7 +363,7 @@ public class FXGraphics2D extends Graphics2D {
                 }
                 double radius = rgp.getRadius();
                 RadialGradient rg = new RadialGradient(
-                        focusAngle * Math.PI / 180, focusDistance, 
+                        Math.toDegrees(focusAngle), focusDistance, 
                         center.getX(), center.getY(), radius, false, 
                         CycleMethod.NO_CYCLE, stops);
                 this.gc.setStroke(rg);
@@ -984,7 +984,7 @@ public class FXGraphics2D extends Graphics2D {
     @Override
     public void rotate(double theta) {
         this.transform.rotate(theta);
-        this.gc.rotate(theta * Math.PI / 180);
+        this.gc.rotate(Math.toDegrees(theta));
     }
 
     /**
