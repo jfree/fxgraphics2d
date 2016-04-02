@@ -5,7 +5,7 @@ Version 1.4, not yet released
 
 Overview
 --------
-**FXGraphics2D** is a free implementation of Java's `Graphics2D` API that targets the JavaFX Canvas.  It makes it possible to reuse existing Java2D code in a JavaFX application.  The code has been developed for the use of **Orson Charts** (http://www.object-refinery.com/orsoncharts/) and **JFreeChart** (http://www.jfree.org/jfreechart).  You can read about `FXGraphics2D` in this Java Magazine article:
+**FXGraphics2D** is a free implementation of Java's `Graphics2D` API that targets the JavaFX Canvas.  It makes it possible to reuse existing Java2D code in a JavaFX application.  The code has been developed for the use of **Orson Charts** (http://www.object-refinery.com/orsoncharts/) and **JFreeChart** (http://www.jfree.org/jfreechart).  You can read about *FXGraphics2D* in this Java Magazine article:
 
 http://www.oraclejavamagazine-digital.com/javamagazine/november_december_2014#pg63
 
@@ -13,7 +13,7 @@ The home page for the project is:
 
 http://www.jfree.org/fxgraphics2d/
 
-FXGraphics2D requires JDK 1.8.0_40 or later and is licensed under the terms of a (three clause) BSD-style license.
+*FXGraphics2D* requires JDK 1.8.0_40 or later and is licensed under the terms of a (three clause) BSD-style license.
 
 
 Demo
@@ -52,7 +52,7 @@ License
 
 The following license applies to the `FXGraphics2D` library (other licenses apply to the demo code dependencies such as JFreeChart and Orson Charts):
 
-Copyright (c) 2014-2016, Object Refinery Limited.
+```Copyright (c) 2014-2016, Object Refinery Limited.
 
 All rights reserved.
 
@@ -65,7 +65,7 @@ Redistribution and use in source and binary forms, with or without modification,
 3. Neither the name of the copyright holder nor the names of its contributors may be used to endorse or promote products derived from this software without specific prior written permission.
 
 THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-
+```
 
 Implementation Notes
 --------------------
