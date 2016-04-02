@@ -5,7 +5,7 @@ Version 1.4, not yet released
 
 Overview
 --------
-*FXGraphics2D* is a free implementation of Java's `Graphics2D` API that targets the JavaFX Canvas.  It makes it possible to reuse existing Java2D code in a JavaFX application.  The code has been developed for the use of Orson Charts (http://www.object-refinery.com/orsoncharts/) and JFreeChart (http://www.jfree.org/jfreechart).  You can read about *FXGraphics2D* in this Java Magazine article:
+**FXGraphics2D** is a free implementation of Java's `Graphics2D` API that targets the JavaFX Canvas.  It makes it possible to reuse existing Java2D code in a JavaFX application.  The code has been developed for the use of **Orson Charts** (http://www.object-refinery.com/orsoncharts/) and **JFreeChart** (http://www.jfree.org/jfreechart).  You can read about **FXGraphics2D** in this Java Magazine article:
 
 http://www.oraclejavamagazine-digital.com/javamagazine/november_december_2014#pg63
 
@@ -13,7 +13,7 @@ The home page for the project is:
 
 http://www.jfree.org/fxgraphics2d/
 
-*FXGraphics2D* requires JDK 1.8.0_40 or later and is licensed under the terms of a (three clause) BSD-style license.
+**FXGraphics2D** requires JDK 1.8.0_40 or later and is licensed under the terms of a (three clause) BSD-style license.
 
 
 Demo
@@ -26,13 +26,13 @@ The second demo is taken from the Orson Charts project and shows various 3D char
 
     java -jar fxgraphics2d-1.4-demo.jar
 
-The demo has the following dependencies (jar files are included in the 'lib' folder):
+The demo has the following dependencies (jar files are included in the `lib` folder):
 - Orson Charts 1.5 : licensed under the terms of the GNU General Public License v3 (GPLv3).  See http://www.object-refinery.com/orsoncharts;
 - Orson PDF 1.7 : licensed under the terms of the GPLv3.  See http://www.object-refinery.com/orsonpdf;
 - JFreeSVG 3.0 : licensed under the terms of the GPLv3.  See http://www.jfree.org/jfreesvg;
 - JFreeChart : licensed under the terms of the GNU Lesser General Public License v2.1 or later (LGPL).  See https://github.com/jfree/jfreechart-fse;
 
-These dependencies are *not* required for building the FXGraphics2D jar file, only the demos.
+These dependencies are *not* required for building the `FXGraphics2D` jar file, only the demos.
 
 Build
 -----
