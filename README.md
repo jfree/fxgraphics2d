@@ -5,7 +5,7 @@ Version 1.4, not yet released
 
 Overview
 --------
-FXGraphics2D is a free implementation of Java's Graphics2D API that targets the JavaFX Canvas.  It makes it possible to reuse existing Java2D code in a JavaFX application.  The code has been developed for the use of Orson Charts (http://www.object-refinery.com/orsoncharts/) and JFreeChart (http://www.jfree.org/jfreechart).  You can read about FXGraphics2D in this Java Magazine article:
+*FXGraphics2D* is a free implementation of Java's `Graphics2D` API that targets the JavaFX Canvas.  It makes it possible to reuse existing Java2D code in a JavaFX application.  The code has been developed for the use of Orson Charts (http://www.object-refinery.com/orsoncharts/) and JFreeChart (http://www.jfree.org/jfreechart).  You can read about *FXGraphics2D* in this Java Magazine article:
 
 http://www.oraclejavamagazine-digital.com/javamagazine/november_december_2014#pg63
 
@@ -13,16 +13,16 @@ The home page for the project is:
 
 http://www.jfree.org/fxgraphics2d/
 
-FXGraphics2D requires JDK 1.8.0_40 or later and is licensed under the terms of a (three clause) BSD-style license.
+*FXGraphics2D* requires JDK 1.8.0_40 or later and is licensed under the terms of a (three clause) BSD-style license.
 
 
 Demo
 ----
-Two demos are included in the distribution.  The first shows the basic usage of the FXGraphics2D class by displaying a JFreeChart instance within a resizable JavaFX canvas.  To run this demo from the command line type the following from the root directory of the project:
+Two demos are included in the distribution.  The first shows the basic usage of the `FXGraphics2D` class by displaying a `JFreeChart` instance within a resizable JavaFX canvas.  To run this demo from the command line type the following from the root directory of the project:
 
     java -cp fxgraphics2d-1.4-demo.jar org.jfree.fx.demo.FXGraphics2DDemo1
 
-The second demo is taken from the Orson Charts project and shows various 3D charts displayed on a custom JavaFX control.  The Orson Charts library is using FXGraphics2D internally for the viewer control.  To run this demo, type the following from the root directory of the project:
+The second demo is taken from the Orson Charts project and shows various 3D charts displayed on a custom JavaFX control.  The Orson Charts library is using `FXGraphics2D` internally for the viewer control.  To run this demo, type the following from the root directory of the project:
 
     java -jar fxgraphics2d-1.4-demo.jar
 
@@ -36,7 +36,7 @@ These dependencies are *not* required for building the FXGraphics2D jar file, on
 
 Build
 -----
-You can build FXGraphics2D with either Ant:
+You can build `FXGraphics2D` with either Ant:
 
     ant -f ant/build.xml
 
@@ -44,13 +44,13 @@ You can build FXGraphics2D with either Ant:
 
     mvn clean install
 
-Note that the pom.xml file in the root folder will build only the FXGraphics2D jar file.  If you want to work with FXGraphics2D in NetBeans, there is an alternative pom file (pom-nb.xml) in the 'maven' directory that will build the project including the demo files and their dependencies.  Simply copy the *content* of pom-nb.xml over to the pom.xml in the root directory for the project, then open the project in NetBeans.
+Note that the `pom.xml` file in the root folder will build only the `FXGraphics2D` jar file.  If you want to work with `FXGraphics2D` in NetBeans, there is an alternative pom file (`pom-nb.xml`) in the 'maven' directory that will build the project including the demo files and their dependencies.  Simply copy the *content* of `pom-nb.xml` over to the `pom.xml` in the root directory for the project, then open the project in NetBeans.
 
 
 License
 -------
 
-The following license applies to the FXGraphics2D library (other licenses apply to the demo code dependencies such as JFreeChart and Orson Charts):
+The following license applies to the `FXGraphics2D` library (other licenses apply to the demo code dependencies such as JFreeChart and Orson Charts):
 
 Copyright (c) 2014-2016, Object Refinery Limited.
 
@@ -82,36 +82,39 @@ The feature was added in Java 1.8.0_40.
 
 Feedback
 --------
-If you have feedback about the FXGraphics2D library, please visit the forum at http://www.jfree.org/fxgraphics2d.
+If you have feedback about the `FXGraphics2D` library, please visit the forum at http://www.jfree.org/fxgraphics2d.
 
 
 History
 -------
 
-??-Mar-2016 : Version 1.4
+##### ??-Mar-2016 : Version 1.4
 - fixed bug in rotate method, incorrect conversion to degrees.
 
-28-Jan-2016 : Version 1.3
-- fixed bug in drawImage() method;
+##### 28-Jan-2016 : Version 1.3
+- fixed bug in `drawImage()` method;
 - add 'maven' directory with a pom that can be copied over to load the project
   in NetBeans;
-- updated Ant script to copy over pom.xml to distribution.
+- updated Ant script to copy over `pom.xml` to distribution.
 
-23-Jan-2016 : Version 1.2.1 
-- implemented getGraphicsDevice() method;
+##### 23-Jan-2016 : Version 1.2.1 
+- implemented `getGraphicsDevice()` method;
 - add support for dashed lines;
-- in setPaint() and setStroke(), don't update anything if the value is the same;
+- in `setPaint()` and `setStroke()`, don't update anything if the value is the same;
 - various performance fixes;
-- fixed bug in drawImage() method;
+- fixed bug in `drawImage()` method;
 - updated demos.
+
 Note that version 1.2.1 corrects a Maven dependency problem that sneaked into the 1.2 release.
 
-30-Jul-2014 : Version 1.1
+##### 30-Jul-2014 : Version 1.1
 - fix clipping so that combined plots in JFreeChart work correctly;
-- observe KEY_STROKE_CONTROL rendering hint for lines and rectangles (used to sharpen gridlines and borders in JFreeChart);
-- adjust fontRenderContext so that glyph positioning is more precise for TextLayout;
-- add clearRect() call in the JFreeChart demo;
+- observe `KEY_STROKE_CONTROL` rendering hint for lines and rectangles (used to 
+  sharpen gridlines and borders in JFreeChart);
+- adjust `fontRenderContext` so that glyph positioning is more precise for 
+  `TextLayout`;
+- add `clearRect()` call in the JFreeChart demo;
 - add Maven support (pom.xml).
 
-19-May-2014 : Version 1.0
+##### 19-May-2014 : Version 1.0
 - initial public release.
