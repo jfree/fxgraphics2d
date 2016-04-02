@@ -52,7 +52,8 @@ License
 
 The following license applies to the `FXGraphics2D` library (other licenses apply to the demo code dependencies such as JFreeChart and Orson Charts):
 
-```Copyright (c) 2014-2016, Object Refinery Limited.
+```
+Copyright (c) 2014-2016, Object Refinery Limited.
 
 All rights reserved.
 
