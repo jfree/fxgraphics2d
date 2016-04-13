@@ -37,19 +37,6 @@
 
 package org.jfree.fx;
 
-import javafx.embed.swing.SwingFXUtils;
-import javafx.scene.canvas.Canvas;
-import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.paint.CycleMethod;
-import javafx.scene.paint.LinearGradient;
-import javafx.scene.paint.RadialGradient;
-import javafx.scene.paint.Stop;
-import javafx.scene.shape.ArcType;
-import javafx.scene.shape.StrokeLineCap;
-import javafx.scene.shape.StrokeLineJoin;
-import javafx.scene.text.FontPosture;
-import javafx.scene.text.FontWeight;
-
 import java.awt.AlphaComposite;
 import java.awt.BasicStroke;
 import java.awt.Color;
@@ -96,6 +83,20 @@ import java.util.Arrays;
 import java.util.Hashtable;
 import java.util.Map;
 import java.util.Set;
+
+import javafx.embed.swing.SwingFXUtils;
+import javafx.scene.canvas.Canvas;
+import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.effect.BlendMode;
+import javafx.scene.paint.CycleMethod;
+import javafx.scene.paint.LinearGradient;
+import javafx.scene.paint.RadialGradient;
+import javafx.scene.paint.Stop;
+import javafx.scene.shape.ArcType;
+import javafx.scene.shape.StrokeLineCap;
+import javafx.scene.shape.StrokeLineJoin;
+import javafx.scene.text.FontPosture;
+import javafx.scene.text.FontWeight;
 
 /**
  * A {@link Graphics2D} implementation that writes to a JavaFX {@link Canvas}.
@@ -475,7 +476,9 @@ public class FXGraphics2D extends Graphics2D {
     }
     
     /**
-     * Sets the composite (only {@code AlphaComposite} is handled).
+     * Sets the composite.  There is limited handling for 
+     * {@code AlphaComposite}, other composites will have no effect on the 
+     * output.
      * 
      * @param comp  the composite ({@code null} not permitted).
      * 
@@ -485,6 +488,40 @@ public class FXGraphics2D extends Graphics2D {
     public void setComposite(Composite comp) {
         nullNotPermitted(comp, "comp");
         this.composite = comp;
+        if (comp instanceof AlphaComposite) {
+            AlphaComposite ac = (AlphaComposite) comp;
+            this.gc.setGlobalAlpha(ac.getAlpha());
+            this.gc.setGlobalBlendMode(blendMode(ac.getRule()));
+        }
+    }
+    
+    /**
+     * Returns a JavaFX BlendMode that is the closest match for the Java2D 
+     * alpha composite rule.
+     * 
+     * @param rule  the rule.
+     * 
+     * @return The blend mode. 
+     */
+    private BlendMode blendMode(int rule) {
+        switch (rule) {
+            case AlphaComposite.SRC_ATOP:
+                return BlendMode.SRC_ATOP;
+            case AlphaComposite.CLEAR:
+            case AlphaComposite.DST:
+            case AlphaComposite.DST_ATOP:
+            case AlphaComposite.DST_IN:
+            case AlphaComposite.DST_OUT:
+            case AlphaComposite.DST_OVER:
+            case AlphaComposite.SRC:
+            case AlphaComposite.SRC_IN:
+            case AlphaComposite.SRC_OUT:
+            case AlphaComposite.SRC_OVER:
+            case AlphaComposite.XOR:
+                return BlendMode.SRC_OVER;
+            default:
+                return BlendMode.SRC_OVER;
+        }
     }
 
     /**
