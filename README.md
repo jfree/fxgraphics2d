@@ -1,7 +1,7 @@
 FXGraphics2D
 ============
 
-Version 1.4, not yet released
+Version 1.4, 25 April 2016
 
 Overview
 --------
@@ -48,7 +48,7 @@ You can build `FXGraphics2D` with either Ant:
 
     mvn clean install
 
-Note that the `pom.xml` file in the root folder will build only the `FXGraphics2D` jar file.  If you want to work with `FXGraphics2D` in NetBeans, there is an alternative pom file (`pom-nb.xml`) in the 'maven' directory that will build the project including the demo files and their dependencies.  Simply copy the *content* of `pom-nb.xml` over to the `pom.xml` in the root directory for the project, then open the project in NetBeans.
+Note that the `pom.xml` file in the root folder will build only the `FXGraphics2D` jar file.  If you want to work with `FXGraphics2D` using NetBeans (or any other Maven-aware development tool), there is an alternative pom file (`pom-nb.xml`) in the 'maven' directory that will build the project including the demo files and their dependencies.  Simply copy the *content* of `pom-nb.xml` over to the `pom.xml` in the root directory for the project, then open the project in NetBeans.
 
 
 License
@@ -108,7 +108,7 @@ If you have feedback about the `FXGraphics2D` library, please visit the forum at
 History
 -------
 
-##### ??-Apr-2016 : Version 1.4
+##### 25-Apr-2016 : Version 1.4
 - improve handling of `setComposite()` for alpha values;
 - fixed bug in rotate method, incorrect conversion to degrees.
 
