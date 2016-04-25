@@ -108,7 +108,8 @@ If you have feedback about the `FXGraphics2D` library, please visit the forum at
 History
 -------
 
-##### ??-Mar-2016 : Version 1.4
+##### ??-Apr-2016 : Version 1.4
+- improve handling of `setComposite()` for alpha values;
 - fixed bug in rotate method, incorrect conversion to degrees.
 
 ##### 28-Jan-2016 : Version 1.3
