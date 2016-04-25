@@ -750,7 +750,7 @@ public class FXGraphics2D extends Graphics2D {
         }
     }
 
-    private double[] coords = new double[6];
+    private final double[] coords = new double[6];
     
     /**
      * Maps a shape to a path in the graphics context. 
