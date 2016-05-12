@@ -4,9 +4,10 @@
 
     <!-- 
         This pom file can be used to load the FXGraphics2D project in 
-        NetBeans.  It includes dependencies required to build and run the
-        demo programs.  To use this file, simply copy the content into the 
-        pom.xml file in the root folder then open the file with NetBeans. 
+        NetBeans or any other Maven-enabled IDE.  It includes dependencies 
+        required to build and run the demo programs (useful for debugging
+        modifications to FXGraphics2D).  To use this file, simply copy the 
+        content into the pom.xml file in the root folder then open the project. 
     -->
     <groupId>org.jfree</groupId>
     <artifactId>fxgraphics2d</artifactId>
@@ -29,27 +30,40 @@
     </properties>
  
     <dependencies>
+
+        <!-- 
+            These dependencies are required for the demo only, they are
+            declared optional so they won't be picked up by other projects.
+        -->
+        <dependency>
+            <groupId>com.orsoncharts</groupId>
+            <artifactId>orsoncharts</artifactId>
+            <version>1.5-SNAPSHOT</version>
+            <optional>true</optional>
+        </dependency>
+                         
         <dependency>
             <groupId>org.jfree</groupId>
             <artifactId>jfreechart2</artifactId>
             <version>2.0-pre1</version>
+            <optional>true</optional>
         </dependency>    
+
         <dependency>
             <groupId>com.orsonpdf</groupId>
             <artifactId>orsonpdf</artifactId>
             <version>1.7</version>
-        </dependency>    
-        <dependency>
-            <groupId>com.orsoncharts</groupId>
-            <artifactId>orsoncharts</artifactId>
-            <version>1.5</version>
-        </dependency>                                  
+            <optional>true</optional>
+        </dependency>
+
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
             <version>4.11</version>
             <scope>test</scope>
+            <optional>true</optional>
         </dependency>
+
     </dependencies>
 
     <build>
