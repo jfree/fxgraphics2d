@@ -40,6 +40,12 @@
             <artifactId>orsoncharts</artifactId>
             <version>1.5-SNAPSHOT</version>
             <optional>true</optional>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.jfree</groupId>
+                    <artifactId>fxgraphics2d</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
                          
         <dependency>
@@ -48,6 +54,14 @@
             <version>2.0-pre1</version>
             <optional>true</optional>
         </dependency>    
+
+        <!-- JFreeSVG is used to provide SVG export -->
+        <dependency>
+            <groupId>org.jfree</groupId>
+            <artifactId>jfreesvg</artifactId>
+            <version>3.1</version>
+            <optional>true</optional>
+        </dependency>
 
         <dependency>
             <groupId>com.orsonpdf</groupId>
