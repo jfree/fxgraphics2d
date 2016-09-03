@@ -256,7 +256,8 @@ public class FXGraphics2D extends Graphics2D {
     }
     
     /**
-     * Returns the device configuration.
+     * Returns the device configuration associated with this
+     * {@code Graphics2D}.
      * 
      * @return The device configuration (never {@code null}).
      */
@@ -638,8 +639,8 @@ public class FXGraphics2D extends Graphics2D {
     }
 
     /**
-     * Sets the value for a hint.  Note that all hints are currently
-     * ignored in this implementation.
+     * Sets the value for a hint.  See the {@link FXHints} class for 
+     * information about the hints that can be used with this implementation.
      * 
      * @param hintKey  the hint key ({@code null} not permitted).
      * @param hintValue  the hint value.
@@ -1128,7 +1129,7 @@ public class FXGraphics2D extends Graphics2D {
 
     /**
      * Returns {@code true} if the rectangle (in device space) intersects
-     * with the shape (the interior, if {@code onStroke} is false, 
+     * with the shape (the interior, if {@code onStroke} is {@code false}, 
      * otherwise the stroked outline of the shape).
      * 
      * @param rect  a rectangle (in device space).
@@ -1285,6 +1286,9 @@ public class FXGraphics2D extends Graphics2D {
      */
     @Override
     public void clip(Shape s) {
+        if (s instanceof Line2D) {
+            s = s.getBounds2D();
+        }
         if (this.clip == null) {
             setClip(s);
             return;
@@ -1574,15 +1578,18 @@ public class FXGraphics2D extends Graphics2D {
      * Draws an image at the location {@code (x, y)}.  Note that the 
      * {@code observer} is ignored.
      * 
-     * @param img  the image.
+     * @param img  the image ({@code null} permitted...method will do nothing).
      * @param x  the x-coordinate.
      * @param y  the y-coordinate.
      * @param observer  ignored.
      * 
-     * @return {@code true} if the image is drawn. 
+     * @return {@code true} if there is no more drawing to be done. 
      */
     @Override
     public boolean drawImage(Image img, int x, int y, ImageObserver observer) {
+        if (img == null) {
+            return true;
+        }
         int w = img.getWidth(observer);
         if (w < 0) {
             return false;
@@ -1595,34 +1602,35 @@ public class FXGraphics2D extends Graphics2D {
     }
 
     /**
-     * Draws an image at the location {@code (x, y)}.  Note that the 
-     * {@code observer} is ignored.
+     * Draws the image into the rectangle defined by {@code (x, y, w, h)}.  
+     * Note that the {@code observer} is ignored (it is not useful in this
+     * context).
      * 
-     * @param img  the image.
+     * @param img  the image ({@code null} permitted...draws nothing).
      * @param x  the x-coordinate.
      * @param y  the y-coordinate.
-     * @param width  the width of the target rectangle for the image.
-     * @param height  the height of the target rectangle for the image.
+     * @param w  the width.
+     * @param h  the height.
      * @param observer  ignored.
      * 
-     * @return {@code true} if the image is drawn. 
+     * @return {@code true} if there is no more drawing to be done. 
      */
     @Override
     public boolean drawImage(final Image img, int x, int y, 
-            int width, int height, ImageObserver observer) {
+            int w, int h, ImageObserver observer) {
         final BufferedImage buffered;
         if (img instanceof BufferedImage) {
             buffered = (BufferedImage) img;
         } else {
-            buffered = new BufferedImage(width, height, 
+            buffered = new BufferedImage(w, h, 
                     BufferedImage.TYPE_INT_ARGB);
             final Graphics2D g2 = buffered.createGraphics();
-            g2.drawImage(img, 0, 0, width, height, null);
+            g2.drawImage(img, 0, 0, w, h, null);
             g2.dispose();
         }
         javafx.scene.image.WritableImage fxImage = SwingFXUtils.toFXImage(
                 buffered, null);
-        this.gc.drawImage(fxImage, x, y, width, height);
+        this.gc.drawImage(fxImage, x, y, w, h);
         return true;
     }
 
@@ -1630,17 +1638,20 @@ public class FXGraphics2D extends Graphics2D {
      * Draws an image at the location {@code (x, y)}.  Note that the 
      * {@code observer} is ignored.
      * 
-     * @param img  the image ({@code null} not permitted).
+     * @param img  the image ({@code null} permitted...draws nothing).
      * @param x  the x-coordinate.
      * @param y  the y-coordinate.
      * @param bgcolor  the background color ({@code null} permitted).
      * @param observer  ignored.
      * 
-     * @return {@code true} if the image is drawn. 
+     * @return {@code true} if there is no more drawing to be done. 
      */
     @Override
     public boolean drawImage(Image img, int x, int y, Color bgcolor, 
             ImageObserver observer) {
+        if (img == null) {
+            return true;
+        }
         int w = img.getWidth(null);
         if (w < 0) {
             return false;
