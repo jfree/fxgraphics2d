@@ -37,6 +37,7 @@
 
 package org.jfree.fx;
 
+import com.sun.javafx.tk.Toolkit;
 import java.awt.AlphaComposite;
 import java.awt.BasicStroke;
 import java.awt.Color;
@@ -864,12 +865,21 @@ public class FXGraphics2D extends Graphics2D {
         FontWeight weight = font.isBold() ? FontWeight.BOLD : FontWeight.NORMAL;
         FontPosture posture = font.isItalic() 
                 ? FontPosture.ITALIC : FontPosture.REGULAR;
-        this.gc.setFont(javafx.scene.text.Font.font(font.getFamily(), 
-                weight, posture, font.getSize()));        
+        javafx.scene.text.Font jfxfont = javafx.scene.text.Font.font(
+                font.getFamily(), weight, posture, font.getSize());
+        this.gc.setFont(jfxfont);
     }
 
     /**
-     * Returns the font metrics for the specified font.
+     * Returns the font metrics for the specified font.  There are two
+     * possibilities here.  First, if the rendering hint
+     * {@link FXHints#KEY_USE_FX_FONT_METRICS} is set with the value
+     * {@code Boolean.TRUE}, then this method will return an instance of
+     * {@link FXFontMetrics}.  This is generally more precise, but on the
+     * downside requires calling some non-public API.  Without this rendering
+     * hint, the font metrics returned are from Java2D (via an internal 
+     * {@code BufferedImage} (this does not always match exactly the font
+     * metrics used by JavaFX).
      * 
      * @param f  the font.
      * 
@@ -877,13 +887,19 @@ public class FXGraphics2D extends Graphics2D {
      */
     @Override
     public FontMetrics getFontMetrics(Font f) {
+
+        Boolean b = (Boolean) getRenderingHint(FXHints.KEY_USE_FX_FONT_METRICS);
+        if (Boolean.TRUE.equals(b)) {
+            return new FXFontMetrics(f, this, this.gc);
+        }
+
         // be lazy about creating the underlying objects...
         if (this.fmImage == null) {
-            this.fmImage = new BufferedImage(10, 10, 
+            this.fmImage = new BufferedImage(10, 10,
                     BufferedImage.TYPE_INT_RGB);
             this.fmImageG2 = this.fmImage.createGraphics();
             this.fmImageG2.setRenderingHint(
-                    RenderingHints.KEY_FRACTIONALMETRICS, 
+                    RenderingHints.KEY_FRACTIONALMETRICS,
                     RenderingHints.VALUE_FRACTIONALMETRICS_ON);
         }
         return this.fmImageG2.getFontMetrics(f);
@@ -1786,7 +1802,7 @@ public class FXGraphics2D extends Graphics2D {
      * {@code observer} is ignored in this implementation.     
      * 
      * @param img  the image.
-     * @param xform  the transform.
+     * @param xform  the transform ({@code null} permitted).
      * @param obs  the image observer (ignored).
      * 
      * @return {@code true} if the image is drawn. 
@@ -1795,9 +1811,13 @@ public class FXGraphics2D extends Graphics2D {
     public boolean drawImage(Image img, AffineTransform xform, 
             ImageObserver obs) {
         AffineTransform savedTransform = getTransform();
-        transform(xform);
+        if (xform != null) {
+            transform(xform);
+        }
         boolean result = drawImage(img, 0, 0, obs);
-        setTransform(savedTransform);
+        if (xform != null) {
+            setTransform(savedTransform);
+        }
         return result;
     }
 
