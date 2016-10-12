@@ -56,13 +56,10 @@ public final class FXHints {
     }
     
     /**
-     * The key for the hint that controls whether strings are rendered as
-     * characters (standard PDF output) or vector graphics (implemented using 
-     * <code>TextLayout</code>).  The latter will result in larger output files 
-     * but permits rendering Unicode characters without font embedding (which is 
-     * not supported by <strong>OrsonPDF</strong> at this point).  Valid hint 
-     * values are {@link #VALUE_DRAW_STRING_TYPE_STANDARD} and 
-     * {@link #VALUE_DRAW_STRING_TYPE_VECTOR}.
+     * The key for the hint that controls whether JavaFX font metrics are
+     * used (better matching to rendering engine, but relies on deprecated API) 
+     * or Java2D font metrics.  A {@code Boolean} value (or {@code null}) can 
+     * be assigned as the value for this key.
      */
     public static final FXHints.Key KEY_USE_FX_FONT_METRICS 
             = new FXHints.Key(0);
