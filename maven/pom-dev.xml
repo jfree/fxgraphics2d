@@ -11,7 +11,7 @@
     -->
     <groupId>org.jfree</groupId>
     <artifactId>fxgraphics2d</artifactId>
-    <version>1.4</version>
+    <version>1.5</version>
     <packaging>jar</packaging>
 
     <name>FXGraphics2D</name>
@@ -55,14 +55,15 @@
             <optional>true</optional>
         </dependency>    
 
-        <!-- JFreeSVG is used to provide SVG export -->
+        <!-- JFreeSVG is used to provide SVG export in the demo -->
         <dependency>
             <groupId>org.jfree</groupId>
             <artifactId>jfreesvg</artifactId>
-            <version>3.1</version>
+            <version>3.2</version>
             <optional>true</optional>
         </dependency>
 
+        <!-- OrsonPDF is used to provide PDF export in the demo -->
         <dependency>
             <groupId>com.orsonpdf</groupId>
             <artifactId>orsonpdf</artifactId>

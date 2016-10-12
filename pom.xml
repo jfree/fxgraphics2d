@@ -4,7 +4,7 @@
  
     <groupId>org.jfree</groupId>
     <artifactId>fxgraphics2d</artifactId>
-    <version>1.4</version>
+    <version>1.5-SNAPSHOT</version>
     <packaging>jar</packaging>
  
     <!-- this is required to host it on Sonatype's OSSRH -->
@@ -75,7 +75,7 @@
             <plugin>
                 <groupId>org.sonatype.plugins</groupId>
                 <artifactId>nexus-staging-maven-plugin</artifactId>
-                <version>1.6.2</version>
+                <version>1.6.7</version>
                 <extensions>true</extensions>
                 <configuration>
                     <serverId>ossrh</serverId>

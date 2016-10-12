@@ -14,13 +14,13 @@
     <target name="initialise" description="Initialise required settings.">
         <tstamp />
         <property name="fxgraphics2d.name" value="fxgraphics2d" />
-        <property name="fxgraphics2d.version" value="1.4" />
+        <property name="fxgraphics2d.version" value="1.5-SNAPSHOT" />
         <property name="orsoncharts.name" value="orsoncharts" />
         <property name="orsoncharts.version" value="1.5" />
         <property name="jfreechart.name" value="jfreechart-nofx" />
         <property name="jfreechart.version" value="2.0-pre1" />
         <property name="jfreesvg.name" value="jfreesvg" />
-        <property name="jfreesvg.version" value="3.0" />
+        <property name="jfreesvg.version" value="3.2" />
         <property name="orsonpdf.name" value="orsonpdf" />
         <property name="orsonpdf.version" value="1.7" />
         <property name="builddir" value="${basedir}/build" />
