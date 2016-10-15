@@ -1,7 +1,7 @@
 FXGraphics2D
 ============
 
-Version 1.5, yet to be released.
+Version 1.5, 15 October 2016.
 
 Overview
 --------
@@ -108,7 +108,7 @@ If you have feedback about the `FXGraphics2D` library, please visit the forum at
 History
 -------
 
-##### to be released : Version 1.5
+##### 15-Oct-2016 : Version 1.5
 - add rendering hint to provide option for measuring fonts via JavaFX API;
 - fix exception in `drawImage()` method with `null` transform;
 - updated JFreeSVG to version 3.2 (affects demo only).

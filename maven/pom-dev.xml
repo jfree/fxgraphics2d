@@ -38,7 +38,7 @@
         <dependency>
             <groupId>com.orsoncharts</groupId>
             <artifactId>orsoncharts</artifactId>
-            <version>1.5-SNAPSHOT</version>
+            <version>1.5</version>
             <optional>true</optional>
             <exclusions>
                 <exclusion>
