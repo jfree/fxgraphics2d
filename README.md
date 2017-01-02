@@ -44,7 +44,7 @@ You can build `FXGraphics2D` with either Ant:
 
     ant -f ant/build.xml
 
-...or Maven:
+...or Maven (this builds only the runtime jar file, not the demos):
 
     mvn clean install
 
