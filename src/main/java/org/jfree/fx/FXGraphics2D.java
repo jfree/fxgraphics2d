@@ -871,15 +871,9 @@ public class FXGraphics2D extends Graphics2D {
     }
 
     /**
-     * Returns the font metrics for the specified font.  There are two
-     * possibilities here.  First, if the rendering hint
-     * {@link FXHints#KEY_USE_FX_FONT_METRICS} is set with the value
-     * {@code Boolean.TRUE}, then this method will return an instance of
-     * {@link FXFontMetrics}.  This is generally more precise, but on the
-     * downside requires calling some non-public API.  Without this rendering
-     * hint, the font metrics returned are from Java2D (via an internal 
-     * {@code BufferedImage} (this does not always match exactly the font
-     * metrics used by JavaFX).
+     * Returns the font metrics for the specified font.  The font metrics 
+     * returned are from Java2D (via an internal {@code BufferedImage}) which 
+     * does not always match exactly the font metrics used by JavaFX.
      * 
      * @param f  the font.
      * 
