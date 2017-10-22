@@ -1,7 +1,7 @@
 FXGraphics2D
 ============
 
-Version 1.6, 22 October 2017 (not yet released).
+Version 1.6, 22 October 2017.
 
 Overview
 --------
@@ -22,7 +22,7 @@ http://www.jfree.org/fxgraphics2d/
 
 Include
 -------
-To include `FXGraphics2D` in your own project, add the following dependency:
+To include `FXGraphics2D` in your own project, add the following Maven dependency:
 
         <dependency>
             <groupId>org.jfree</groupId>
