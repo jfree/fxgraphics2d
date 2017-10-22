@@ -4,7 +4,7 @@
  
     <groupId>org.jfree</groupId>
     <artifactId>fxgraphics2d</artifactId>
-    <version>1.5</version>
+    <version>1.6</version>
     <packaging>jar</packaging>
  
     <!-- this is required to host it on Sonatype's OSSRH -->
@@ -33,31 +33,25 @@
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
-            <version>4.11</version>
+            <version>4.12</version>
             <scope>test</scope>
         </dependency>
     </dependencies>
 
-    <build>
-        <sourceDirectory>src</sourceDirectory>
-    
+    <build>    
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.1</version>
+                <version>3.7.0</version>
                 <configuration>
-                    <source>1.8</source>
-                    <target>1.8</target>
+                    <source>1.9</source>
+                    <target>1.9</target>
                     <compilerArgument>-Xlint:unchecked</compilerArgument>
                     <encoding>${project.build.sourceEncoding}</encoding>
-                    <excludes>
-                        <exclude>com/orsoncharts/demo/**</exclude>
-                        <exclude>org/jfree/fx/demo/**</exclude>
-                    </excludes>
                 </configuration>
             </plugin>
-            <plugin>
+<!--            <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-gpg-plugin</artifactId>
                 <version>1.5</version>
@@ -70,7 +64,7 @@
                         </goals>
                     </execution>
                 </executions>
-            </plugin>
+            </plugin> -->
 
             <plugin>
                 <groupId>org.sonatype.plugins</groupId>
@@ -111,12 +105,6 @@
                                 </goals>
                             </execution>
                         </executions>
-                        <configuration>
-                            <sourceFileExcludes>
-                                <exclude>com/orsoncharts/demo/**</exclude>
-                                <exclude>org/jfree/fx/demo/**</exclude>
-                            </sourceFileExcludes>
-                        </configuration>
                     </plugin>
 
                     <plugin>

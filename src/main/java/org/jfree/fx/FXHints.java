@@ -2,7 +2,7 @@
  * FXGraphics2D
  * ============
  * 
- * (C)opyright 2014-2016, by Object Refinery Limited.
+ * (C)opyright 2014-2017, by Object Refinery Limited.
  * 
  * http://www.jfree.org/fxgraphics2d/index.html
  *
@@ -60,6 +60,9 @@ public final class FXHints {
      * used (better matching to rendering engine, but relies on deprecated API) 
      * or Java2D font metrics.  A {@code Boolean} value (or {@code null}) can 
      * be assigned as the value for this key.
+     * 
+     * @deprecated As of version 1.6, this hint does nothing (because the
+     * implementation cannot be supported on JDK9).
      */
     public static final FXHints.Key KEY_USE_FX_FONT_METRICS 
             = new FXHints.Key(0);

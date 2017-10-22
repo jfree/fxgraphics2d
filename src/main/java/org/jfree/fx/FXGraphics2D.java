@@ -2,7 +2,7 @@
  * FXGraphics2D
  * ============
  * 
- * (C)opyright 2014-2016, by Object Refinery Limited.
+ * (C)opyright 2014-2017, by Object Refinery Limited.
  * 
  * http://www.jfree.org/fxgraphics2d/index.html
  *
@@ -37,7 +37,6 @@
 
 package org.jfree.fx;
 
-import com.sun.javafx.tk.Toolkit;
 import java.awt.AlphaComposite;
 import java.awt.BasicStroke;
 import java.awt.Color;
@@ -888,12 +887,6 @@ public class FXGraphics2D extends Graphics2D {
      */
     @Override
     public FontMetrics getFontMetrics(Font f) {
-
-        Boolean b = (Boolean) getRenderingHint(FXHints.KEY_USE_FX_FONT_METRICS);
-        if (Boolean.TRUE.equals(b)) {
-            return new FXFontMetrics(f, this, this.gc);
-        }
-
         // be lazy about creating the underlying objects...
         if (this.fmImage == null) {
             this.fmImage = new BufferedImage(10, 10,

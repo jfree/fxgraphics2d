@@ -1,7 +1,7 @@
 FXGraphics2D
 ============
 
-Version 1.5, 15 October 2016.
+Version 1.6, 22 October 2017.
 
 Overview
 --------
@@ -20,44 +20,20 @@ http://www.jfree.org/fxgraphics2d/
 *FXGraphics2D* requires JDK 1.8.0_40 or later and is licensed under the terms of a (three clause) BSD-style license.
 
 
-Demo
-----
-Two demos are included in the distribution.  The first shows the basic usage of the `FXGraphics2D` class by displaying a `JFreeChart` instance within a resizable JavaFX canvas.  To run this demo from the command line type the following from the root directory of the project:
-
-    java -cp fxgraphics2d-1.5-demo.jar org.jfree.fx.demo.FXGraphics2DDemo1
-
-The second demo is taken from the *Orson Charts* project and shows various 3D charts displayed on a custom JavaFX control.  The *Orson Charts* library is using `FXGraphics2D` internally for the viewer control.  To run this demo, type the following from the root directory of the project:
-
-    java -jar fxgraphics2d-1.5-demo.jar
-
-The demo has the following dependencies (jar files are included in the `lib` folder):
-- Orson Charts 1.5 : licensed under the terms of the GNU General Public License v3 (GPLv3).  See http://www.object-refinery.com/orsoncharts;
-- Orson PDF 1.7 : licensed under the terms of the GPLv3.  See http://www.object-refinery.com/orsonpdf;
-- JFreeSVG 3.2 : licensed under the terms of the GPLv3.  See http://www.jfree.org/jfreesvg;
-- JFreeChart : licensed under the terms of the GNU Lesser General Public License v2.1 or later (LGPL).  See https://github.com/jfree/jfreechart-fse;
-
-These dependencies are *not* required for building the `FXGraphics2D` jar file, only the demos.
-
 Build
 -----
-You can build `FXGraphics2D` with either Ant:
-
-    ant -f ant/build.xml
-
-...or Maven (this builds only the runtime jar file, not the demos):
+You can build `FXGraphics2D` from sources using Maven:
 
     mvn clean install
-
-Note that the `pom.xml` file in the root folder will build only the `FXGraphics2D` jar file.  If you want to work with `FXGraphics2D` using NetBeans (or any other Maven-aware development tool), there is an alternative pom file (`pom-nb.xml`) in the 'maven' directory that will build the project including the demo files and their dependencies.  Simply copy the *content* of `pom-nb.xml` over to the `pom.xml` in the root directory for the project, then open the project in NetBeans.
 
 
 License
 -------
 
-The following license applies to the `FXGraphics2D` library (other licenses apply to the demo code dependencies such as JFreeChart and Orson Charts):
+`FXGraphics2D` is licensed under a BSD-style license:
 
 ```
-Copyright (c) 2014-2016, Object Refinery Limited.
+Copyright (c) 2014-2017, Object Refinery Limited.
 
 All rights reserved.
 
@@ -107,6 +83,10 @@ If you have feedback about the `FXGraphics2D` library, please visit the forum at
 
 History
 -------
+
+##### 22-Oct-2017 : Version 1.6
+- added support for JDK9 by removing the use of some non-public classes;
+- simplified the project set-up by removing Ant as a build option, and removing the demos (these will be provided in a separate Git project).
 
 ##### 15-Oct-2016 : Version 1.5
 - add rendering hint to provide option for measuring fonts via JavaFX API;
