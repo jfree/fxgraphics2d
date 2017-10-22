@@ -20,6 +20,16 @@ http://www.jfree.org/fxgraphics2d/
 *FXGraphics2D* requires JDK 1.8.0_40 or later and is licensed under the terms of a (three clause) BSD-style license.
 
 
+Include
+-------
+To include `FXGraphics2D` in your own project, add the following dependency:
+
+        <dependency>
+            <groupId>org.jfree</groupId>
+            <artifactId>fxgraphics2d</artifactId>
+            <version>1.6</version>
+        </dependency>
+
 Build
 -----
 You can build `FXGraphics2D` from sources using Maven:
@@ -86,7 +96,7 @@ History
 
 ##### 22-Oct-2017 : Version 1.6
 - added support for JDK9 by removing the use of some non-public classes;
-- simplified the project set-up by removing Ant as a build option, and removing the demos (these will be provided in a separate Git project).
+- simplified the project set-up by removing Ant as a build option, and removing the demos (these will be provided in a separate Git project https://github.com/jfree/jfree-fxdemos).
 
 ##### 15-Oct-2016 : Version 1.5
 - add rendering hint to provide option for measuring fonts via JavaFX API;
