@@ -1,7 +1,7 @@
 FXGraphics2D
 ============
 
-Version 1.6, 22 October 2017.
+Version 1.6, 22 October 2017 (not yet released).
 
 Overview
 --------
