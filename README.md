@@ -1,7 +1,7 @@
 FXGraphics2D
 ============
 
-Version 1.6, 22 October 2017.
+Version 1.6, 5 November 2017.
 
 Overview
 --------
@@ -9,7 +9,12 @@ Overview
 
 ![FXGraphics2D sample](http://www.object-refinery.com/blog/images/fxgraphics2d_normalised.png)
 
- The code has been developed for the use of **Orson Charts** (http://www.object-refinery.com/orsoncharts/) and **JFreeChart** (http://www.jfree.org/jfreechart).  You can read about *FXGraphics2D* in this Java Magazine article:
+ The code has been developed for the use of **Orson Charts** (http://www.object-refinery.com/orsoncharts/) 
+and **JFreeChart** (http://www.jfree.org/jfreechart).  Numerous demos can be
+found in the [JFree-FXDemos](https://github.com/jfree/jfree-fxdemos "JFree-FXDemos Project Page at GitHub")
+project page at GitHub.
+
+You can also read about *FXGraphics2D* in this Java Magazine article:
 
 http://www.oraclejavamagazine-digital.com/javamagazine/november_december_2014#pg63
 
