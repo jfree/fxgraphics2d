@@ -99,7 +99,7 @@ If you have feedback about the `FXGraphics2D` library, please visit the forum at
 History
 -------
 
-##### 22-Oct-2017 : Version 1.6
+##### 5-Nov-2017 : Version 1.6
 - added support for JDK9 by removing the use of some non-public classes;
 - simplified the project set-up by removing Ant as a build option, and removing the demos (these will be provided in a separate Git project https://github.com/jfree/jfree-fxdemos).
 
