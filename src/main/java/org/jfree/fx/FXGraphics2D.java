@@ -190,6 +190,9 @@ public class FXGraphics2D extends Graphics2D {
      * metrics.  Used in the getFontMetrics(Font f) method.
      */
     private Graphics2D fmImageG2;
+    
+    /** The FXFontMetrics. */
+    private FXFontMetrics fxFontMetrics;
 
     /** 
      * The device configuration (this is lazily instantiated in the 
@@ -223,6 +226,7 @@ public class FXGraphics2D extends Graphics2D {
         this.zeroStrokeWidth = 0.5;
         this.hints = new RenderingHints(RenderingHints.KEY_ANTIALIASING, 
                 RenderingHints.VALUE_ANTIALIAS_DEFAULT);
+        this.hints.put(FXHints.KEY_USE_FX_FONT_METRICS, true);
     }
     
     /**
@@ -621,8 +625,7 @@ public class FXGraphics2D extends Graphics2D {
     }
 
     /**
-     * Returns the current value for the specified hint.  Note that all hints
-     * are currently ignored in this implementation.
+     * Returns the current value for the specified hint.
      * 
      * @param hintKey  the hint key ({@code null} permitted, but the
      *     result will be {@code null} also in that case).
@@ -881,6 +884,14 @@ public class FXGraphics2D extends Graphics2D {
      */
     @Override
     public FontMetrics getFontMetrics(Font f) {
+        if (getRenderingHint(FXHints.KEY_USE_FX_FONT_METRICS) == Boolean.TRUE) {
+            if (this.fxFontMetrics == null 
+                    || !f.equals(this.fxFontMetrics.getFont())) {
+                this.fxFontMetrics = new FXFontMetrics(this.font, this);
+            }
+            return this.fxFontMetrics;
+        } 
+        
         // be lazy about creating the underlying objects...
         if (this.fmImage == null) {
             this.fmImage = new BufferedImage(10, 10,
