@@ -26,8 +26,8 @@
     </licenses>
 
     <scm>
-        <connection>scm:git:git:https://github.com/jfree/jfreechart-fx.git</connection>
-        <url>https://github.com/jfree/jfreechart-fx</url>
+        <connection>scm:git:git:https://github.com/jfree/fxgraphics2d.git</connection>
+        <url>https://github.com/jfree/fxgraphics2d</url>
     </scm>
 
     <developers>
