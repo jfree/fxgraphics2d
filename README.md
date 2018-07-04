@@ -1,7 +1,7 @@
 FXGraphics2D
 ============
 
-Version 1.6, 5 November 2017.
+Version 1.7, not yet released.
 
 Overview
 --------
@@ -52,7 +52,7 @@ License
 `FXGraphics2D` is licensed under a BSD-style license:
 
 ```
-Copyright (c) 2014-2017, Object Refinery Limited.
+Copyright (c) 2014-2018, Object Refinery Limited.
 
 All rights reserved.
 
@@ -102,6 +102,9 @@ If you have feedback about the `FXGraphics2D` library, please visit the forum at
 
 History
 -------
+
+##### not-yet-released : Version 1.7
+- fixed bug #6 where color, stroke and font attributes are changed after calling setClip() twice.
 
 ##### 5-Nov-2017 : Version 1.6
 - added support for JDK9 by removing the use of some non-public classes;
