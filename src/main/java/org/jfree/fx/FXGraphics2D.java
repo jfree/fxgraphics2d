@@ -2,7 +2,7 @@
  * FXGraphics2D
  * ============
  * 
- * (C)opyright 2014-2017, by Object Refinery Limited.
+ * (C)opyright 2014-2018, by Object Refinery Limited.
  * 
  * http://www.jfree.org/fxgraphics2d/index.html
  *
@@ -334,6 +334,10 @@ public class FXGraphics2D extends Graphics2D {
         if (paintsAreEqual(paint, this.paint)) {
             return;
         }
+        applyPaint(paint);
+    }
+    
+    private void applyPaint(Paint paint) {
         this.paint = paint;
         if (paint instanceof Color) {
             setColor((Color) paint);
@@ -419,6 +423,10 @@ public class FXGraphics2D extends Graphics2D {
         if (c == null || c.equals(this.color)) {
             return;
         }
+        applyColor(c);
+    }
+    
+    private void applyColor(Color c) {
         this.color = c;
         this.paint = c;
         javafx.scene.paint.Color fxcolor = awtColorToJavaFX(c);
@@ -559,18 +567,28 @@ public class FXGraphics2D extends Graphics2D {
             if (bs.equals(this.stroke)) {
                 return; // no change
             }
-            double lineWidth = bs.getLineWidth();
-            if (lineWidth == 0.0) {
-                lineWidth = this.zeroStrokeWidth;
-            }
-            this.gc.setLineWidth(lineWidth);
-            this.gc.setLineCap(awtToJavaFXLineCap(bs.getEndCap()));
-            this.gc.setLineJoin(awtToJavaFXLineJoin(bs.getLineJoin()));
-            this.gc.setMiterLimit(bs.getMiterLimit());
-            this.gc.setLineDashes(floatToDoubleArray(bs.getDashArray()));
-            this.gc.setLineDashOffset(bs.getDashPhase());
         }
         this.stroke = s;
+        applyStroke(s);
+    }
+    
+    private void applyStroke(Stroke s) {
+        if (s instanceof BasicStroke) {
+            applyBasicStroke((BasicStroke) s);
+        }
+    }
+    
+    private void applyBasicStroke(BasicStroke bs) {
+        double lineWidth = bs.getLineWidth();
+        if (lineWidth == 0.0) {
+            lineWidth = this.zeroStrokeWidth;
+        }
+        this.gc.setLineWidth(lineWidth);
+        this.gc.setLineCap(awtToJavaFXLineCap(bs.getEndCap()));
+        this.gc.setLineJoin(awtToJavaFXLineJoin(bs.getLineJoin()));
+        this.gc.setMiterLimit(bs.getMiterLimit());
+        this.gc.setLineDashes(floatToDoubleArray(bs.getDashArray()));
+        this.gc.setLineDashOffset(bs.getDashPhase());   
     }
     
     /**
@@ -1246,16 +1264,16 @@ public class FXGraphics2D extends Graphics2D {
     
     private void reapplyAttributes() {
         if (!paintsAreEqual(this.paint, this.savedPaint)) {
-            setPaint(this.savedPaint);
+            applyPaint(this.paint);
         }
         if (!this.color.equals(this.savedColor)) {
-            setColor(this.savedColor);
+            applyColor(this.color);
         }
-        if (!this.stroke.equals(this.savedColor)) {
-            setStroke(this.savedStroke);
+        if (!this.stroke.equals(this.savedStroke)) {
+            applyStroke(this.stroke);
         }
         if (!this.font.equals(this.savedFont)) {
-            setFont(this.savedFont);
+            applyFont(this.font);
         }
         if (!this.transform.equals(this.savedTransform)) {
             setTransform(this.transform);
