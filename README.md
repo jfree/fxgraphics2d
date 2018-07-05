@@ -3,6 +3,8 @@ FXGraphics2D
 
 Version 1.7, 5 July 2018.
 
+[![Maven Central](https://maven-badges.herokuapp.com/maven-central/org.jfree/fxgraphics2d/badge.svg)](https://maven-badges.herokuapp.com/maven-central/org.jfree/fxgraphics2d)
+
 Overview
 --------
 **FXGraphics2D** is a free implementation of Java's `Graphics2D` API that targets the JavaFX Canvas.  It makes it possible to reuse existing Java2D code in a JavaFX application. 
