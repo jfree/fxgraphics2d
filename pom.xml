@@ -5,7 +5,7 @@
  
     <groupId>org.jfree</groupId>
     <artifactId>fxgraphics2d</artifactId>
-    <version>1.7-SNAPSHOT</version>
+    <version>1.7</version>
     <packaging>jar</packaging>
 
     <name>FXGraphics2D</name>

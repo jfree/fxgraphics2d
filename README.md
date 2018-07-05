@@ -1,7 +1,7 @@
 FXGraphics2D
 ============
 
-Version 1.7, not yet released.
+Version 1.7, 5 July 2018.
 
 Overview
 --------
@@ -36,7 +36,7 @@ To include `FXGraphics2D` in your own project, add the following Maven dependenc
         <dependency>
             <groupId>org.jfree</groupId>
             <artifactId>fxgraphics2d</artifactId>
-            <version>1.6</version>
+            <version>1.7</version>
         </dependency>
 
 Build
@@ -103,7 +103,7 @@ If you have feedback about the `FXGraphics2D` library, please visit the forum at
 History
 -------
 
-##### not-yet-released : Version 1.7
+##### 5-Jul-2018 : Version 1.7
 - fixed bug #6 where color, stroke and font attributes are changed after calling setClip() twice.
 
 ##### 5-Nov-2017 : Version 1.6
