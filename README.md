@@ -104,7 +104,7 @@ History
 -------
 
 ##### 5-Jul-2018 : Version 1.7
-- fixed bug #6 where color, stroke and font attributes are changed after calling setClip() twice.
+- fixed bug #6 where color, stroke and font attributes are changed after calling `setClip()` twice.
 
 ##### 5-Nov-2017 : Version 1.6
 - added support for JDK9 by removing the use of some non-public classes;
