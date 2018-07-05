@@ -125,7 +125,7 @@ History
   in NetBeans;
 - updated Ant script to copy over `pom.xml` to distribution.
 
-##### 23-Jan-2016 : Version 1.2.1 
+##### 23-Jan-2016 : Version 1.2.1 
 - implemented `getGraphicsDevice()` method;
 - add support for dashed lines;
 - in `setPaint()` and `setStroke()`, don't update anything if the value is the same;
