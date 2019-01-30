@@ -2,7 +2,7 @@
  * FXGraphics2D
  * ============
  * 
- * (C)opyright 2014-2018, by Object Refinery Limited.
+ * (C)opyright 2014-2019, by Object Refinery Limited.
  * 
  * http://www.jfree.org/fxgraphics2d/index.html
  *
@@ -736,7 +736,7 @@ public class FXGraphics2D extends Graphics2D {
                 double y1 = Math.rint(l.getY1()) - 0.5;
                 double x2 = Math.rint(l.getX2()) - 0.5;
                 double y2 = Math.rint(l.getY2()) - 0.5;
-                l.setLine(x1, y1, x2, y2);
+                l = line(x1, y1, x2, y2);
             }
             this.gc.strokeLine(l.getX1(), l.getY1(), l.getX2(), l.getY2());
         } else if (s instanceof Rectangle2D) {
@@ -751,7 +751,7 @@ public class FXGraphics2D extends Graphics2D {
                 double y = Math.rint(r.getY()) - 0.5;
                 double w = Math.floor(r.getWidth());
                 double h = Math.floor(r.getHeight());
-                r.setRect(x, y, w, h);
+                r = rect(x, y, w, h);
             }
             this.gc.strokeRect(r.getX(), r.getY(), r.getWidth(), r.getHeight());
         } else if (s instanceof RoundRectangle2D) {
@@ -1368,12 +1368,7 @@ public class FXGraphics2D extends Graphics2D {
      */
     @Override
     public void drawLine(int x1, int y1, int x2, int y2) {
-        if (this.line == null) {
-            this.line = new Line2D.Double(x1, y1, x2, y2);
-        } else {
-            this.line.setLine(x1, y1, x2, y2);
-        }
-        draw(this.line);
+        draw(line(x1, y1, x2, y2));
     }
 
     /**
@@ -1887,6 +1882,25 @@ public class FXGraphics2D extends Graphics2D {
     }
  
     /**
+     * Returns a recyclable {@link Line} object.
+     * 
+     * @param x1  the x-coordinate.
+     * @param y2  the y-coordinate.
+     * @param x2  the width.
+     * @param y2  the height.
+     * 
+     * @return A line (never {@code null}).
+     */
+    private Line2D line(double x1, double y1, double x2, double y2) {
+        if (this.line == null) {
+            this.line = new Line2D.Double(x1, y1, x2, y2);
+        } else {
+            this.line.setLine(x1, y1, x2, y2);
+        }
+        return this.line;
+    }
+    
+    /**
      * Sets the attributes of the reusable {@link Rectangle2D} object that is
      * used by the {@link FXGraphics2D#drawRect(int, int, int, int)} and 
      * {@link FXGraphics2D#fillRect(int, int, int, int)} methods.
@@ -1898,7 +1912,7 @@ public class FXGraphics2D extends Graphics2D {
      * 
      * @return A rectangle (never {@code null}).
      */
-    private Rectangle2D rect(int x, int y, int width, int height) {
+    private Rectangle2D rect(double x, double y, double width, double height) {
         if (this.rect == null) {
             this.rect = new Rectangle2D.Double(x, y, width, height);
         } else {

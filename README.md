@@ -1,7 +1,7 @@
 FXGraphics2D
 ============
 
-Version 1.7, 5 July 2018.
+Version 1.8, not yet released.
 
 Overview
 --------
@@ -52,7 +52,7 @@ License
 `FXGraphics2D` is licensed under a BSD-style license:
 
 ```
-Copyright (c) 2014-2018, Object Refinery Limited.
+Copyright (c) 2014-2019, Object Refinery Limited.
 
 All rights reserved.
 
@@ -102,6 +102,9 @@ If you have feedback about the `FXGraphics2D` library, please visit the forum at
 
 History
 -------
+
+##### ?-???-2019 : Version 1.8
+- fixed bug #8 where draw(Shape) alters the shape state for `RenderingHints.VALUE_STROKE_PURE`.
 
 ##### 5-Jul-2018 : Version 1.7
 - fixed bug #6 where color, stroke and font attributes are changed after calling `setClip()` twice.
