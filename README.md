@@ -106,7 +106,8 @@ History
 -------
 
 ##### ?-???-2019 : Version 1.8
-- fixed bug #8 where draw(Shape) alters the shape state for `RenderingHints.VALUE_STROKE_PURE`.
+- fixed bug #8 where draw(Shape) alters the shape state for `RenderingHints.VALUE_STROKE_PURE`;
+- added automatic module name (`org.jfree.fxgraphics2d`).
 
 ##### 5-Jul-2018 : Version 1.7
 - fixed bug #6 where color, stroke and font attributes are changed after calling `setClip()` twice.
