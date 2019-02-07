@@ -1,7 +1,7 @@
 FXGraphics2D
 ============
 
-Version 1.8, not yet released.
+Version 1.8, 7 Feb 2019.
 
 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/org.jfree/fxgraphics2d/badge.svg)](https://maven-badges.herokuapp.com/maven-central/org.jfree/fxgraphics2d)
 
@@ -38,7 +38,7 @@ To include `FXGraphics2D` in your own project, add the following Maven dependenc
         <dependency>
             <groupId>org.jfree</groupId>
             <artifactId>fxgraphics2d</artifactId>
-            <version>1.7</version>
+            <version>1.8</version>
         </dependency>
 
 Build
@@ -105,8 +105,8 @@ If you have feedback about the `FXGraphics2D` library, please visit the forum at
 History
 -------
 
-##### ?-???-2019 : Version 1.8
-- fixed bug #8 where draw(Shape) alters the shape state for `RenderingHints.VALUE_STROKE_PURE`;
+##### 7-Feb-2019 : Version 1.8
+- fixed bug #8 where `draw(Shape)` alters the shape state for `RenderingHints.VALUE_STROKE_PURE`;
 - added automatic module name (`org.jfree.fxgraphics2d`).
 
 ##### 5-Jul-2018 : Version 1.7
