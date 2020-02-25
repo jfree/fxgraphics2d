@@ -2,7 +2,7 @@
  * FXGraphics2D
  * ============
  * 
- * (C)opyright 2014-2017, by Object Refinery Limited.
+ * (C)opyright 2014-2020, by Object Refinery Limited.
  * 
  * http://www.jfree.org/fxgraphics2d/index.html
  *

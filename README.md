@@ -1,7 +1,7 @@
 FXGraphics2D
 ============
 
-Version 1.8, 7 Feb 2019.
+Version 2.0, not yet released.
 
 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/org.jfree/fxgraphics2d/badge.svg)](https://maven-badges.herokuapp.com/maven-central/org.jfree/fxgraphics2d)
 
@@ -28,7 +28,7 @@ The home page for the project is:
 
 http://www.jfree.org/fxgraphics2d/
 
-*FXGraphics2D* requires JDK 1.8.0_40 or later and is licensed under the terms of a (three clause) BSD-style license.
+*FXGraphics2D* requires JDK 11 or later and is licensed under the terms of a (three clause) BSD-style license.
 
 
 Include
@@ -37,8 +37,8 @@ To include `FXGraphics2D` in your own project, add the following Maven dependenc
 
         <dependency>
             <groupId>org.jfree</groupId>
-            <artifactId>fxgraphics2d</artifactId>
-            <version>1.8</version>
+            <artifactId>org.jfree.fxgraphics2d</artifactId>
+            <version>2.0</version>
         </dependency>
 
 Build
@@ -54,7 +54,7 @@ License
 `FXGraphics2D` is licensed under a BSD-style license:
 
 ```
-Copyright (c) 2014-2019, Object Refinery Limited.
+Copyright (c) 2014-2020, Object Refinery Limited.
 
 All rights reserved.
 
@@ -104,6 +104,10 @@ If you have feedback about the `FXGraphics2D` library, please visit the forum at
 
 History
 -------
+
+##### 22-Feb-2020 : Version 2.0
+- converted to a module (`org.jfree.fxgraphics2d`);
+- now requires JDK 11 or later.
 
 ##### 7-Feb-2019 : Version 1.8
 - fixed bug #8 where `draw(Shape)` alters the shape state for `RenderingHints.VALUE_STROKE_PURE`;

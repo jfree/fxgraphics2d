@@ -2,7 +2,7 @@
  * FXGraphics2D
  * ============
  * 
- * (C)opyright 2014-2019, by Object Refinery Limited.
+ * (C)opyright 2014-2020, by Object Refinery Limited.
  * 
  * http://www.jfree.org/fxgraphics2d/index.html
  *
@@ -83,8 +83,8 @@ import java.util.Arrays;
 import java.util.Hashtable;
 import java.util.Map;
 import java.util.Set;
-
 import javafx.embed.swing.SwingFXUtils;
+
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.effect.BlendMode;
@@ -1882,7 +1882,7 @@ public class FXGraphics2D extends Graphics2D {
     }
  
     /**
-     * Returns a recyclable {@link Line} object.
+     * Returns a recyclable {@link Line2D} object.
      * 
      * @param x1  the x-coordinate.
      * @param y2  the y-coordinate.
