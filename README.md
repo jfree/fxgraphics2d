@@ -1,9 +1,9 @@
 FXGraphics2D
 ============
 
-Version 2.0, not yet released.
+Version 2.0, 27 February 2020.
 
-[![Maven Central](https://maven-badges.herokuapp.com/maven-central/org.jfree/fxgraphics2d/badge.svg)](https://maven-badges.herokuapp.com/maven-central/org.jfree/fxgraphics2d)
+[![Maven Central](https://maven-badges.herokuapp.com/maven-central/org.jfree/org.jfree.fxgraphics2d/badge.svg)](https://maven-badges.herokuapp.com/maven-central/org.jfree/org.jfree.fxgraphics2d)
 
 Overview
 --------
@@ -105,7 +105,7 @@ If you have feedback about the `FXGraphics2D` library, please visit the forum at
 History
 -------
 
-##### 22-Feb-2020 : Version 2.0
+##### 27-Feb-2020 : Version 2.0
 - converted to a module (`org.jfree.fxgraphics2d`);
 - now requires JDK 11 or later.
 
