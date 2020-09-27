@@ -47,12 +47,12 @@
         <dependency>
             <groupId>org.openjfx</groupId>
             <artifactId>javafx-base</artifactId>
-            <version>13.0.2</version>
+            <version>15</version>
         </dependency>        
         <dependency>
             <groupId>org.openjfx</groupId>
             <artifactId>javafx-swing</artifactId>
-            <version>13.0.2</version>
+            <version>15</version>
         </dependency>                          
      
         <dependency>
