@@ -104,6 +104,8 @@ If you have feedback about the `FXGraphics2D` library, please visit the forum at
 
 History
 -------
+##### not-yet-released : Version 2.1
+- migrated tests to JUnit 5.
 
 ##### 27-Feb-2020 : Version 2.0
 - converted to a module (`org.jfree.fxgraphics2d`);
