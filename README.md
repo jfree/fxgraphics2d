@@ -1,7 +1,7 @@
 FXGraphics2D
 ============
 
-Version 2.0, 27 February 2020.
+Version 2.1, 3 October 2020.
 
 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/org.jfree/org.jfree.fxgraphics2d/badge.svg)](https://maven-badges.herokuapp.com/maven-central/org.jfree/org.jfree.fxgraphics2d)
 
@@ -38,7 +38,7 @@ To include `FXGraphics2D` in your own project, add the following Maven dependenc
         <dependency>
             <groupId>org.jfree</groupId>
             <artifactId>org.jfree.fxgraphics2d</artifactId>
-            <version>2.0</version>
+            <version>2.1</version>
         </dependency>
 
 Build
@@ -104,7 +104,7 @@ If you have feedback about the `FXGraphics2D` library, please visit the forum at
 
 History
 -------
-##### not-yet-released : Version 2.1
+##### 3-Oct-2020 : Version 2.1
 - update JavaFX dependencies to version 15;
 - migrated tests to JUnit 5.
 
