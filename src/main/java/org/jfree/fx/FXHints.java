@@ -69,6 +69,11 @@ public final class FXHints {
      */
     public static class Key extends RenderingHints.Key {
 
+        /**
+         * Creates a new instance with the specified private key.
+         * 
+         * @param privateKey  the private key. 
+         */
         public Key(int privateKey) {
             super(privateKey);    
         }
