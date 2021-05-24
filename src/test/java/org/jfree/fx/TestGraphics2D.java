@@ -2,7 +2,7 @@
  * FXGraphics2D
  * ============
  * 
- * (C)opyright 2014-2020, by Object Refinery Limited.
+ * (C)opyright 2014-2021, by Object Refinery Limited.
  * 
  * http://www.jfree.org/fxgraphics2d/index.html
  *
@@ -42,10 +42,12 @@ import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.fail;
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Font;
+import java.awt.FontMetrics;
 import java.awt.GradientPaint;
 import java.awt.Graphics2D;
 import java.awt.Image;
@@ -399,6 +401,27 @@ public class TestGraphics2D {
     }
     
     /**
+     * Clipping with a null argument is "not recommended" according to the 
+     * latest API docs (https://bugs.java.com/bugdatabase/view_bug.do?bug_id=6206189).
+     */
+    @Test
+    public void checkClipWithNullArgument() {
+        
+        // when there is a current clip set, a null pointer exception is expected
+        this.g2.setClip(new Rectangle2D.Double(1.0, 2.0, 3.0, 4.0));
+        Exception exception = assertThrows(NullPointerException.class, () -> {
+            this.g2.clip(null);
+        });
+        
+        this.g2.setClip(null);
+        try {
+            this.g2.clip(null);
+        } catch (Exception e) {
+            fail("No exception expected.");             
+        }
+    }
+    
+    /**
      * A simple check for a call to clipRect().
      */
     @Test
@@ -442,6 +465,12 @@ public class TestGraphics2D {
         }
     }
     
+    @Test
+    public void checkDrawStringWithEmptyString() {
+        // this should not cause any exception 
+        g2.drawString("", 1, 2);
+    }
+
     /**
      * Some checks for the create() method.
      */
@@ -748,9 +777,25 @@ public class TestGraphics2D {
         assertTrue(true); // won't get here if there's an exception above
     }
     
-    /**
-     * See https://github.com/jfree/fxgraphics2d/issues/6
-     */
+    @Test
+    public void drawImageWithNullImage() {
+        // API docs say method does nothing if img is null
+        // still seems to return true
+        assertTrue(g2.drawImage(null, 10, 20, null));
+        assertTrue(g2.drawImage(null, 10, 20, 30, 40, null));
+        assertTrue(g2.drawImage(null, 10, 20, Color.YELLOW, null));
+        assertTrue(g2.drawImage(null, 1, 2, 3, 4, Color.RED, null));
+        assertTrue(g2.drawImage(null, 1, 2, 3, 4, 5, 6, 7, 8, null));
+        assertTrue(g2.drawImage(null, 1, 2, 3, 4, 5, 6, 7, 8, Color.RED, null));
+    }
+    
+    @Test
+    public void drawImageWithNegativeDimensions() {
+        Image img = new BufferedImage(10, 10, BufferedImage.TYPE_INT_ARGB);
+        assertTrue(g2.drawImage(img, 1, 2, -10, 10, null));
+        assertTrue(g2.drawImage(img, 1, 2, 10, -10, null)); 
+    }    
+
     @Test
     public void checkColorAfterSetClip() {
         this.g2.setColor(Color.RED);
@@ -791,5 +836,39 @@ public class TestGraphics2D {
         assertEquals(new BasicStroke(2.0f), this.g2.getStroke());
         this.g2.setClip(0, 0, 20, 20);
         assertEquals(new BasicStroke(2.0f), this.g2.getStroke());
+    }
+    
+    /** 
+     * A test to check whether setting a transform on the Graphics2D affects
+     * the results of text measurements performed via getFontMetrics().
+     */
+    @Test
+    public void testGetFontMetrics() {
+        Font f = new Font(Font.SANS_SERIF, Font.PLAIN, 10);
+        FontMetrics fm = this.g2.getFontMetrics(f);
+        int w = fm.stringWidth("ABC");
+        Rectangle2D bounds = fm.getStringBounds("ABC", this.g2);
+        
+        // after scaling, the string width is not changed
+        this.g2.setTransform(AffineTransform.getScaleInstance(3.0, 2.0));
+        fm = this.g2.getFontMetrics(f);
+        assertEquals(w, fm.stringWidth("ABC"));
+        assertEquals(bounds.getWidth(), fm.getStringBounds("ABC", this.g2).getWidth(), EPSILON);
+    }
+
+    @Test
+    public void drawImageWithNullImageOp() {
+        BufferedImage img = new BufferedImage(10, 10, BufferedImage.TYPE_INT_ARGB);
+        g2.drawImage(img, null, 2, 3);
+        assertTrue(true); // won't get here if there's an exception above        
+    }
+    
+    /**
+     * API docs say the method does nothing when called with a null image.
+     */
+    @Test 
+    public void drawRenderedImageWithNullImage() {
+        g2.drawRenderedImage(null, AffineTransform.getTranslateInstance(0, 0));
+        assertTrue(true); // won't get here if there's an exception above                
     }
 }

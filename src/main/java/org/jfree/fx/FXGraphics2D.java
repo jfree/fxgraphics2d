@@ -2,7 +2,7 @@
  * FXGraphics2D
  * ============
  * 
- * (C)opyright 2014-2020, by Object Refinery Limited.
+ * (C)opyright 2014-2021, by Object Refinery Limited.
  * 
  * http://www.jfree.org/fxgraphics2d/index.html
  *
@@ -1762,13 +1762,17 @@ public class FXGraphics2D extends Graphics2D {
     }
 
     /**
-     * Draws a rendered image.
+     * Draws the rendered image. When {@code img} is {@code null} this method
+     * does nothing.
      * 
-     * @param img  the rendered image.
+     * @param img  the image ({@code null} permitted).
      * @param xform  the transform.
      */
     @Override
     public void drawRenderedImage(RenderedImage img, AffineTransform xform) {
+        if (img == null) { // to match the behaviour specified in the JDK
+            return;
+        }
         BufferedImage bi = convertRenderedImage(img);
         drawImage(bi, xform, null);
     }
@@ -1848,13 +1852,16 @@ public class FXGraphics2D extends Graphics2D {
      * to the specified image at the location {@code (x, y)}.
      * 
      * @param img  the image.
-     * @param op  the operation.
+     * @param op  the operation ({@code null} permitted).
      * @param x  the x-coordinate.
      * @param y  the y-coordinate.
      */
     @Override
     public void drawImage(BufferedImage img, BufferedImageOp op, int x, int y) {
-        BufferedImage imageToDraw = op.filter(img, null);
+        BufferedImage imageToDraw = img;
+        if (op != null) {
+            imageToDraw = op.filter(img, null);
+        }
         drawImage(imageToDraw, new AffineTransform(1f, 0f, 0f, 1f, x, y), null);
     }
 
