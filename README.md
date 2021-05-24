@@ -1,7 +1,7 @@
 FXGraphics2D
 ============
 
-Version 2.1, 3 October 2020.
+Version 2.1.1, 24 May 2021.
 
 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/org.jfree/org.jfree.fxgraphics2d/badge.svg)](https://maven-badges.herokuapp.com/maven-central/org.jfree/org.jfree.fxgraphics2d)
 
@@ -38,7 +38,7 @@ To include `FXGraphics2D` in your own project, add the following Maven dependenc
         <dependency>
             <groupId>org.jfree</groupId>
             <artifactId>org.jfree.fxgraphics2d</artifactId>
-            <version>2.1</version>
+            <version>2.1.1</version>
         </dependency>
 
 Build
@@ -54,7 +54,7 @@ License
 `FXGraphics2D` is licensed under a BSD-style license:
 
 ```
-Copyright (c) 2014-2020, Object Refinery Limited.
+Copyright (c) 2014-2021, Object Refinery Limited.
 
 All rights reserved.
 
@@ -104,8 +104,9 @@ If you have feedback about the `FXGraphics2D` library, please visit the forum at
 
 History
 -------
-##### not-yet-released
+##### 24-May-2021
 - fix handling for `null` arguments in `drawImage()` methods;
+- update JavaFX dependency to version 16;
 - update JUnit test dependency to 5.7.2.
 
 ##### 3-Oct-2020 : Version 2.1
