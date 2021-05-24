@@ -104,7 +104,7 @@ If you have feedback about the `FXGraphics2D` library, please visit the forum at
 
 History
 -------
-##### 24-May-2021
+##### 24-May-2021 : Version 2.1.1
 - fix handling for `null` arguments in `drawImage()` methods;
 - update JavaFX dependency to version 16;
 - update JUnit test dependency to 5.7.2.
