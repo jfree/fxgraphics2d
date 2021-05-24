@@ -56,7 +56,8 @@ import javafx.scene.text.Text;
  * @since 1.5
  */
 public class FXFontMetrics extends FontMetrics {
-    
+
+    /** The graphics target. */
     private Graphics2D g2;
     
     /**
