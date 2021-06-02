@@ -50,8 +50,9 @@ import javafx.scene.text.Text;
 
 /**
  * A font metrics implementation for JavaFX.  This uses the JavaFX APIs to
- * get font measurements, which is more exact than relying on the equivalent
- * Java2D APIs.
+ * get string bounds, which is more exact than relying on the Java2D/AWT
+ * measurements.  The remaining font metrics, however, still come from 
+ * Java2D/AWT.
  * 
  * @since 1.5
  */
