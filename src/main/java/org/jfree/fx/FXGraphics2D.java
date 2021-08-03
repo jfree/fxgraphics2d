@@ -337,7 +337,20 @@ public class FXGraphics2D extends Graphics2D {
         }
         applyPaint(paint);
     }
-    
+
+    private CycleMethod toJavaFXCycleMethod(MultipleGradientPaint.CycleMethod method) {
+        switch (method) {
+            case NO_CYCLE:
+                return CycleMethod.NO_CYCLE;
+            case REFLECT:
+                return CycleMethod.REFLECT;
+            case REPEAT:
+                return CycleMethod.REPEAT;
+            default:
+                throw new IllegalStateException("Unknown cycle method " + method);
+        }
+    }
+
     private void applyPaint(Paint paint) {
         this.paint = paint;
         if (paint instanceof Color) {
@@ -349,8 +362,9 @@ public class FXGraphics2D extends Graphics2D {
                     new Stop(1, awtColorToJavaFX(gp.getColor2())) };
             Point2D p1 = gp.getPoint1();
             Point2D p2 = gp.getPoint2();
+            CycleMethod cm = gp.isCyclic() ? CycleMethod.REFLECT : CycleMethod.NO_CYCLE;
             LinearGradient lg = new LinearGradient(p1.getX(), p1.getY(), 
-                    p2.getX(), p2.getY(), false, CycleMethod.NO_CYCLE, stops);
+                    p2.getX(), p2.getY(), false, cm, stops);
             this.gc.setStroke(lg);
             this.gc.setFill(lg);
         } else if (paint instanceof MultipleGradientPaint) {
@@ -376,7 +390,7 @@ public class FXGraphics2D extends Graphics2D {
                 RadialGradient rg = new RadialGradient(
                         Math.toDegrees(focusAngle), focusDistance, 
                         center.getX(), center.getY(), radius, false, 
-                        CycleMethod.NO_CYCLE, stops);
+                        toJavaFXCycleMethod(rgp.getCycleMethod()), stops);
                 this.gc.setStroke(rg);
                 this.gc.setFill(rg);
             } else if (paint instanceof LinearGradientPaint) {
@@ -385,7 +399,7 @@ public class FXGraphics2D extends Graphics2D {
                 Point2D end = lgp.getEndPoint();
                 LinearGradient lg = new LinearGradient(start.getX(), 
                         start.getY(), end.getX(), end.getY(), false, 
-                        CycleMethod.NO_CYCLE, stops);
+                        toJavaFXCycleMethod(lgp.getCycleMethod()), stops);
                 this.gc.setStroke(lg);
                 this.gc.setFill(lg);
             }
