@@ -104,6 +104,9 @@ If you have feedback about the `FXGraphics2D` library, please visit the forum at
 
 History
 -------
+##### not yet released : Version 2.1.2
+- set winding rule for `Path2D` instances.
+
 ##### 24-May-2021 : Version 2.1.1
 - fix handling for `null` arguments in `drawImage()` methods;
 - update JavaFX dependency to version 16;

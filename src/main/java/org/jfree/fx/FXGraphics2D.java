@@ -93,6 +93,7 @@ import javafx.scene.paint.LinearGradient;
 import javafx.scene.paint.RadialGradient;
 import javafx.scene.paint.Stop;
 import javafx.scene.shape.ArcType;
+import javafx.scene.shape.FillRule;
 import javafx.scene.shape.StrokeLineCap;
 import javafx.scene.shape.StrokeLineJoin;
 import javafx.scene.text.FontPosture;
@@ -780,6 +781,14 @@ public class FXGraphics2D extends Graphics2D {
      * @param s  the shape ({@code null} not permitted).
      */
     private void shapeToPath(Shape s) {
+        if (s instanceof Path2D) {
+            Path2D path = (Path2D) s;
+            if (path.getWindingRule() == Path2D.WIND_EVEN_ODD) {
+                this.gc.setFillRule(FillRule.EVEN_ODD);
+            } else {
+                this.gc.setFillRule(FillRule.NON_ZERO);
+            }
+        }
         this.gc.beginPath();
         PathIterator iterator = s.getPathIterator(null);
         while (!iterator.isDone()) {
