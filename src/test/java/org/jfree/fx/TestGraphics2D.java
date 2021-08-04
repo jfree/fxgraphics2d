@@ -22,9 +22,9 @@
  *     names of its contributors may be used to endorse or promote products
  *     derived from this software without specific prior written permission.
  *
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" 
- * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE 
- * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE 
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+ * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+ * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
  * ARE DISCLAIMED. IN NO EVENT SHALL OBJECT REFINERY LIMITED BE LIABLE FOR ANY
  * DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
  * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
@@ -81,8 +81,8 @@ public class TestGraphics2D {
 //        BufferedImage img = new BufferedImage(10, 20, BufferedImage.TYPE_INT_ARGB);
 //        this.g2 = img.createGraphics();
  
-	Canvas canvas = new Canvas(640, 480);
-	GraphicsContext gc = canvas.getGraphicsContext2D();
+	    Canvas canvas = new Canvas(640, 480);
+	    GraphicsContext gc = canvas.getGraphicsContext2D();
         this.g2 = new FXGraphics2D(gc);
     }
     
@@ -291,7 +291,7 @@ public class TestGraphics2D {
         this.g2.setClip(r);
         assertEquals(new Rectangle(0, 0, 1, 1), this.g2.getClipBounds());       
     }
-    
+
     /**
      * Checks that getClipBounds() returns {@code null} when the clip is
      * {@code null}.
@@ -314,7 +314,11 @@ public class TestGraphics2D {
         assertEquals(new Rectangle2D.Double(1.0, 1.0, 1.0, 1.0), 
                 this.g2.getClip().getBounds2D());
     }
-    
+
+    /**
+     * Check that if the user clip is non-intersecting with the existing clip, then
+     * the clip is empty.
+     */
     @Test
     public void checkNonIntersectingClip() {
         Rectangle2D r = new Rectangle2D.Double(1.0, 1.0, 3.0, 3.0);
@@ -401,27 +405,6 @@ public class TestGraphics2D {
     }
     
     /**
-     * Clipping with a null argument is "not recommended" according to the 
-     * latest API docs (https://bugs.java.com/bugdatabase/view_bug.do?bug_id=6206189).
-     */
-    @Test
-    public void checkClipWithNullArgument() {
-        
-        // when there is a current clip set, a null pointer exception is expected
-        this.g2.setClip(new Rectangle2D.Double(1.0, 2.0, 3.0, 4.0));
-        Exception exception = assertThrows(NullPointerException.class, () -> {
-            this.g2.clip(null);
-        });
-        
-        this.g2.setClip(null);
-        try {
-            this.g2.clip(null);
-        } catch (Exception e) {
-            fail("No exception expected.");             
-        }
-    }
-    
-    /**
      * A simple check for a call to clipRect().
      */
     @Test
@@ -448,7 +431,28 @@ public class TestGraphics2D {
         this.g2.clipRect(2, 1, 4, -2);
         assertTrue(this.g2.getClip().getBounds2D().isEmpty());    
     }
-    
+
+    /**
+     * Clipping with a null argument is "not recommended" according to the
+     * latest API docs (https://bugs.java.com/bugdatabase/view_bug.do?bug_id=6206189).
+     */
+    @Test
+    public void checkClipWithNullArgument() {
+
+        // when there is a current clip set, a null pointer exception is expected
+        this.g2.setClip(new Rectangle2D.Double(1.0, 2.0, 3.0, 4.0));
+        Exception exception = assertThrows(NullPointerException.class, () -> {
+            this.g2.clip(null);
+        });
+
+        this.g2.setClip(null);
+        try {
+            this.g2.clip(null);
+        } catch (Exception e) {
+            fail("No exception expected.");
+        }
+    }
+
     @Test
     public void checkDrawStringWithNullString() {
         try {
@@ -794,7 +798,7 @@ public class TestGraphics2D {
         Image img = new BufferedImage(10, 10, BufferedImage.TYPE_INT_ARGB);
         assertTrue(g2.drawImage(img, 1, 2, -10, 10, null));
         assertTrue(g2.drawImage(img, 1, 2, 10, -10, null)); 
-    }    
+    }
 
     @Test
     public void checkColorAfterSetClip() {
@@ -871,4 +875,43 @@ public class TestGraphics2D {
         g2.drawRenderedImage(null, AffineTransform.getTranslateInstance(0, 0));
         assertTrue(true); // won't get here if there's an exception above                
     }
+
+    /**
+     * Filling and/or stroking a Rectangle2D with a negative width will not display anything but
+     * should not throw an exception.
+     */
+    @Test
+    public void fillOrStrokeRectangleWithNegativeWidthMustNotFail() {
+        g2.draw(new Rectangle2D.Double(0, 0, 0, 10));
+        g2.draw(new Rectangle2D.Double(0, 0, -10, 10));
+        g2.fill(new Rectangle2D.Double(0, 0, 0, 10));
+        g2.fill(new Rectangle2D.Double(0, 0, -10, 10));
+        assertTrue(true); // won't get here if there's an exception above
+    }
+
+    /**
+     * Filling and/or stroking a Rectangle2D with a negative height will not display anything but
+     * should not throw an exception.
+     */
+    @Test
+    public void fillOrStrokeRectangleWithNegativeHeightMustNotFail() {
+        g2.draw(new Rectangle2D.Double(0, 0, 0, 10));
+        g2.draw(new Rectangle2D.Double(0, 0, -10, 10));
+        g2.fill(new Rectangle2D.Double(0, 0, 0, 10));
+        g2.fill(new Rectangle2D.Double(0, 0, -10, 10));
+        assertTrue(true); // won't get here if there's an exception above
+    }
+
+    @Test
+    public void checkClipAfterCreate() {
+        this.g2.setClip(10, 20, 30, 40);
+        assertEquals(new Rectangle(10, 20, 30, 40), g2.getClip().getBounds2D());
+
+        Graphics2D g2copy = (Graphics2D) this.g2.create();
+        g2copy.clipRect(11, 21, 10, 10);
+        assertEquals(new Rectangle(11, 21, 10, 10), g2copy.getClip().getBounds2D());
+        g2copy.dispose();
+        assertEquals(new Rectangle(10, 20, 30, 40), g2.getClip().getBounds2D());
+    }
+
 }
