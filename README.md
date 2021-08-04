@@ -106,7 +106,9 @@ History
 -------
 ##### not yet released : Version 2.1.2
 - set winding rule for `Path2D` instances;
-- set cycle method on gradient paints.
+- set cycle method on gradient paints;
+- fix focus distance on `RadialGradientPaint`.
+
 
 ##### 24-May-2021 : Version 2.1.1
 - fix handling for `null` arguments in `drawImage()` methods;

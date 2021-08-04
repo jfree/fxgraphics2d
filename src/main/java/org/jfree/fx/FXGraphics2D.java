@@ -388,7 +388,7 @@ public class FXGraphics2D extends Graphics2D {
                 }
                 double radius = rgp.getRadius();
                 RadialGradient rg = new RadialGradient(
-                        Math.toDegrees(focusAngle), focusDistance, 
+                        Math.toDegrees(focusAngle), focusDistance / radius,
                         center.getX(), center.getY(), radius, false, 
                         toJavaFXCycleMethod(rgp.getCycleMethod()), stops);
                 this.gc.setStroke(rg);
