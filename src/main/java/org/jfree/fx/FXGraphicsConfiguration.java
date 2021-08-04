@@ -37,13 +37,12 @@
 
 package org.jfree.fx;
 
-import java.awt.GraphicsConfiguration;
-import java.awt.GraphicsDevice;
-import java.awt.Rectangle;
-import java.awt.Transparency;
+import java.awt.*;
 import java.awt.geom.AffineTransform;
+import java.awt.image.BufferedImage;
 import java.awt.image.ColorModel;
 import java.awt.image.DirectColorModel;
+import java.awt.image.VolatileImage;
 
 /**
  * A graphics configuration for the {@link FXGraphics2D} class.
@@ -138,4 +137,32 @@ public class FXGraphicsConfiguration extends GraphicsConfiguration {
         return new Rectangle(this.width, this.height);
     }
     
+    private BufferedImage img;
+    private GraphicsConfiguration gc;
+
+    /**
+     * Returns a volatile image.  This method is a workaround for a
+     * ClassCastException that occurs on MacOSX when exporting a Swing UI
+     * that uses the Nimbus Look and Feel.
+     *
+     * @param width  the image width.
+     * @param height  the image height.
+     * @param caps  the image capabilities.
+     * @param transparency  the transparency.
+     *
+     * @return The volatile image.
+     *
+     * @throws AWTException if there is a problem creating the image.
+     */
+    @Override
+    public VolatileImage createCompatibleVolatileImage(int width, int height,
+                                                       ImageCapabilities caps, int transparency) throws AWTException {
+        if (img == null) {
+            img = new BufferedImage(1, 1, BufferedImage.TYPE_INT_ARGB);
+            gc = img.createGraphics().getDeviceConfiguration();
+        }
+        return gc.createCompatibleVolatileImage(width, height, caps,
+                transparency);
+    }
+
 }
