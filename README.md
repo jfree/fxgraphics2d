@@ -7,10 +7,12 @@ Version 2.1.1, 24 May 2021.
 
 Overview
 --------
-**FXGraphics2D** is a free implementation of Java's `Graphics2D` API that targets the JavaFX Canvas.  It makes it possible to reuse existing Java2D code in a JavaFX application. 
+**FXGraphics2D** is an implementation of Java's `Graphics2D` API that targets the JavaFX `Canvas`.  It makes it possible to reuse existing Java2D code in a JavaFX application. 
 
 ![FXGraphics2D sample](http://www.object-refinery.com/blog/images/fxgraphics2d_normalised.png)
 
+Background
+----------
 The code has been developed for the use of **Orson Charts** (http://www.object-refinery.com/orsoncharts/) 
 and **JFreeChart** (http://www.jfree.org/jfreechart).  Numerous demos can be
 found in the [JFree-FXDemos](https://github.com/jfree/jfree-fxdemos "JFree-FXDemos Project Page at GitHub")
@@ -18,15 +20,11 @@ project page at GitHub.
 
 You can also read about *FXGraphics2D* in this Java Magazine article:
 
-    http://www.oraclejavamagazine-digital.com/javamagazine/november_december_2014#pg63
+- http://www.oraclejavamagazine-digital.com/javamagazine/november_december_2014#pg63
 
 Temporary: link above is broken, please use this in the meantime:
 
-http://www.jfree.org/fxgraphics2d/javamagazine20141112-dl.pdf
-
-The home page for the project is:
-
-http://www.jfree.org/fxgraphics2d/
+- http://www.jfree.org/fxgraphics2d/javamagazine20141112-dl.pdf
 
 *FXGraphics2D* requires JDK 11 or later and is licensed under the terms of a (three clause) BSD-style license.
 
@@ -35,11 +33,11 @@ Include
 -------
 To include `FXGraphics2D` in your own project, add the following Maven dependency:
 
-        <dependency>
-            <groupId>org.jfree</groupId>
-            <artifactId>org.jfree.fxgraphics2d</artifactId>
-            <version>2.1.1</version>
-        </dependency>
+    <dependency>
+        <groupId>org.jfree</groupId>
+        <artifactId>org.jfree.fxgraphics2d</artifactId>
+        <version>2.1.1</version>
+    </dependency>
 
 Build
 -----
@@ -47,6 +45,26 @@ You can build `FXGraphics2D` from sources using Maven:
 
     mvn clean install
 
+Testing
+-------
+FXGraphics2D is being tested using [Graphics2D Tester](https://github.com/jfree/graphics2d-tester) and produces the output shown below.  There are several areas that still need work:
+
+- the compositing rules in `AlphaComposite` cannot be mapped 100% to JavaFX equivalents.
+- font metrics are approximated
+- the `create()` method is not yet managing the user clip correctly, causing problems in the Swing UI / SteelSeries test
+- image drawing with clipping shows a strange greying out effect
+
+![FXGraphics2D test output](fxgraphics2d.png)
+
+Implementation Notes
+--------------------
+1.  In performance testing we have noted that path rendering is not as fast as it could be.  This is confirmed by this bug report:
+
+    - https://bugs.openjdk.java.net/browse/JDK-8092373
+
+Feedback
+--------
+If you have feedback about the `FXGraphics2D` library, please use the [discussion area](https://github.com/jfree/fxgraphics2d/discussions).
 
 License
 -------
@@ -83,24 +101,6 @@ ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS 
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 ```
-
-Implementation Notes
---------------------
-(1) Initial versions of the JavaFX Canvas did not have support for dashed lines.  We submitted this feature request:
-
-    https://bugs.openjdk.java.net/browse/JDK-8097787
-
-The feature was added in Java 1.8.0_40.
-
-(2) In performance testing we have noted that path rendering is not as fast as it could be.  This is confirmed by this bug report:
-
-    https://bugs.openjdk.java.net/browse/JDK-8092373
-
-
-Feedback
---------
-If you have feedback about the `FXGraphics2D` library, please visit the forum at http://www.jfree.org/fxgraphics2d.
-
 
 History
 -------

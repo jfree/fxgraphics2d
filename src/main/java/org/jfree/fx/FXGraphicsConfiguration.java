@@ -136,7 +136,7 @@ public class FXGraphicsConfiguration extends GraphicsConfiguration {
     public Rectangle getBounds() {
         return new Rectangle(this.width, this.height);
     }
-    
+
     private BufferedImage img;
     private GraphicsConfiguration gc;
 
