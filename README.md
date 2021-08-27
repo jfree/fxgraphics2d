@@ -56,12 +56,6 @@ FXGraphics2D is being tested using [Graphics2D Tester](https://github.com/jfree/
 
 ![FXGraphics2D test output](fxgraphics2d.png)
 
-Implementation Notes
---------------------
-1.  In performance testing we have noted that path rendering is not as fast as it could be.  This is confirmed by this bug report:
-
-    - https://bugs.openjdk.java.net/browse/JDK-8092373
-
 Feedback
 --------
 If you have feedback about the `FXGraphics2D` library, please use the [discussion area](https://github.com/jfree/fxgraphics2d/discussions).
