@@ -13,7 +13,7 @@ Overview
 
 Background
 ----------
-The code has been developed for the use of **Orson Charts** (http://www.object-refinery.com/orsoncharts/) 
+The code has been developed for the use of **Orson Charts** (https://github.com/jfree/orson-charts/) 
 and **JFreeChart** (http://www.jfree.org/jfreechart).  Numerous demos can be
 found in the [JFree-FXDemos](https://github.com/jfree/jfree-fxdemos "JFree-FXDemos Project Page at GitHub")
 project page at GitHub.
@@ -66,7 +66,7 @@ License
 `FXGraphics2D` is licensed under a BSD-style license:
 
 ```
-Copyright (c) 2014-2021, Object Refinery Limited.
+Copyright (c) 2014-2021, David Gilbert.
 
 All rights reserved.
 

@@ -1,6 +1,6 @@
 The following license applies to the FXGraphics2D library:
 
-Copyright (c) 2014-2020, Object Refinery Limited.
+Copyright (c) 2014-2021, by David Gilbert.
 All rights reserved.
 
 Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met:
