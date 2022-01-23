@@ -1,7 +1,7 @@
 FXGraphics2D
 ============
 
-Version 2.1.2, 5 August 2021.
+Version 2.1.3, 23 January 2022.
 
 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/org.jfree/org.jfree.fxgraphics2d/badge.svg)](https://maven-badges.herokuapp.com/maven-central/org.jfree/org.jfree.fxgraphics2d)
 
@@ -36,7 +36,7 @@ To include `FXGraphics2D` in your own project, add the following Maven dependenc
     <dependency>
         <groupId>org.jfree</groupId>
         <artifactId>org.jfree.fxgraphics2d</artifactId>
-        <version>2.1.2</version>
+        <version>2.1.3</version>
     </dependency>
 
 Build
@@ -66,7 +66,7 @@ License
 `FXGraphics2D` is licensed under a BSD-style license:
 
 ```
-Copyright (c) 2014-2021, David Gilbert.
+Copyright (c) 2014-2022, David Gilbert.
 
 All rights reserved.
 
@@ -98,6 +98,10 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 History
 -------
+##### 23-Jan-2022 : Version 2.1.3
+- set JavaFX dependency to version 17
+- apply code clean-up suggested by IntelliJ
+
 ##### 5-Aug-2021 : Version 2.1.2
 - set winding rule for `Path2D` instances;
 - set cycle method on gradient paints;

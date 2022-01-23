@@ -2,9 +2,9 @@
  * FXGraphics2D
  * ============
  * 
- * (C)opyright 2014-2021, by David Gilbert Limited.
+ * (C)opyright 2014-2022, by David Gilbert.
  * 
- * http://www.jfree.org/fxgraphics2d/index.html
+ * https://github.com/jfree/fxgraphics2d
  *
  * The FXGraphics2D class has been developed by David Gilbert for
  * use in Orson Charts (https://github.com/jfree/orson-charts) and
@@ -48,7 +48,7 @@ public class FXGraphicsDevice extends GraphicsDevice {
 
     private final String id;
     
-    GraphicsConfiguration defaultConfig;
+    final GraphicsConfiguration defaultConfig;
     
     /**
      * Creates a new instance.

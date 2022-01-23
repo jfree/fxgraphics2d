@@ -2,11 +2,11 @@
  * FXGraphics2D
  * ============
  * 
- * (C)opyright 2014-2021, by David Gilbert Limited.
+ * (C)opyright 2014-2022, by David Gilbert.
  * 
- * http://www.jfree.org/fxgraphics2d/index.html
+ * https://github.com/jfree/fxgraphics2d
  *
- * The FXGraphics2D class has been developed by David Gilbert Limited for
+ * The FXGraphics2D class has been developed by David Gilbert for
  * use in Orson Charts (https://github.com/jfree/orson-charts) and
  * JFreeChart (http://www.jfree.org/jfreechart).  It may be useful for other
  * code that uses the Graphics2D API provided by Java2D.
@@ -89,13 +89,11 @@ public final class FXHints {
          */
         @Override
         public boolean isCompatibleValue(Object val) {
-            switch (intKey()) {
-                case 0:
-                    return val == null 
-                            || val instanceof Boolean;
-                default:
-                    throw new RuntimeException("Not expected!");
+            if (intKey() == 0) {
+                return val == null
+                        || val instanceof Boolean;
             }
+            throw new RuntimeException("Not expected!");
         }
     }
     

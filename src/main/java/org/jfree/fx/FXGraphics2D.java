@@ -2,9 +2,9 @@
  * FXGraphics2D
  * ============
  * 
- * (C)opyright 2014-2021, by David Gilbert.
+ * (C)opyright 2014-2022, by David Gilbert.
  * 
- * http://www.jfree.org/fxgraphics2d/index.html
+ * https://github.com/jfree/fxgraphics2d
  *
  * The FXGraphics2D class has been developed by David Gilbert for
  * use in Orson Charts (https://github.com/jfree/orson-charts) and
@@ -479,7 +479,7 @@ public class FXGraphics2D extends Graphics2D {
     /**
      * Sets the background color.  This attribute is used by the 
      * {@link #clearRect(int, int, int, int)} method.  The reference 
-     * implementation allows {@code null} for the background color so
+     * implementation allows {@code null} for the background color, so
      * we allow that too (but for that case, the {@link #clearRect(int, int, int, int)} 
      * method will do nothing).
      * 
@@ -653,7 +653,7 @@ public class FXGraphics2D extends Graphics2D {
         }
         double[] d = new double[f.length];
         for (int i = 0; i < f.length; i++) {
-            d[i] = (double) f[i];
+            d[i] = f[i];
         }
         return d;
     }
@@ -1055,7 +1055,7 @@ public class FXGraphics2D extends Graphics2D {
      */
     @Override
     public void translate(int tx, int ty) {
-        translate((double) tx, (double) ty);
+        translate(tx, (double) ty);
     }
 
     /**
@@ -1824,8 +1824,8 @@ public class FXGraphics2D extends Graphics2D {
         Hashtable properties = new Hashtable();
         String[] keys = img.getPropertyNames();
         if (keys != null) {
-            for (int i = 0; i < keys.length; i++) {
-                properties.put(keys[i], img.getProperty(keys[i]));
+            for (String key : keys) {
+                properties.put(key, img.getProperty(key));
             }
         }
         BufferedImage result = new BufferedImage(cm, raster, 
@@ -1916,7 +1916,7 @@ public class FXGraphics2D extends Graphics2D {
      * Returns a recyclable {@link Line2D} object.
      * 
      * @param x1  the x-coordinate.
-     * @param y2  the y-coordinate.
+     * @param y1  the y-coordinate.
      * @param x2  the width.
      * @param y2  the height.
      * 

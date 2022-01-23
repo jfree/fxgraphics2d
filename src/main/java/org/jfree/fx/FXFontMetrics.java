@@ -2,9 +2,9 @@
  * FXGraphics2D
  * ============
  * 
- * (C)opyright 2014-2021, by David Gilbert.
+ * (C)opyright 2014-2022, by David Gilbert.
  * 
- * http://www.jfree.org/fxgraphics2d/index.html
+ * https://github.com/jfree/fxgraphics2d
  *
  * The FXGraphics2D class has been developed by David Gilbert for
  * use in Orson Charts (https://github.com/jfree/orson-charts) and
@@ -60,7 +60,7 @@ import javafx.scene.text.Text;
 public class FXFontMetrics extends FontMetrics {
 
     /** The graphics target. */
-    private Graphics2D g2;
+    private final Graphics2D g2;
     
     /**
      * Creates a new instance.
