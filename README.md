@@ -54,7 +54,8 @@ FXGraphics2D is being tested using [Graphics2D Tester](https://github.com/jfree/
 - the `create()` method is not yet managing the user clip correctly, causing problems in the Swing UI / SteelSeries test
 - image drawing with clipping shows a strange greying out effect
 
-![FXGraphics2D test output](fxgraphics2d.png)
+![FXGraphics2D test output](https://user-images.githubusercontent.com/1835893/150667758-2d4cc102-baa9-494a-b948-ea3c30605c0f.png)
+
 
 Feedback
 --------
