@@ -2,7 +2,7 @@
  * FXGraphics2D
  * ============
  * 
- * (C)opyright 2014-2022, by David Gilbert.
+ * (C)opyright 2014-present, by David Gilbert.
  * 
  * https://github.com/jfree/fxgraphics2d
  *

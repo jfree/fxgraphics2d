@@ -66,7 +66,7 @@ License
 `FXGraphics2D` is licensed under a BSD-style license:
 
 ```
-Copyright (c) 2014-2022, David Gilbert.
+Copyright (c) 2014-present, David Gilbert.
 
 All rights reserved.
 
@@ -98,6 +98,9 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 History
 -------
+##### not yet released : Version 2.1.4
+- set JavaFX dependency to version 19
+
 ##### 23-Jan-2022 : Version 2.1.3
 - set JavaFX dependency to version 17
 - apply code clean-up suggested by IntelliJ
