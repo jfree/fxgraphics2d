@@ -35,7 +35,6 @@
  * THE POSSIBILITY OF SUCH DAMAGE.
  * 
  */
-
 package org.jfree.fx;
 
 import java.awt.AlphaComposite;
@@ -107,26 +106,30 @@ import javafx.scene.text.FontWeight;
  * JFreeChart (<a href="http://www.jfree.org/jfreechart/">http://www.jfree.org/jfreechart/</a>).
  */
 public class FXGraphics2D extends Graphics2D {
-    
+
+    static {
+        System.out.println("Using FXGraphics2D (bourgesl fork) ...");
+    }
+
     /** The graphics context for the JavaFX canvas. */
     private final GraphicsContext gc;
-    
+
     /** Rendering hints. */
     private final RenderingHints hints;
-    
+
     private Shape clip;
-    
+
     /** Stores the AWT Paint object for get/setPaint(). */
     private Paint paint = Color.BLACK;
-    
+
     /** Stores the AWT Color object for get/setColor(). */
     private Color color = Color.BLACK;
-    
+
     private Composite composite = AlphaComposite.getInstance(
             AlphaComposite.SRC_OVER, 1.0f);
 
     private Stroke stroke = new BasicStroke(1.0f);
- 
+
     /** 
      * The width of the stroke to use when the user supplies a
      * BasicStroke with a width of 0.0 (in this case the Java specification
@@ -134,9 +137,9 @@ public class FXGraphics2D extends Graphics2D {
      * possible line for the target device and the antialias hint setting.")
      */
     private double zeroStrokeWidth;
-    
+
     private Font font = new Font("SansSerif", Font.PLAIN, 12);
-    
+
     private final FontRenderContext fontRenderContext = new FontRenderContext(
             null, false, true);
 
@@ -144,7 +147,7 @@ public class FXGraphics2D extends Graphics2D {
 
     /** The background color, used in the {@code clearRect()} method. */
     private Color background = Color.BLACK;
-    
+
     /** A flag that is set when the JavaFX graphics state has been saved. */
     private boolean stateSaved = false;
 
@@ -153,13 +156,15 @@ public class FXGraphics2D extends Graphics2D {
     private Color savedColor;
     private Font savedFont;
     private AffineTransform savedTransform;
-    
+
+    private final GCState gcState;
+
     /**
      * An instance that is lazily instantiated in drawLine and then 
      * subsequently reused to avoid creating a lot of garbage.
      */
     private Line2D line;
-    
+
     /**
      * An instance that is lazily instantiated in fillRect and then 
      * subsequently reused to avoid creating a lot of garbage.
@@ -171,19 +176,19 @@ public class FXGraphics2D extends Graphics2D {
      * subsequently reused to avoid creating a lot of garbage.
      */
     private RoundRectangle2D roundRect;
-    
-     /**
+
+    /**
      * An instance that is lazily instantiated in draw/fillOval and then
      * subsequently reused to avoid creating a lot of garbage.
      */
-   private Ellipse2D oval;
-    
+    private Ellipse2D oval;
+
     /**
      * An instance that is lazily instantiated in draw/fillArc and then
      * subsequently reused to avoid creating a lot of garbage.
      */
     private Arc2D arc;
-    
+
     /** A hidden image used for font metrics. */
     private BufferedImage fmImage;
 
@@ -192,7 +197,7 @@ public class FXGraphics2D extends Graphics2D {
      * metrics.  Used in the getFontMetrics(Font f) method.
      */
     private Graphics2D fmImageG2;
-    
+
     /** The FXFontMetrics. */
     private FXFontMetrics fxFontMetrics;
 
@@ -201,7 +206,7 @@ public class FXGraphics2D extends Graphics2D {
      * getDeviceConfiguration() method).
      */
     private GraphicsConfiguration deviceConfiguration;
-    
+
     /**
      * Throws an {@code IllegalArgumentException} if {@code arg} is
      * {@code null}.
@@ -213,24 +218,29 @@ public class FXGraphics2D extends Graphics2D {
     private static void nullNotPermitted(Object arg, String name) {
         if (arg == null) {
             throw new IllegalArgumentException("Null '" + name + "' argument.");
-        }    
+        }
     }
-    
+
     /**
      * Creates a new instance that will render to the specified JavaFX
      * {@code GraphicsContext}.
      * 
      * @param gc  the graphics context ({@code null} not permitted). 
      */
-    public FXGraphics2D(GraphicsContext gc) {
-        nullNotPermitted(gc, "gc");
-        this.gc = gc;
+    public FXGraphics2D(final GraphicsContext gc) {
+        this(new GCState(gc));
+    }
+
+    private FXGraphics2D(final GCState gcState) {
+        nullNotPermitted(gcState, "gcState");
+        this.gcState = gcState;
+        this.gc = gcState.gc;
         this.zeroStrokeWidth = 0.5;
-        this.hints = new RenderingHints(RenderingHints.KEY_ANTIALIASING, 
+        this.hints = new RenderingHints(RenderingHints.KEY_ANTIALIASING,
                 RenderingHints.VALUE_ANTIALIAS_DEFAULT);
         this.hints.put(FXHints.KEY_USE_FX_FONT_METRICS, true);
     }
-    
+
     /**
      * Returns the width to use for the stroke when the AWT stroke
      * specified has a zero width (the default value is {@code 0.5}).  
@@ -246,7 +256,7 @@ public class FXGraphics2D extends Graphics2D {
     public double getZeroStrokeWidth() {
         return this.zeroStrokeWidth;
     }
-    
+
     /**
      * Sets the width to use for the stroke when setting a new AWT stroke that
      * has a width of {@code 0.0}.
@@ -259,7 +269,7 @@ public class FXGraphics2D extends Graphics2D {
         }
         this.zeroStrokeWidth = width;
     }
-    
+
     /**
      * Returns the device configuration associated with this
      * {@code Graphics2D}.
@@ -284,16 +294,16 @@ public class FXGraphics2D extends Graphics2D {
      */
     @Override
     public Graphics create() {
-        FXGraphics2D copy = new FXGraphics2D(this.gc);
+        FXGraphics2D copy = new FXGraphics2D(this.gcState);
         copy.setRenderingHints(getRenderingHints());
-        copy.setClip(getClip());
+        copy.setClip(getClipInternally());
         copy.setPaint(getPaint());
         copy.setColor(getColor());
         copy.setComposite(getComposite());
         copy.setStroke(getStroke());
         copy.setFont(getFont());
         copy.setTransform(getTransform());
-        copy.setBackground(getBackground());    
+        copy.setBackground(getBackground());
         return copy;
     }
 
@@ -358,13 +368,13 @@ public class FXGraphics2D extends Graphics2D {
             setColor((Color) paint);
         } else if (paint instanceof GradientPaint) {
             GradientPaint gp = (GradientPaint) paint;
-            Stop[] stops = new Stop[] { new Stop(0, 
-                    awtColorToJavaFX(gp.getColor1())), 
-                    new Stop(1, awtColorToJavaFX(gp.getColor2())) };
+            Stop[] stops = new Stop[]{new Stop(0,
+                awtColorToJavaFX(gp.getColor1())),
+                                      new Stop(1, awtColorToJavaFX(gp.getColor2()))};
             Point2D p1 = gp.getPoint1();
             Point2D p2 = gp.getPoint2();
             CycleMethod cm = gp.isCyclic() ? CycleMethod.REFLECT : CycleMethod.NO_CYCLE;
-            LinearGradient lg = new LinearGradient(p1.getX(), p1.getY(), 
+            LinearGradient lg = new LinearGradient(p1.getX(), p1.getY(),
                     p2.getX(), p2.getY(), false, cm, stops);
             this.gc.setStroke(lg);
             this.gc.setFill(lg);
@@ -380,17 +390,17 @@ public class FXGraphics2D extends Graphics2D {
             if (paint instanceof RadialGradientPaint) {
                 RadialGradientPaint rgp = (RadialGradientPaint) paint;
                 Point2D center = rgp.getCenterPoint();
-                Point2D focus = rgp.getFocusPoint();           
+                Point2D focus = rgp.getFocusPoint();
                 double focusDistance = focus.distance(center);
                 double focusAngle = 0.0;
                 if (!focus.equals(center)) {
-                    focusAngle = Math.atan2(focus.getY() - center.getY(), 
-                        focus.getX() - center.getX());
+                    focusAngle = Math.atan2(focus.getY() - center.getY(),
+                            focus.getX() - center.getX());
                 }
                 double radius = rgp.getRadius();
                 RadialGradient rg = new RadialGradient(
                         Math.toDegrees(focusAngle), focusDistance / radius,
-                        center.getX(), center.getY(), radius, false, 
+                        center.getX(), center.getY(), radius, false,
                         toJavaFXCycleMethod(rgp.getCycleMethod()), stops);
                 this.gc.setStroke(rg);
                 this.gc.setFill(rg);
@@ -398,8 +408,8 @@ public class FXGraphics2D extends Graphics2D {
                 LinearGradientPaint lgp = (LinearGradientPaint) paint;
                 Point2D start = lgp.getStartPoint();
                 Point2D end = lgp.getEndPoint();
-                LinearGradient lg = new LinearGradient(start.getX(), 
-                        start.getY(), end.getX(), end.getY(), false, 
+                LinearGradient lg = new LinearGradient(start.getX(),
+                        start.getY(), end.getX(), end.getY(), false,
                         toJavaFXCycleMethod(lgp.getCycleMethod()), stops);
                 this.gc.setStroke(lg);
                 this.gc.setFill(lg);
@@ -441,7 +451,7 @@ public class FXGraphics2D extends Graphics2D {
         }
         applyColor(c);
     }
-    
+
     private void applyColor(Color c) {
         this.color = c;
         this.paint = c;
@@ -458,10 +468,10 @@ public class FXGraphics2D extends Graphics2D {
      * @return A JavaFX color. 
      */
     private javafx.scene.paint.Color awtColorToJavaFX(Color c) {
-        return javafx.scene.paint.Color.rgb(c.getRed(), c.getGreen(), 
+        return javafx.scene.paint.Color.rgb(c.getRed(), c.getGreen(),
                 c.getBlue(), c.getAlpha() / 255.0);
     }
-    
+
     /**
      * Returns the background color (the default value is {@link Color#BLACK}).
      * This attribute is used by the {@link #clearRect(int, int, int, int)} 
@@ -503,7 +513,7 @@ public class FXGraphics2D extends Graphics2D {
     public Composite getComposite() {
         return this.composite;
     }
-    
+
     /**
      * Sets the composite.  There is limited handling for 
      * {@code AlphaComposite}, other composites will have no effect on the 
@@ -523,7 +533,7 @@ public class FXGraphics2D extends Graphics2D {
             this.gc.setGlobalBlendMode(blendMode(ac.getRule()));
         }
     }
-    
+
     /**
      * Returns a JavaFX BlendMode that is the closest match for the Java2D 
      * alpha composite rule.
@@ -547,7 +557,6 @@ public class FXGraphics2D extends Graphics2D {
             case AlphaComposite.SRC_OUT:
             case AlphaComposite.SRC_OVER:
             case AlphaComposite.XOR:
-                return BlendMode.SRC_OVER;
             default:
                 return BlendMode.SRC_OVER;
         }
@@ -587,13 +596,13 @@ public class FXGraphics2D extends Graphics2D {
         this.stroke = s;
         applyStroke(s);
     }
-    
+
     private void applyStroke(Stroke s) {
         if (s instanceof BasicStroke) {
             applyBasicStroke((BasicStroke) s);
         }
     }
-    
+
     private void applyBasicStroke(BasicStroke bs) {
         double lineWidth = bs.getLineWidth();
         if (lineWidth == 0.0) {
@@ -604,26 +613,27 @@ public class FXGraphics2D extends Graphics2D {
         this.gc.setLineJoin(awtToJavaFXLineJoin(bs.getLineJoin()));
         this.gc.setMiterLimit(bs.getMiterLimit());
         this.gc.setLineDashes(floatToDoubleArray(bs.getDashArray()));
-        this.gc.setLineDashOffset(bs.getDashPhase());   
+        this.gc.setLineDashOffset(bs.getDashPhase());
     }
-    
+
     /**
      * Maps a line cap code from AWT to the corresponding JavaFX StrokeLineCap
      * enum value.
      * 
-     * @param c  the line cap code.
+     * @param cap  the line cap code.
      * 
      * @return A JavaFX line cap value. 
      */
-    private StrokeLineCap awtToJavaFXLineCap(int c) {
-        if (c == BasicStroke.CAP_BUTT) {
-            return StrokeLineCap.BUTT;
-        } else if (c == BasicStroke.CAP_ROUND) {
-            return StrokeLineCap.ROUND;
-        } else if (c == BasicStroke.CAP_SQUARE) {
-            return StrokeLineCap.SQUARE;
-        } else {
-            throw new IllegalArgumentException("Unrecognised cap code: " + c);
+    private StrokeLineCap awtToJavaFXLineCap(int cap) {
+        switch (cap) {
+            case BasicStroke.CAP_BUTT:
+                return StrokeLineCap.BUTT;
+            case BasicStroke.CAP_ROUND:
+                return StrokeLineCap.ROUND;
+            case BasicStroke.CAP_SQUARE:
+                return StrokeLineCap.SQUARE;
+            default:
+                throw new IllegalArgumentException("Unrecognised cap code: " + cap);
         }
     }
 
@@ -631,22 +641,23 @@ public class FXGraphics2D extends Graphics2D {
      * Maps a line join code from AWT to the corresponding JavaFX 
      * StrokeLineJoin enum value.
      * 
-     * @param j  the line join code.
+     * @param join  the line join code.
      * 
      * @return A JavaFX line join value. 
      */
-    private StrokeLineJoin awtToJavaFXLineJoin(int j) {
-        if (j == BasicStroke.JOIN_BEVEL) {
-            return StrokeLineJoin.BEVEL;
-        } else if (j == BasicStroke.JOIN_MITER) {
-            return StrokeLineJoin.MITER;
-        } else if (j == BasicStroke.JOIN_ROUND) {
-            return StrokeLineJoin.ROUND;
-        } else {
-            throw new IllegalArgumentException("Unrecognised join code: " + j);            
+    private StrokeLineJoin awtToJavaFXLineJoin(int join) {
+        switch (join) {
+            case BasicStroke.JOIN_BEVEL:
+                return StrokeLineJoin.BEVEL;
+            case BasicStroke.JOIN_MITER:
+                return StrokeLineJoin.MITER;
+            case BasicStroke.JOIN_ROUND:
+                return StrokeLineJoin.ROUND;
+            default:
+                throw new IllegalArgumentException("Unrecognised join code: " + join);
         }
     }
-    
+
     private double[] floatToDoubleArray(float[] f) {
         if (f == null) {
             return null;
@@ -746,7 +757,7 @@ public class FXGraphics2D extends Graphics2D {
         }
         if (s instanceof Line2D) {
             Line2D l = (Line2D) s;
-            Object hint = getRenderingHint(RenderingHints.KEY_STROKE_CONTROL);
+            final Object hint = getRenderingHint(RenderingHints.KEY_STROKE_CONTROL);
             if (hint != RenderingHints.VALUE_STROKE_PURE) {
                 double x1 = Math.rint(l.getX1()) - 0.5;
                 double y1 = Math.rint(l.getY1()) - 0.5;
@@ -757,11 +768,13 @@ public class FXGraphics2D extends Graphics2D {
             this.gc.strokeLine(l.getX1(), l.getY1(), l.getX2(), l.getY2());
         } else if (s instanceof Rectangle2D) {
             Rectangle2D r = (Rectangle2D) s;
-            if (s instanceof Rectangle) {
-                r = new Rectangle2D.Double(r.getX(), r.getY(), r.getWidth(), 
-                        r.getHeight());
+            if (r.getWidth() < 0.0 || r.getHeight() < 0.0) {
+                return;
             }
-            Object hint = getRenderingHint(RenderingHints.KEY_STROKE_CONTROL);
+            if (s instanceof Rectangle) {
+                r = new Rectangle2D.Double(r.getX(), r.getY(), r.getWidth(), r.getHeight());
+            }
+            final Object hint = getRenderingHint(RenderingHints.KEY_STROKE_CONTROL);
             if (hint != RenderingHints.VALUE_STROKE_PURE) {
                 double x = Math.rint(r.getX()) - 0.5;
                 double y = Math.rint(r.getY()) - 0.5;
@@ -771,16 +784,22 @@ public class FXGraphics2D extends Graphics2D {
             }
             this.gc.strokeRect(r.getX(), r.getY(), r.getWidth(), r.getHeight());
         } else if (s instanceof RoundRectangle2D) {
-            RoundRectangle2D rr = (RoundRectangle2D) s;
-            this.gc.strokeRoundRect(rr.getX(), rr.getY(), rr.getWidth(), 
+            final RoundRectangle2D rr = (RoundRectangle2D) s;
+            if (rr.getWidth() < 0.0 || rr.getHeight() < 0.0) {
+                return;
+            }
+            this.gc.strokeRoundRect(rr.getX(), rr.getY(), rr.getWidth(),
                     rr.getHeight(), rr.getArcWidth(), rr.getArcHeight());
         } else if (s instanceof Ellipse2D) {
-            Ellipse2D e = (Ellipse2D) s;
+            final Ellipse2D e = (Ellipse2D) s;
+            if (e.getWidth() < 0.0 || e.getHeight() < 0.0) {
+                return;
+            }
             this.gc.strokeOval(e.getX(), e.getY(), e.getWidth(), e.getHeight());
         } else if (s instanceof Arc2D) {
-            Arc2D a = (Arc2D) s;
-            this.gc.strokeArc(a.getX(), a.getY(), a.getWidth(), a.getHeight(), 
-                    a.getAngleStart(), a.getAngleExtent(), 
+            final Arc2D a = (Arc2D) s;
+            this.gc.strokeArc(a.getX(), a.getY(), a.getWidth(), a.getHeight(),
+                    a.getAngleStart(), a.getAngleExtent(),
                     intToArcType(a.getArcType()));
         } else {
             shapeToPath(s);
@@ -789,15 +808,15 @@ public class FXGraphics2D extends Graphics2D {
     }
 
     private final double[] coords = new double[6];
-    
+
     /**
      * Maps a shape to a path in the graphics context. 
      * 
-     * @param s  the shape ({@code null} not permitted).
+     * @param shape  the shape ({@code null} not permitted).
      */
-    private void shapeToPath(Shape s) {
-        if (s instanceof Path2D) {
-            Path2D path = (Path2D) s;
+    private void shapeToPath(final Shape shape) {
+        if (shape instanceof Path2D) {
+            final Path2D path = (Path2D) shape;
             if (path.getWindingRule() == Path2D.WIND_EVEN_ODD) {
                 this.gc.setFillRule(FillRule.EVEN_ODD);
             } else {
@@ -805,9 +824,9 @@ public class FXGraphics2D extends Graphics2D {
             }
         }
         this.gc.beginPath();
-        PathIterator iterator = s.getPathIterator(null);
-        while (!iterator.isDone()) {
-            int segType = iterator.currentSegment(coords);
+
+        for (final PathIterator iterator = shape.getPathIterator(null); !iterator.isDone(); iterator.next()) {
+            final int segType = iterator.currentSegment(coords);
             switch (segType) {
                 case PathIterator.SEG_MOVETO:
                     this.gc.moveTo(coords[0], coords[1]);
@@ -816,35 +835,37 @@ public class FXGraphics2D extends Graphics2D {
                     this.gc.lineTo(coords[0], coords[1]);
                     break;
                 case PathIterator.SEG_QUADTO:
-                    this.gc.quadraticCurveTo(coords[0], coords[1], coords[2], 
-                            coords[3]);
+                    this.gc.quadraticCurveTo(coords[0], coords[1],
+                            coords[2], coords[3]);
                     break;
                 case PathIterator.SEG_CUBICTO:
-                    this.gc.bezierCurveTo(coords[0], coords[1], coords[2], 
-                            coords[3], coords[4], coords[5]);
+                    this.gc.bezierCurveTo(coords[0], coords[1],
+                            coords[2], coords[3],
+                            coords[4], coords[5]);
                     break;
                 case PathIterator.SEG_CLOSE:
                     this.gc.closePath();
                     break;
                 default:
-                    throw new RuntimeException("Unrecognised segment type " 
-                            + segType);
+                    throw new RuntimeException("Unrecognised segment type " + segType);
             }
-            iterator.next();
         }
     }
-    
+
     private ArcType intToArcType(int t) {
-        if (t == Arc2D.CHORD) {
-            return ArcType.CHORD;
-        } else if (t == Arc2D.OPEN) {
-            return ArcType.OPEN;
-        } else if (t == Arc2D.PIE) {
-            return ArcType.ROUND;
+        switch (t) {
+            case Arc2D.CHORD:
+                return ArcType.CHORD;
+            case Arc2D.OPEN:
+                return ArcType.OPEN;
+            case Arc2D.PIE:
+                return ArcType.ROUND;
+            default:
+                break;
         }
         throw new IllegalArgumentException("Unrecognised t: " + t);
     }
-    
+
     /**
      * Fills the specified shape with the current {@code paint}.  There is
      * direct handling for {@code RoundRectangle2D}, 
@@ -858,19 +879,28 @@ public class FXGraphics2D extends Graphics2D {
     @Override
     public void fill(Shape s) {
         if (s instanceof Rectangle2D) {
-            Rectangle2D r = (Rectangle2D) s;
+            final Rectangle2D r = (Rectangle2D) s;
+            if (r.getWidth() <= 0.0 || r.getHeight() <= 0.0) {
+                return;
+            }
             this.gc.fillRect(r.getX(), r.getY(), r.getWidth(), r.getHeight());
         } else if (s instanceof RoundRectangle2D) {
-            RoundRectangle2D rr = (RoundRectangle2D) s;
-            this.gc.fillRoundRect(rr.getX(), rr.getY(), rr.getWidth(), 
+            final RoundRectangle2D rr = (RoundRectangle2D) s;
+            if (rr.getWidth() <= 0.0 || rr.getHeight() <= 0.0) {
+                return;
+            }
+            this.gc.fillRoundRect(rr.getX(), rr.getY(), rr.getWidth(),
                     rr.getHeight(), rr.getArcWidth(), rr.getArcHeight());
         } else if (s instanceof Ellipse2D) {
-            Ellipse2D e = (Ellipse2D) s;
+            final Ellipse2D e = (Ellipse2D) s;
+            if (e.getWidth() <= 0.0 || e.getHeight() <= 0.0) {
+                return;
+            }
             this.gc.fillOval(e.getX(), e.getY(), e.getWidth(), e.getHeight());
         } else if (s instanceof Arc2D) {
-            Arc2D a = (Arc2D) s;
-            this.gc.fillArc(a.getX(), a.getY(), a.getWidth(), a.getHeight(), 
-                    a.getAngleStart(), a.getAngleExtent(), 
+            final Arc2D a = (Arc2D) s;
+            this.gc.fillArc(a.getX(), a.getY(), a.getWidth(), a.getHeight(),
+                    a.getAngleStart(), a.getAngleExtent(),
                     intToArcType(a.getArcType()));
         } else {
             shapeToPath(s);
@@ -908,7 +938,7 @@ public class FXGraphics2D extends Graphics2D {
     private void applyFont(Font font) {
         this.font = font;
         FontWeight weight = font.isBold() ? FontWeight.BOLD : FontWeight.NORMAL;
-        FontPosture posture = font.isItalic() 
+        FontPosture posture = font.isItalic()
                 ? FontPosture.ITALIC : FontPosture.REGULAR;
         javafx.scene.text.Font jfxfont = javafx.scene.text.Font.font(
                 font.getFamily(), weight, posture, font.getSize());
@@ -927,13 +957,13 @@ public class FXGraphics2D extends Graphics2D {
     @Override
     public FontMetrics getFontMetrics(Font f) {
         if (getRenderingHint(FXHints.KEY_USE_FX_FONT_METRICS) == Boolean.TRUE) {
-            if (this.fxFontMetrics == null 
+            if (this.fxFontMetrics == null
                     || !f.equals(this.fxFontMetrics.getFont())) {
                 this.fxFontMetrics = new FXFontMetrics(this.font, this);
             }
             return this.fxFontMetrics;
-        } 
-        
+        }
+
         // be lazy about creating the underlying objects...
         if (this.fmImage == null) {
             this.fmImage = new BufferedImage(10, 10,
@@ -945,7 +975,7 @@ public class FXGraphics2D extends Graphics2D {
         }
         return this.fmImageG2.getFontMetrics(f);
     }
-    
+
     /**
      * Returns the font render context.  The implementation here returns the
      * {@code FontRenderContext} for an image that is maintained 
@@ -1000,7 +1030,7 @@ public class FXGraphics2D extends Graphics2D {
      */
     @Override
     public void drawString(AttributedCharacterIterator iterator, int x, int y) {
-        drawString(iterator, (float) x, (float) y); 
+        drawString(iterator, (float) x, (float) y);
     }
 
     /**
@@ -1012,18 +1042,17 @@ public class FXGraphics2D extends Graphics2D {
      * @param y  the y-coordinate.
      */
     @Override
-    public void drawString(AttributedCharacterIterator iterator, float x, 
-            float y) {
-        Set<AttributedCharacterIterator.Attribute> 
-                s = iterator.getAllAttributeKeys();
+    public void drawString(AttributedCharacterIterator iterator, float x,
+                           float y) {
+        Set<AttributedCharacterIterator.Attribute> s = iterator.getAllAttributeKeys();
         if (!s.isEmpty()) {
-            TextLayout layout = new TextLayout(iterator, 
+            TextLayout layout = new TextLayout(iterator,
                     getFontRenderContext());
             layout.draw(this, x, y);
         } else {
             StringBuilder strb = new StringBuilder();
             iterator.first();
-            for (int i = iterator.getBeginIndex(); i < iterator.getEndIndex(); 
+            for (int i = iterator.getBeginIndex(); i < iterator.getEndIndex();
                     i++) {
                 strb.append(iterator.current());
                 iterator.next();
@@ -1158,12 +1187,11 @@ public class FXGraphics2D extends Graphics2D {
     @Override
     public void setTransform(AffineTransform t) {
         if (t == null) {
-            this.transform = new AffineTransform();
-            t = this.transform;
+            this.transform = t = new AffineTransform();
         } else {
             this.transform = new AffineTransform(t);
         }
-        this.gc.setTransform(t.getScaleX(), t.getShearY(), t.getShearX(), 
+        this.gc.setTransform(t.getScaleX(), t.getShearY(), t.getShearX(),
                 t.getScaleY(), t.getTranslateX(), t.getTranslateY());
     }
 
@@ -1180,18 +1208,18 @@ public class FXGraphics2D extends Graphics2D {
      */
     @Override
     public boolean hit(Rectangle rect, Shape s, boolean onStroke) {
-        Shape ts;
+        final Shape ts;
         if (onStroke) {
-            ts = this.transform.createTransformedShape(
-                    this.stroke.createStrokedShape(s));
+            ts = _createTransformedShape(this.stroke.createStrokedShape(s), false);
         } else {
-            ts = this.transform.createTransformedShape(s);
+            ts = _createTransformedShape(s, false);
         }
         if (!rect.getBounds2D().intersects(ts.getBounds2D())) {
             return false;
         }
-        Area a1 = new Area(rect);
-        Area a2 = new Area(ts);
+        // note: Area class is very slow (especially for rect):
+        final Area a1 = new Area(rect);
+        final Area a2 = new Area(ts);
         a1.intersect(a2);
         return !a1.isEmpty();
     }
@@ -1224,7 +1252,7 @@ public class FXGraphics2D extends Graphics2D {
         if (this.clip == null) {
             return null;
         }
-        return getClip().getBounds();
+        return getClipInternally().getBounds();
     }
 
     /**
@@ -1240,116 +1268,14 @@ public class FXGraphics2D extends Graphics2D {
         if (this.clip == null) {
             return null;
         }
-        AffineTransform inv;
-        try {
-            inv = this.transform.createInverse();
-            return inv.createTransformedShape(this.clip);
-        } catch (NoninvertibleTransformException ex) {
-            return null;
-        }
+        return _inverseTransform(this.clip, true);
     }
 
-    /**
-     * Sets the user clipping region.
-     * 
-     * @param shape  the new user clipping region ({@code null} permitted).
-     * 
-     * @see #getClip()
-     */
-    @Override
-    public void setClip(Shape shape) {
-        if (this.stateSaved) {
-            this.gc.restore(); // get back original clip
-            reapplyAttributes(); // but keep other attributes
-            this.stateSaved = false;
-        }
-        // null is handled fine here...
-        this.clip = this.transform.createTransformedShape(shape);
-        if (clip != null) {
-            this.gc.save(); 
-            rememberSavedAttributes();
-            shapeToPath(shape);
-            this.gc.clip();
-        }
-    }
-    
-    /** 
-     * Remember the Graphics2D attributes in force at the point of pushing
-     * the JavaFX context.
-     */
-    private void rememberSavedAttributes() {
-        this.stateSaved = true;
-        this.savedColor = this.color;
-        this.savedFont = this.font;
-        this.savedPaint = this.paint;
-        this.savedStroke = this.stroke;
-        this.savedTransform = new AffineTransform(this.transform);
-    }
-    
-    private void reapplyAttributes() {
-        if (!paintsAreEqual(this.paint, this.savedPaint)) {
-            applyPaint(this.paint);
-        }
-        if (!this.color.equals(this.savedColor)) {
-            applyColor(this.color);
-        }
-        if (!this.stroke.equals(this.savedStroke)) {
-            applyStroke(this.stroke);
-        }
-        if (!this.font.equals(this.savedFont)) {
-            applyFont(this.font);
-        }
-        if (!this.transform.equals(this.savedTransform)) {
-            setTransform(this.transform);
-        }
-        this.savedColor = null;
-        this.savedFont = null;
-        this.savedPaint = null;
-        this.savedStroke = null;
-        this.savedTransform = null;
-    }
-    
-    /**
-     * Clips to the intersection of the current clipping region and the
-     * specified shape. 
-     * 
-     * According to the Oracle API specification, this method will accept a 
-     * {@code null} argument, but there is an open bug report (since 2004) 
-     * that suggests this is wrong:
-     * <p>
-     * <a href="http://bugs.sun.com/bugdatabase/view_bug.do?bug_id=6206189">
-     * http://bugs.sun.com/bugdatabase/view_bug.do?bug_id=6206189</a>
-     * 
-     * In this implementation, a {@code null} argument is not permitted.
-     * 
-     * @param s  the clip shape ({@code null} not permitted). 
-     */
-    @Override
-    public void clip(Shape s) {
-        if (s instanceof Line2D) {
-            s = s.getBounds2D();
-        }
+    private Shape getClipInternally() {
         if (this.clip == null) {
-            setClip(s);
-            return;
+            return null;
         }
-        Shape ts = this.transform.createTransformedShape(s);
-        Shape clipNew;
-        if (!ts.intersects(this.clip.getBounds2D())) {
-            clipNew = new Rectangle2D.Double();
-        } else {
-            Area a1 = new Area(ts);
-            Area a2 = new Area(this.clip);
-            a1.intersect(a2);
-            clipNew = new Path2D.Double(a1);
-        }
-        this.clip = clipNew;
-        if (!this.stateSaved) {
-            this.gc.save();
-            rememberSavedAttributes();
-        }
-        shapeToPath(this.clip);
-        this.gc.clip();
+        return _inverseTransform(this.clip, false);
     }
 
     /**
@@ -1379,6 +1305,129 @@ public class FXGraphics2D extends Graphics2D {
     @Override
     public void setClip(int x, int y, int width, int height) {
         setClip(rect(x, y, width, height));
+    }
+
+    /**
+     * Sets the user clipping region.
+     * 
+     * @param shape  the new user clipping region ({@code null} permitted).
+     * 
+     * @see #getClip()
+     */
+    @Override
+    public void setClip(final Shape shape) {
+        setClip(shape, true);
+    }
+
+    private void setClip(final Shape shape, final boolean clone) {
+        // System.out.println("setClip: " + shape);
+        if (this.stateSaved) {
+            this.gcState.restore();
+            reapplyAttributes(); // but keep other attributes
+            this.stateSaved = false;
+        }
+        // null is handled fine here...
+        this.clip = _createTransformedShape(shape, clone); // device space
+        if (clip != null) {
+            this.gcState.save();
+            rememberSavedAttributes();
+
+            shapeToPath(shape); // user space
+            // System.out.println("gc.clip: " + shape);
+            this.gc.clip();
+        }
+    }
+
+    /** 
+     * Remember the Graphics2D attributes in force at the point of pushing
+     * the JavaFX context.
+     */
+    private void rememberSavedAttributes() {
+        this.stateSaved = true;
+        this.savedColor = this.color;
+        this.savedFont = this.font;
+        this.savedPaint = this.paint;
+        this.savedStroke = this.stroke;
+        this.savedTransform = new AffineTransform(this.transform);
+    }
+
+    private void reapplyAttributes() {
+        if (!paintsAreEqual(this.paint, this.savedPaint)) {
+            applyPaint(this.paint);
+        }
+        if (!this.color.equals(this.savedColor)) {
+            applyColor(this.color);
+        }
+        if (!this.stroke.equals(this.savedStroke)) {
+            applyStroke(this.stroke);
+        }
+        if (!this.font.equals(this.savedFont)) {
+            applyFont(this.font);
+        }
+        if (!this.transform.equals(this.savedTransform)) {
+            setTransform(this.transform);
+        }
+        this.savedColor = null;
+        this.savedFont = null;
+        this.savedPaint = null;
+        this.savedStroke = null;
+        this.savedTransform = null;
+    }
+
+    /**
+     * Clips to the intersection of the current clipping region and the
+     * specified shape. 
+     * 
+     * According to the Oracle API specification, this method will accept a 
+     * {@code null} argument, but there is an open bug report (since 2004) 
+     * that suggests this is wrong:
+     * <p>
+     * <a href="http://bugs.sun.com/bugdatabase/view_bug.do?bug_id=6206189">
+     * http://bugs.sun.com/bugdatabase/view_bug.do?bug_id=6206189</a>
+     * 
+     * In this implementation, a {@code null} argument is not permitted.
+     * 
+     * @param s  the clip shape ({@code null} not permitted). 
+     */
+    @Override
+    public void clip(Shape s) {
+        // System.out.println("clip: shape: " + s);
+        // System.out.println("clip:  clip: " + s);
+
+        if (s instanceof Line2D) {
+            s = s.getBounds2D();
+        }
+        if (this.clip == null) {
+            setClip(s);
+            return;
+        }
+        if (s == null) {
+            throw new NullPointerException("clip(Shape): null argument.");
+        }
+        final Shape ts = _createTransformedShape(s, false);
+        // System.out.println("clip:  ts: " + ts);
+        final Shape clipNew;
+        if (!ts.intersects(this.clip.getBounds2D())) {
+            clipNew = new Rectangle2D.Double();
+        } else {
+            // note: Area class is very slow (especially for rectangles)
+            final Area a1 = new Area(ts);
+            final Area a2 = new Area(this.clip);
+            a1.intersect(a2);
+            clipNew = new Path2D.Double(a1);
+        }
+        // System.out.println("clip:  clipNew: " + clipNew);
+        this.clip = clipNew; // device space
+        if (!this.stateSaved) {
+            this.gcState.save();
+            rememberSavedAttributes();
+        }
+        if (true) {
+            shapeToPath(this.getClipInternally());
+        } else {
+            shapeToPath(this.clip); // Incorrect, it should be in user space !
+        }
+        this.gc.clip();
     }
 
     /**
@@ -1430,7 +1479,7 @@ public class FXGraphics2D extends Graphics2D {
         fillRect(x, y, width, height);
         setPaint(saved);
     }
-    
+
     /**
      * Draws a rectangle with rounded corners using the current 
      * {@code paint} and {@code stroke}.
@@ -1445,8 +1494,8 @@ public class FXGraphics2D extends Graphics2D {
      * @see #fillRoundRect(int, int, int, int, int, int) 
      */
     @Override
-    public void drawRoundRect(int x, int y, int width, int height, 
-            int arcWidth, int arcHeight) {
+    public void drawRoundRect(int x, int y, int width, int height,
+                              int arcWidth, int arcHeight) {
         draw(roundRect(x, y, width, height, arcWidth, arcHeight));
     }
 
@@ -1463,11 +1512,11 @@ public class FXGraphics2D extends Graphics2D {
      * @see #drawRoundRect(int, int, int, int, int, int) 
      */
     @Override
-    public void fillRoundRect(int x, int y, int width, int height, 
-            int arcWidth, int arcHeight) {
+    public void fillRoundRect(int x, int y, int width, int height,
+                              int arcWidth, int arcHeight) {
         fill(roundRect(x, y, width, height, arcWidth, arcHeight));
     }
-    
+
     /**
      * Draws an oval framed by the rectangle {@code (x, y, width, height)}
      * using the current {@code paint} and {@code stroke}.
@@ -1515,8 +1564,8 @@ public class FXGraphics2D extends Graphics2D {
      * @see #fillArc(int, int, int, int, int, int) 
      */
     @Override
-    public void drawArc(int x, int y, int width, int height, int startAngle, 
-            int arcAngle) {
+    public void drawArc(int x, int y, int width, int height, int startAngle,
+                        int arcAngle) {
         draw(arc(x, y, width, height, startAngle, arcAngle));
     }
 
@@ -1536,8 +1585,8 @@ public class FXGraphics2D extends Graphics2D {
      * @see #drawArc(int, int, int, int, int, int) 
      */
     @Override
-    public void fillArc(int x, int y, int width, int height, int startAngle, 
-            int arcAngle) {
+    public void fillArc(int x, int y, int width, int height, int startAngle,
+                        int arcAngle) {
         fill(arc(x, y, width, height, startAngle, arcAngle));
     }
 
@@ -1596,8 +1645,8 @@ public class FXGraphics2D extends Graphics2D {
      * 
      * @return A polygon.
      */
-    public GeneralPath createPolygon(int[] xPoints, int[] yPoints, 
-            int nPoints, boolean close) {
+    public GeneralPath createPolygon(int[] xPoints, int[] yPoints,
+                                     int nPoints, boolean close) {
         GeneralPath p = new GeneralPath();
         p.moveTo(xPoints[0], yPoints[0]);
         for (int i = 1; i < nPoints; i++) {
@@ -1608,7 +1657,7 @@ public class FXGraphics2D extends Graphics2D {
         }
         return p;
     }
-    
+
     /**
      * Draws an image at the location {@code (x, y)}.  Note that the 
      * {@code observer} is ignored.
@@ -1651,20 +1700,18 @@ public class FXGraphics2D extends Graphics2D {
      * @return {@code true} if there is no more drawing to be done. 
      */
     @Override
-    public boolean drawImage(final Image img, int x, int y, 
-            int w, int h, ImageObserver observer) {
+    public boolean drawImage(final Image img, int x, int y,
+                             int w, int h, ImageObserver observer) {
         final BufferedImage buffered;
         if (img instanceof BufferedImage) {
             buffered = (BufferedImage) img;
         } else {
-            buffered = new BufferedImage(w, h, 
-                    BufferedImage.TYPE_INT_ARGB);
+            buffered = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
             final Graphics2D g2 = buffered.createGraphics();
             g2.drawImage(img, 0, 0, w, h, null);
             g2.dispose();
         }
-        javafx.scene.image.WritableImage fxImage = SwingFXUtils.toFXImage(
-                buffered, null);
+        javafx.scene.image.WritableImage fxImage = SwingFXUtils.toFXImage(buffered, null);
         this.gc.drawImage(fxImage, x, y, w, h);
         return true;
     }
@@ -1682,8 +1729,8 @@ public class FXGraphics2D extends Graphics2D {
      * @return {@code true} if there is no more drawing to be done. 
      */
     @Override
-    public boolean drawImage(Image img, int x, int y, Color bgcolor, 
-            ImageObserver observer) {
+    public boolean drawImage(Image img, int x, int y, Color bgcolor,
+                             ImageObserver observer) {
         if (img == null) {
             return true;
         }
@@ -1714,8 +1761,8 @@ public class FXGraphics2D extends Graphics2D {
      * @return {@code true} if the image is drawn.      
      */
     @Override
-    public boolean drawImage(Image img, int x, int y, int w, int h, 
-            Color bgcolor, ImageObserver observer) {
+    public boolean drawImage(Image img, int x, int y, int w, int h,
+                             Color bgcolor, ImageObserver observer) {
         Paint saved = getPaint();
         setPaint(bgcolor);
         fillRect(x, y, w, h);
@@ -1742,11 +1789,11 @@ public class FXGraphics2D extends Graphics2D {
      * @return {@code true} if the image is drawn. 
      */
     @Override
-    public boolean drawImage(Image img, int dx1, int dy1, int dx2, int dy2, 
-            int sx1, int sy1, int sx2, int sy2, ImageObserver observer) {
+    public boolean drawImage(Image img, int dx1, int dy1, int dx2, int dy2,
+                             int sx1, int sy1, int sx2, int sy2, ImageObserver observer) {
         int w = dx2 - dx1;
         int h = dy2 - dy1;
-        BufferedImage img2 = new BufferedImage(w, h, 
+        BufferedImage img2 = new BufferedImage(w, h,
                 BufferedImage.TYPE_INT_ARGB);
         Graphics2D g2 = img2.createGraphics();
         g2.drawImage(img, 0, 0, w, h, sx1, sy1, sx2, sy2, null);
@@ -1775,9 +1822,9 @@ public class FXGraphics2D extends Graphics2D {
      * @return {@code true} if the image is drawn. 
      */
     @Override
-    public boolean drawImage(Image img, int dx1, int dy1, int dx2, int dy2, 
-            int sx1, int sy1, int sx2, int sy2, Color bgcolor, 
-            ImageObserver observer) {
+    public boolean drawImage(Image img, int dx1, int dy1, int dx2, int dy2,
+                             int sx1, int sy1, int sx2, int sy2, Color bgcolor,
+                             ImageObserver observer) {
         Paint saved = getPaint();
         setPaint(bgcolor);
         fillRect(dx1, dy1, dx2 - dx1, dy2 - dy1);
@@ -1814,7 +1861,7 @@ public class FXGraphics2D extends Graphics2D {
      */
     private static BufferedImage convertRenderedImage(RenderedImage img) {
         if (img instanceof BufferedImage) {
-            return (BufferedImage) img;	
+            return (BufferedImage) img;
         }
         ColorModel cm = img.getColorModel();
         int width = img.getWidth();
@@ -1828,7 +1875,7 @@ public class FXGraphics2D extends Graphics2D {
                 properties.put(key, img.getProperty(key));
             }
         }
-        BufferedImage result = new BufferedImage(cm, raster, 
+        BufferedImage result = new BufferedImage(cm, raster,
                 isAlphaPremultiplied, properties);
         img.copyData(raster);
         return result;
@@ -1841,8 +1888,8 @@ public class FXGraphics2D extends Graphics2D {
      * @param xform  the transform.
      */
     @Override
-    public void drawRenderableImage(RenderableImage img, 
-            AffineTransform xform) {
+    public void drawRenderableImage(RenderableImage img,
+                                    AffineTransform xform) {
         RenderedImage ri = img.createDefaultRendering();
         drawRenderedImage(ri, xform);
     }
@@ -1858,8 +1905,8 @@ public class FXGraphics2D extends Graphics2D {
      * @return {@code true} if the image is drawn. 
      */
     @Override
-    public boolean drawImage(Image img, AffineTransform xform, 
-            ImageObserver obs) {
+    public boolean drawImage(Image img, AffineTransform xform,
+                             ImageObserver obs) {
         AffineTransform savedTransform = getTransform();
         if (xform != null) {
             transform(xform);
@@ -1909,9 +1956,14 @@ public class FXGraphics2D extends Graphics2D {
      */
     @Override
     public void dispose() {
-        // nothing to do
+        // restore gc state:
+        if (false && this.stateSaved) {
+            this.gcState.restore();
+            this.stateSaved = false;
+        }
+        // System.out.println("dispose(): " + gcState);
     }
- 
+
     /**
      * Returns a recyclable {@link Line2D} object.
      * 
@@ -1930,7 +1982,7 @@ public class FXGraphics2D extends Graphics2D {
         }
         return this.line;
     }
-    
+
     /**
      * Sets the attributes of the reusable {@link Rectangle2D} object that is
      * used by the {@link FXGraphics2D#drawRect(int, int, int, int)} and 
@@ -1966,13 +2018,13 @@ public class FXGraphics2D extends Graphics2D {
      * 
      * @return A round rectangle (never {@code null}).
      */
-    private RoundRectangle2D roundRect(int x, int y, int width, int height, 
-            int arcWidth, int arcHeight) {
+    private RoundRectangle2D roundRect(int x, int y, int width, int height,
+                                       int arcWidth, int arcHeight) {
         if (this.roundRect == null) {
-            this.roundRect = new RoundRectangle2D.Double(x, y, width, height, 
+            this.roundRect = new RoundRectangle2D.Double(x, y, width, height,
                     arcWidth, arcHeight);
         } else {
-            this.roundRect.setRoundRect(x, y, width, height, 
+            this.roundRect.setRoundRect(x, y, width, height,
                     arcWidth, arcHeight);
         }
         return this.roundRect;
@@ -1992,18 +2044,18 @@ public class FXGraphics2D extends Graphics2D {
      * 
      * @return An arc (never {@code null}).
      */
-    private Arc2D arc(int x, int y, int width, int height, int startAngle, 
-            int arcAngle) {
+    private Arc2D arc(int x, int y, int width, int height, int startAngle,
+                      int arcAngle) {
         if (this.arc == null) {
-            this.arc = new Arc2D.Double(x, y, width, height, startAngle, 
+            this.arc = new Arc2D.Double(x, y, width, height, startAngle,
                     arcAngle, Arc2D.OPEN);
         } else {
-            this.arc.setArc(x, y, width, height, startAngle, arcAngle, 
+            this.arc.setArc(x, y, width, height, startAngle, arcAngle,
                     Arc2D.OPEN);
         }
         return this.arc;
     }
-            
+
     /**
      * Returns an {@link Ellipse2D} object that may be reused (so this instance
      * should be used for short term operations only). See the 
@@ -2025,7 +2077,7 @@ public class FXGraphics2D extends Graphics2D {
         }
         return this.oval;
     }
-    
+
     /**
      * Returns {@code true} if the two {@code Paint} objects are equal 
      * OR both {@code null}.  This method handles
@@ -2042,13 +2094,13 @@ public class FXGraphics2D extends Graphics2D {
         if (p1 == p2) {
             return true;
         }
-            
+
         // handle cases where either or both arguments are null
         if (p1 == null) {
-            return (p2 == null);   
+            return (p2 == null);
         }
         if (p2 == null) {
-            return false;   
+            return false;
         }
 
         // handle cases...
@@ -2058,31 +2110,31 @@ public class FXGraphics2D extends Graphics2D {
         if (p1 instanceof GradientPaint && p2 instanceof GradientPaint) {
             GradientPaint gp1 = (GradientPaint) p1;
             GradientPaint gp2 = (GradientPaint) p2;
-            return gp1.getColor1().equals(gp2.getColor1()) 
+            return gp1.getColor1().equals(gp2.getColor1())
                     && gp1.getColor2().equals(gp2.getColor2())
-                    && gp1.getPoint1().equals(gp2.getPoint1())    
+                    && gp1.getPoint1().equals(gp2.getPoint1())
                     && gp1.getPoint2().equals(gp2.getPoint2())
                     && gp1.isCyclic() == gp2.isCyclic()
-                    && gp1.getTransparency() == gp1.getTransparency(); 
-        } 
-        if (p1 instanceof LinearGradientPaint 
+                    && gp1.getTransparency() == gp1.getTransparency();
+        }
+        if (p1 instanceof LinearGradientPaint
                 && p2 instanceof LinearGradientPaint) {
             LinearGradientPaint lgp1 = (LinearGradientPaint) p1;
             LinearGradientPaint lgp2 = (LinearGradientPaint) p2;
             return lgp1.getStartPoint().equals(lgp2.getStartPoint())
-                    && lgp1.getEndPoint().equals(lgp2.getEndPoint()) 
+                    && lgp1.getEndPoint().equals(lgp2.getEndPoint())
                     && Arrays.equals(lgp1.getFractions(), lgp2.getFractions())
                     && Arrays.equals(lgp1.getColors(), lgp2.getColors())
                     && lgp1.getCycleMethod() == lgp2.getCycleMethod()
                     && lgp1.getColorSpace() == lgp2.getColorSpace()
                     && lgp1.getTransform().equals(lgp2.getTransform());
-        } 
-        if (p1 instanceof RadialGradientPaint 
+        }
+        if (p1 instanceof RadialGradientPaint
                 && p2 instanceof RadialGradientPaint) {
             RadialGradientPaint rgp1 = (RadialGradientPaint) p1;
             RadialGradientPaint rgp2 = (RadialGradientPaint) p2;
             return rgp1.getCenterPoint().equals(rgp2.getCenterPoint())
-                    && rgp1.getRadius() == rgp2.getRadius() 
+                    && rgp1.getRadius() == rgp2.getRadius()
                     && rgp1.getFocusPoint().equals(rgp2.getFocusPoint())
                     && Arrays.equals(rgp1.getFractions(), rgp2.getFractions())
                     && Arrays.equals(rgp1.getColors(), rgp2.getColors())
@@ -2093,4 +2145,35 @@ public class FXGraphics2D extends Graphics2D {
         return p1.equals(p2);
     }
 
+    private Shape _createTransformedShape(final Shape s, final boolean clone) {
+        if (this.transform.isIdentity()) {
+            return (clone) ? _clone(s) : s;
+        }
+        return this.transform.createTransformedShape(s);
+    }
+
+    private Shape _inverseTransform(final Shape s, final boolean clone) {
+        if (this.transform.isIdentity()) {
+            return (clone) ? _clone(s) : s;
+        }
+        try {
+            final AffineTransform inv = this.transform.createInverse();
+            return inv.createTransformedShape(s);
+        } catch (NoninvertibleTransformException nite) {
+            // System.err.println("NoninvertibleTransformException: " + this.transform);
+            return null;
+        }
+    }
+
+    private Shape _clone(final Shape s) {
+        if (s == null) {
+            return null;
+        }
+        if (s instanceof Rectangle2D) {
+            final Rectangle2D r = new Rectangle2D.Double();
+            r.setRect((Rectangle2D) s);
+            return r;
+        }
+        return new Path2D.Double(s, null);
+    }
 }
