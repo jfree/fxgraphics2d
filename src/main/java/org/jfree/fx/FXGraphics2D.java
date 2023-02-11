@@ -98,6 +98,7 @@ import javafx.scene.shape.StrokeLineCap;
 import javafx.scene.shape.StrokeLineJoin;
 import javafx.scene.text.FontPosture;
 import javafx.scene.text.FontWeight;
+import org.jfree.fx.GCStateHandler.GCState;
 
 /**
  * A {@link Graphics2D} implementation that writes to a JavaFX {@link Canvas}.
@@ -107,17 +108,11 @@ import javafx.scene.text.FontWeight;
  */
 public class FXGraphics2D extends Graphics2D {
 
-    static {
-        System.out.println("Using FXGraphics2D (bourgesl fork) ...");
-    }
-
     /** The graphics context for the JavaFX canvas. */
     private final GraphicsContext gc;
 
     /** Rendering hints. */
     private final RenderingHints hints;
-
-    private Shape clip;
 
     /** Stores the AWT Paint object for get/setPaint(). */
     private Paint paint = Color.BLACK;
@@ -148,16 +143,13 @@ public class FXGraphics2D extends Graphics2D {
     /** The background color, used in the {@code clearRect()} method. */
     private Color background = Color.BLACK;
 
-    /** A flag that is set when the JavaFX graphics state has been saved. */
-    private boolean stateSaved = false;
+    private final GCStateHandler gcHandler;
 
-    private Stroke savedStroke;
-    private Paint savedPaint;
-    private Color savedColor;
-    private Font savedFont;
-    private AffineTransform savedTransform;
+    /** The GCStateHandler save/restore count, used to restore the original clip in setClip(). */
+    private int saveCount;
 
-    private final GCState gcState;
+    /** The user clip (can be null). */
+    Shape clip;
 
     /**
      * An instance that is lazily instantiated in drawLine and then 
@@ -228,17 +220,51 @@ public class FXGraphics2D extends Graphics2D {
      * @param gc  the graphics context ({@code null} not permitted). 
      */
     public FXGraphics2D(final GraphicsContext gc) {
-        this(new GCState(gc));
+        this(new GCStateHandler(gc));
     }
 
-    private FXGraphics2D(final GCState gcState) {
-        nullNotPermitted(gcState, "gcState");
-        this.gcState = gcState;
-        this.gc = gcState.gc;
+    private FXGraphics2D(final GCStateHandler gcHandler) {
+        nullNotPermitted(gcHandler, "gcHandler");
+        this.gc = gcHandler.gc;
+        this.gcHandler = gcHandler;
+        this.saveCount = gcHandler.getSaveCount();
         this.zeroStrokeWidth = 0.5;
         this.hints = new RenderingHints(RenderingHints.KEY_ANTIALIASING,
                 RenderingHints.VALUE_ANTIALIAS_DEFAULT);
         this.hints.put(FXHints.KEY_USE_FX_FONT_METRICS, true);
+    }
+
+    /**
+     * Creates a new graphics object that is a copy of this graphics object.
+     * 
+     * @return A new graphics object.
+     */
+    @Override
+    public Graphics create() {
+        FXGraphics2D copy = new FXGraphics2D(this.gcHandler);
+        copy.setRenderingHints(getRenderingHints());
+        // copy clip directly:
+        copy.clip = this.clip;
+        copy.setPaint(getPaint());
+        copy.setColor(getColor());
+        copy.setComposite(getComposite());
+        copy.setStroke(getStroke());
+        copy.setFont(getFont());
+        copy.setTransform(getTransform());
+        copy.setBackground(getBackground());
+        return copy;
+    }
+
+    /**
+     * Reset the GraphicsContext to its previous state
+     */
+    @Override
+    public void dispose() {
+        // restore gc state:
+        if (this.gcHandler.isStateSavedSince(saveCount)) {
+            // restore clip but keep other attributes
+            reapplyAttributes(this.gcHandler.restoreToCount(saveCount));
+        }
     }
 
     /**
@@ -285,26 +311,6 @@ public class FXGraphics2D extends Graphics2D {
                     height);
         }
         return this.deviceConfiguration;
-    }
-
-    /**
-     * Creates a new graphics object that is a copy of this graphics object.
-     * 
-     * @return A new graphics object.
-     */
-    @Override
-    public Graphics create() {
-        FXGraphics2D copy = new FXGraphics2D(this.gcState);
-        copy.setRenderingHints(getRenderingHints());
-        copy.setClip(getClipInternally());
-        copy.setPaint(getPaint());
-        copy.setColor(getColor());
-        copy.setComposite(getComposite());
-        copy.setStroke(getStroke());
-        copy.setFont(getFont());
-        copy.setTransform(getTransform());
-        copy.setBackground(getBackground());
-        return copy;
     }
 
     /**
@@ -1320,58 +1326,39 @@ public class FXGraphics2D extends Graphics2D {
     }
 
     private void setClip(final Shape shape, final boolean clone) {
-        // System.out.println("setClip: " + shape);
-        if (this.stateSaved) {
-            this.gcState.restore();
-            reapplyAttributes(); // but keep other attributes
-            this.stateSaved = false;
+        if (this.gcHandler.isStateSavedSince(saveCount)) {
+            // restore clip but keep other attributes
+            reapplyAttributes(this.gcHandler.restoreToCount(saveCount));
         }
         // null is handled fine here...
         this.clip = _createTransformedShape(shape, clone); // device space
         if (clip != null) {
-            this.gcState.save();
-            rememberSavedAttributes();
+            // Remember the Graphics2D attributes in force at the point of pushing the JavaFX context:
+            this.gcHandler.save(new GCStateHandler.GCState(color, paint, stroke, font, transform));
 
             shapeToPath(shape); // user space
-            // System.out.println("gc.clip: " + shape);
             this.gc.clip();
         }
     }
 
-    /** 
-     * Remember the Graphics2D attributes in force at the point of pushing
-     * the JavaFX context.
-     */
-    private void rememberSavedAttributes() {
-        this.stateSaved = true;
-        this.savedColor = this.color;
-        this.savedFont = this.font;
-        this.savedPaint = this.paint;
-        this.savedStroke = this.stroke;
-        this.savedTransform = new AffineTransform(this.transform);
-    }
-
-    private void reapplyAttributes() {
-        if (!paintsAreEqual(this.paint, this.savedPaint)) {
-            applyPaint(this.paint);
+    private void reapplyAttributes(final GCState state) {
+        if (state != null) {
+            if (!paintsAreEqual(this.paint, state.savedPaint)) {
+                applyPaint(this.paint);
+            }
+            if (!this.color.equals(state.savedColor)) {
+                applyColor(this.color);
+            }
+            if (!this.stroke.equals(state.savedStroke)) {
+                applyStroke(this.stroke);
+            }
+            if (!this.font.equals(state.savedFont)) {
+                applyFont(this.font);
+            }
+            if (!this.transform.equals(state.savedTransform)) {
+                setTransform(this.transform);
+            }
         }
-        if (!this.color.equals(this.savedColor)) {
-            applyColor(this.color);
-        }
-        if (!this.stroke.equals(this.savedStroke)) {
-            applyStroke(this.stroke);
-        }
-        if (!this.font.equals(this.savedFont)) {
-            applyFont(this.font);
-        }
-        if (!this.transform.equals(this.savedTransform)) {
-            setTransform(this.transform);
-        }
-        this.savedColor = null;
-        this.savedFont = null;
-        this.savedPaint = null;
-        this.savedStroke = null;
-        this.savedTransform = null;
     }
 
     /**
@@ -1391,9 +1378,6 @@ public class FXGraphics2D extends Graphics2D {
      */
     @Override
     public void clip(Shape s) {
-        // System.out.println("clip: shape: " + s);
-        // System.out.println("clip:  clip: " + s);
-
         if (s instanceof Line2D) {
             s = s.getBounds2D();
         }
@@ -1405,7 +1389,6 @@ public class FXGraphics2D extends Graphics2D {
             throw new NullPointerException("clip(Shape): null argument.");
         }
         final Shape ts = _createTransformedShape(s, false);
-        // System.out.println("clip:  ts: " + ts);
         final Shape clipNew;
         if (!ts.intersects(this.clip.getBounds2D())) {
             clipNew = new Rectangle2D.Double();
@@ -1416,17 +1399,12 @@ public class FXGraphics2D extends Graphics2D {
             a1.intersect(a2);
             clipNew = new Path2D.Double(a1);
         }
-        // System.out.println("clip:  clipNew: " + clipNew);
         this.clip = clipNew; // device space
-        if (!this.stateSaved) {
-            this.gcState.save();
-            rememberSavedAttributes();
+        if (!this.gcHandler.isStateSavedSince(saveCount)) {
+            // Remember the Graphics2D attributes in force at the point of pushing the JavaFX context:
+            this.gcHandler.save(new GCStateHandler.GCState(color, paint, stroke, font, transform));
         }
-        if (true) {
-            shapeToPath(this.getClipInternally());
-        } else {
-            shapeToPath(this.clip); // Incorrect, it should be in user space !
-        }
+        shapeToPath(this.getClipInternally());
         this.gc.clip();
     }
 
@@ -1949,19 +1927,6 @@ public class FXGraphics2D extends Graphics2D {
     @Override
     public void copyArea(int x, int y, int width, int height, int dx, int dy) {
         // FIXME: implement this, low priority
-    }
-
-    /**
-     * This method does nothing.
-     */
-    @Override
-    public void dispose() {
-        // restore gc state:
-        if (false && this.stateSaved) {
-            this.gcState.restore();
-            this.stateSaved = false;
-        }
-        // System.out.println("dispose(): " + gcState);
     }
 
     /**
