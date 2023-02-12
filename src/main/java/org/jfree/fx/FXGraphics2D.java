@@ -176,10 +176,9 @@ public class FXGraphics2D extends Graphics2D {
     private Ellipse2D oval;
 
     /**
-     * An instance that is lazily instantiated in draw/fillArc and then
-     * subsequently reused to avoid creating a lot of garbage.
+     * An instance that is used/reused in draw/fillArc to avoid creating a lot of garbage.
      */
-    private Arc2D arc;
+    private final Arc2D arc = new Arc2D.Double();
 
     /** A hidden image used for font metrics. */
     private BufferedImage fmImage;
@@ -1544,7 +1543,7 @@ public class FXGraphics2D extends Graphics2D {
     @Override
     public void drawArc(int x, int y, int width, int height, int startAngle,
                         int arcAngle) {
-        draw(arc(x, y, width, height, startAngle, arcAngle));
+        draw(arc(x, y, width, height, startAngle, arcAngle, Arc2D.OPEN));
     }
 
     /**
@@ -1565,7 +1564,7 @@ public class FXGraphics2D extends Graphics2D {
     @Override
     public void fillArc(int x, int y, int width, int height, int startAngle,
                         int arcAngle) {
-        fill(arc(x, y, width, height, startAngle, arcAngle));
+        fill(arc(x, y, width, height, startAngle, arcAngle, Arc2D.PIE));
     }
 
     /**
@@ -2006,18 +2005,13 @@ public class FXGraphics2D extends Graphics2D {
      * @param height  the height.
      * @param startAngle  the start angle in degrees, 0 = 3 o'clock.
      * @param arcAngle  the angle (anticlockwise) in degrees.
+     * @param arcStyle  the arc style.
      * 
      * @return An arc (never {@code null}).
      */
     private Arc2D arc(int x, int y, int width, int height, int startAngle,
-                      int arcAngle) {
-        if (this.arc == null) {
-            this.arc = new Arc2D.Double(x, y, width, height, startAngle,
-                    arcAngle, Arc2D.OPEN);
-        } else {
-            this.arc.setArc(x, y, width, height, startAngle, arcAngle,
-                    Arc2D.OPEN);
-        }
+                      int arcAngle, int arcStyle) {
+        this.arc.setArc(x, y, width, height, startAngle, arcAngle, arcStyle);
         return this.arc;
     }
 
