@@ -99,6 +99,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 History
 -------
 ##### not yet released : Version 2.1.4
+- fixed clip handling with child Graphics2D.create() (PR #11 by Laurent Bourgès)
 - set JavaFX dependency to version 19
 
 ##### 23-Jan-2022 : Version 2.1.3
