@@ -51,10 +51,9 @@ FXGraphics2D is being tested using [Graphics2D Tester](https://github.com/jfree/
 
 - the compositing rules in `AlphaComposite` cannot be mapped 100% to JavaFX equivalents
 - font metrics are approximated
-- the `create()` method is not yet managing the user clip correctly, causing problems in the Swing UI / SteelSeries test
 - image drawing with clipping shows a strange greying out effect
 
-![fxgraphics2d](https://user-images.githubusercontent.com/1835893/213083249-80a93568-e654-416c-abae-68244c46be30.png)
+![fxgraphics2d](https://user-images.githubusercontent.com/1835893/218298599-5bcc5da1-e4ed-490a-a21d-1e8acad4fff7.png)
 
 Feedback
 --------
