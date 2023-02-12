@@ -1,7 +1,7 @@
 FXGraphics2D
 ============
 
-Version 2.1.3, 23 January 2022.
+Version 2.1.4, 12 February 2023.
 
 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/org.jfree/org.jfree.fxgraphics2d/badge.svg)](https://maven-badges.herokuapp.com/maven-central/org.jfree/org.jfree.fxgraphics2d)
 
@@ -36,7 +36,7 @@ To include `FXGraphics2D` in your own project, add the following Maven dependenc
     <dependency>
         <groupId>org.jfree</groupId>
         <artifactId>org.jfree.fxgraphics2d</artifactId>
-        <version>2.1.3</version>
+        <version>2.1.4</version>
     </dependency>
 
 Build
@@ -97,7 +97,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 History
 -------
-##### not yet released : Version 2.1.4
+##### 12-Feb-2023 : Version 2.1.4
 - fixed clip handling with child Graphics2D.create() (PR #11 by Laurent Bourgès)
 - fix bug in drawArc()/fillArc()
 - set JavaFX dependency to version 19
