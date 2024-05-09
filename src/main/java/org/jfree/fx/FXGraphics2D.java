@@ -56,6 +56,7 @@ import java.awt.Rectangle;
 import java.awt.RenderingHints;
 import java.awt.Shape;
 import java.awt.Stroke;
+import java.awt.TexturePaint;
 import java.awt.font.FontRenderContext;
 import java.awt.font.GlyphVector;
 import java.awt.font.TextLayout;
@@ -88,7 +89,9 @@ import javafx.embed.swing.SwingFXUtils;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.effect.BlendMode;
+import javafx.scene.image.WritableImage;
 import javafx.scene.paint.CycleMethod;
+import javafx.scene.paint.ImagePattern;
 import javafx.scene.paint.LinearGradient;
 import javafx.scene.paint.RadialGradient;
 import javafx.scene.paint.Stop;
@@ -419,6 +422,14 @@ public class FXGraphics2D extends Graphics2D {
                 this.gc.setStroke(lg);
                 this.gc.setFill(lg);
             }
+        } else if (paint instanceof TexturePaint){
+            BufferedImage textureImage = ((TexturePaint) paint).getImage();
+            int width = textureImage.getWidth();
+            int height = textureImage.getHeight();
+            WritableImage image = SwingFXUtils.toFXImage(textureImage, null);
+            ImagePattern imagePattern = new ImagePattern(image,0,0, width, height,false);
+            this.gc.setStroke(imagePattern);
+            this.gc.setFill(imagePattern);
         } else {
             // this is a paint we don't recognise
         }
