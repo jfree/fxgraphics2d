@@ -1,7 +1,7 @@
 FXGraphics2D
 ============
 
-Version 2.1.4, 12 February 2023.
+Version 2.1.5, 22 May 2025.
 
 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/org.jfree/org.jfree.fxgraphics2d/badge.svg)](https://maven-badges.herokuapp.com/maven-central/org.jfree/org.jfree.fxgraphics2d)
 
