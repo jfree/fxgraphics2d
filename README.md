@@ -97,6 +97,11 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 History
 -------
+##### 22-May-2025 : Version 2.1.5
+- fixed bug in `paintsAreEqual()` method
+- set JavaFX dependency to 21.0.2
+- updated Maven publishing flow
+
 ##### 12-Feb-2023 : Version 2.1.4
 - fixed clip handling with child Graphics2D.create() (PR #11 by Laurent Bourgès)
 - fix bug in drawArc()/fillArc()
