@@ -58,7 +58,7 @@ final class GCStateHandler {
     private int saveCount = 0;
 
     /** stack of saved states */
-    private final ArrayList<GCState> states = new ArrayList<GCState>(8);
+    private final ArrayList<GCState> states = new ArrayList<>(8);
 
     GCStateHandler(final GraphicsContext gc) {
         this.gc = gc;

@@ -777,7 +777,7 @@ public class TestGraphics2D {
     }
     
     /**
-     * Checks a translate() followed by a shear().
+     * Checks a call to translate() followed by a shear().
      */
     @Test
     public void shearFollowingTranslate() {
