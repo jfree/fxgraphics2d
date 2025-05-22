@@ -21,10 +21,6 @@ project page at GitHub.
 
 You can also read about *FXGraphics2D* in this Java Magazine article:
 
-- http://www.oraclejavamagazine-digital.com/javamagazine/november_december_2014#pg63
-
-Temporary: link above is broken, please use this in the meantime:
-
 - http://www.jfree.org/fxgraphics2d/javamagazine20141112-dl.pdf
 
 *FXGraphics2D* requires JDK 11 or later and is licensed under the terms of a (three clause) BSD-style license.
@@ -37,7 +33,7 @@ To include `FXGraphics2D` in your own project, add the following Maven dependenc
     <dependency>
         <groupId>org.jfree</groupId>
         <artifactId>org.jfree.fxgraphics2d</artifactId>
-        <version>2.1.4</version>
+        <version>2.1.5</version>
     </dependency>
 
 Build
