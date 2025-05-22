@@ -1363,14 +1363,14 @@ public class FXGraphics2D extends Graphics2D {
     /**
      * Clips to the intersection of the current clipping region and the
      * specified shape. 
-     * 
+     * <p>
      * According to the Oracle API specification, this method will accept a 
      * {@code null} argument, but there is an open bug report (since 2004) 
      * that suggests this is wrong:
      * <p>
      * <a href="http://bugs.sun.com/bugdatabase/view_bug.do?bug_id=6206189">
      * http://bugs.sun.com/bugdatabase/view_bug.do?bug_id=6206189</a>
-     * 
+     * <p>
      * In this implementation, a {@code null} argument is not permitted.
      * 
      * @param s  the clip shape ({@code null} not permitted). 
@@ -2074,7 +2074,7 @@ public class FXGraphics2D extends Graphics2D {
                     && gp1.getPoint1().equals(gp2.getPoint1())
                     && gp1.getPoint2().equals(gp2.getPoint2())
                     && gp1.isCyclic() == gp2.isCyclic()
-                    && gp1.getTransparency() == gp1.getTransparency();
+                    && gp1.getTransparency() == gp2.getTransparency();
         }
         if (p1 instanceof LinearGradientPaint
                 && p2 instanceof LinearGradientPaint) {
