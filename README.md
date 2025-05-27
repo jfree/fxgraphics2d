@@ -49,6 +49,7 @@ FXGraphics2D is being tested using [Graphics2D Tester](https://github.com/jfree/
 - the compositing rules in `AlphaComposite` cannot be mapped 100% to JavaFX equivalents
 - font metrics are approximated
 - image drawing with clipping shows a strange greying out effect
+- `TexturePaint` is not supported yet (but see [pull request #14](https://github.com/jfree/fxgraphics2d/pull/14))
 
 ![fxgraphics2d](https://user-images.githubusercontent.com/1835893/218298599-5bcc5da1-e4ed-490a-a21d-1e8acad4fff7.png)
 
@@ -96,7 +97,7 @@ History
 -------
 ##### 22-May-2025 : Version 2.1.5
 - fixed bug in `paintsAreEqual()` method
-- set JavaFX dependency to 21.0.2
+- set JavaFX dependency to 21.0.5
 - updated Maven publishing flow
 
 ##### 12-Feb-2023 : Version 2.1.4
