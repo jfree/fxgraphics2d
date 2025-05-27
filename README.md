@@ -3,7 +3,7 @@ FXGraphics2D
 
 Version 2.1.5, 22 May 2025.
 
-[![Maven Central](https://img.shields.io/maven-central/v/org.jfree/org.jfree.fxgraphics2d)](https://central.sonatype.com/artifact/org.jfree/org.jfree.fxgraphics2d/versions) [![javadoc](https://javadoc.io/badge2/org.jfree/org.jfree.fxgraphics2d/javadoc.svg)](https://javadoc.io/doc/org.jfree/org.jfree.fxgraphics2d)
+[![Maven Central](https://img.shields.io/maven-central/v/org.jfree/org.jfree.fxgraphics2d)](https://central.sonatype.com/artifact/org.jfree/org.jfree.fxgraphics2d/versions) [![javadoc](https://javadoc.io/badge2/org.jfree/org.jfree.fxgraphics2d/javadoc.svg)](https://javadoc.io/doc/org.jfree/org.jfree.fxgraphics2d) [![JFXCentral](https://img.shields.io/badge/Find_me_on-JFXCentral-blue?logo=googlechrome&logoColor=white)](https://www.jfx-central.com/libraries/fxgraphics2d)
 
 Overview
 --------
