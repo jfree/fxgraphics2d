@@ -51,7 +51,7 @@ FXGraphics2D is being tested using [Graphics2D Tester](https://github.com/jfree/
 - image drawing with clipping shows a strange greying out effect
 - `TexturePaint` is not supported yet (but see [pull request #14](https://github.com/jfree/fxgraphics2d/pull/14))
 
-![fxgraphics2d](https://user-images.githubusercontent.com/1835893/218298599-5bcc5da1-e4ed-490a-a21d-1e8acad4fff7.png)
+![fxgraphics2d](https://github.com/user-attachments/assets/3460b359-2f88-4110-adc9-39f27df977a6)
 
 Feedback
 --------
