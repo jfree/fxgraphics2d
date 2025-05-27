@@ -149,7 +149,7 @@ public class FXGraphics2D extends Graphics2D {
     private final GCStateHandler gcHandler;
 
     /** The GCStateHandler save/restore count, used to restore the original clip in setClip(). */
-    private int saveCount;
+    private final int saveCount;
 
     /** The user clip (can be null). */
     Shape clip;
@@ -1857,7 +1857,7 @@ public class FXGraphics2D extends Graphics2D {
         int height = img.getHeight();
         WritableRaster raster = cm.createCompatibleWritableRaster(width, height);
         boolean isAlphaPremultiplied = cm.isAlphaPremultiplied();
-        Hashtable properties = new Hashtable();
+        Hashtable<String, Object> properties = new Hashtable<>();
         String[] keys = img.getPropertyNames();
         if (keys != null) {
             for (String key : keys) {
@@ -2066,11 +2066,8 @@ public class FXGraphics2D extends Graphics2D {
             return true;
         }
 
-        // handle cases where either or both arguments are null
-        if (p1 == null) {
-            return (p2 == null);
-        }
-        if (p2 == null) {
+        // handle cases where one argument or the other is null
+        if (p1 == null || p2 == null) {
             return false;
         }
 

@@ -95,6 +95,9 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 History
 -------
+##### Next release
+- added support for `TexturePaint` (see [#14](https://github.com/jfree/fxgraphics2d/pull/14))
+
 ##### 22-May-2025 : Version 2.1.5
 - fixed bug in `paintsAreEqual()` method
 - set JavaFX dependency to 21.0.5
