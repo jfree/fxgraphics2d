@@ -373,9 +373,10 @@ public class FXGraphics2D extends Graphics2D {
             setColor((Color) paint);
         } else if (paint instanceof GradientPaint) {
             GradientPaint gp = (GradientPaint) paint;
-            Stop[] stops = new Stop[]{new Stop(0,
-                awtColorToJavaFX(gp.getColor1())),
-                                      new Stop(1, awtColorToJavaFX(gp.getColor2()))};
+            Stop[] stops = new Stop[] {
+                    new Stop(0, awtColorToJavaFX(gp.getColor1())),
+                    new Stop(1, awtColorToJavaFX(gp.getColor2()))
+            };
             Point2D p1 = gp.getPoint1();
             Point2D p2 = gp.getPoint2();
             CycleMethod cm = gp.isCyclic() ? CycleMethod.REFLECT : CycleMethod.NO_CYCLE;
