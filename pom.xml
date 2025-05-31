@@ -87,7 +87,7 @@
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>3.14.0</version>
                 <configuration>
-                    <release>11</release>
+                    <release>22</release>
                     <compilerArgument>-Xlint:unchecked</compilerArgument>
                     <encoding>${project.build.sourceEncoding}</encoding>
                 </configuration>
